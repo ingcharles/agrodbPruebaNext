@@ -1,0 +1,9 @@
+vie ago 12 08:48:01 -05 2022
+{"estado":"error","mensaje":"Error: La sesi\u00f3n del usuario a finalizado"}
+Warning: Cannot modify header information - headers already sent by (output started at /var/www/html/agrodb/aplicaciones/mvc/Core/Mensajes.php:19) in /var/www/html/agrodb/aplicaciones/mvc/Core/Comun.php on line 129
+<br/> >>> <b>PROCESO AUTOMÁTICO DE FIRMA ELECTRONICA DE DOCUMENTOS GUIA 2022-08-12 08:08:01</b>\n<br/> >>> Obtención de registros de documentos por atender para el proceso de firma\n<br/> >>> Firma de registro con id de documento 3594</b>\n<br/> >>> Inicio de proceso de firmado 3594</b>\n
+Warning: file_get_contents(/var/www/html/agrodb/aplicaciones/registroOperador/certificados/centroMercanciaPecuaria/1790506886001_732336.pdf): failed to open stream: No such file or directory in /var/www/html/agrodb/vendor/propa/tcpdi/tcpdi.php on line 138
+
+Notice: Undefined index: REQUEST_URI in /var/www/html/agrodb/vendor/ccampbell/chromephp/ChromePhp.php on line 136
+
+Warning: Cannot modify header information - headers already sent by (output started at /var/www/html/agrodb/aplicaciones/mvc/Core/Mensajes.php:19) in /var/www/html/agrodb/vendor/ccampbell/chromephp/ChromePhp.php on line 394

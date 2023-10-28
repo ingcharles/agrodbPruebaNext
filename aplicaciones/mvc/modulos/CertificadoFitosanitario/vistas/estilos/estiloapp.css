@@ -1,0 +1,19 @@
+@CHARSET "UTF-8";
+
+#__certificadoFitosanitario {
+	background-image: url('../img/certificadoFitosanitario.png');
+}
+
+
+#__revisionSolicitudes {
+	background-image: url('../img/revisionSolicitudes.png');
+}
+
+#_anulaReemplaza {
+	background-image: url('../img/anulaReemplaza.png');
+	position: relative;
+}
+
+#__revisionEstadoSolicitud{
+	background-image: url('../img/revisionEstadoSolicitud.png');
+}

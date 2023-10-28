@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="perfilPublico" pageWidth="325" pageHeight="502" columnWidth="325" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="d1b4b236-4aca-4d64-9df3-763db542be60">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+	<parameter name="identificador" class="java.lang.String"/>
+	<parameter name="fotoFondo" class="java.lang.String"/>
+	<parameter name="fotoPersona" class="java.lang.String"/>
+	<parameter name="fotoQR" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select
+	CONCAT(substring(fic.nombre, 1, POSITION(' ' IN fic.nombre)-1), ' ', substring(fic.apellido, 1, POSITION(' ' IN fic.apellido)-1)) as nombre,
+	fic.identificador,
+	con.nombre_puesto,
+	con.direccion
+from
+	g_uath.ficha_empleado  fic,
+	g_uath.datos_contrato con
+where
+	fic.identificador= $P{identificador}  and con.identificador =  $P{identificador}  and con.estado = 1]]>
+	</queryString>
+	<field name="nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+	</field>
+	<field name="identificador" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="identificador"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ficha_empleado"/>
+	</field>
+	<field name="nombre_puesto" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre_puesto"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="datos_contrato"/>
+	</field>
+	<field name="direccion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="direccion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="datos_contrato"/>
+	</field>
+	<detail>
+		<band height="502">
+			<property name="com.jaspersoft.studio.layout"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<image scaleImage="FillFrame">
+				<reportElement x="0" y="0" width="325" height="502" uuid="a4dd5f3f-9d1b-4cdc-8ff1-da7db47a5fc2">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{fotoFondo}]]></imageExpression>
+			</image>
+			<image scaleImage="FillFrame">
+				<reportElement stretchType="RelativeToTallestObject" x="92" y="97" width="140" height="189" uuid="3dc174b0-e269-404b-94b5-cd5deb90170c">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{fotoPersona}]]></imageExpression>
+			</image>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="20" y="298" width="290" height="20" forecolor="#76787A" uuid="4a53ac81-531a-4d4a-9282-ec5acaf05a7b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="20" y="319" width="290" height="20" forecolor="#76787A" uuid="f43b4172-1218-485a-8af2-5b034e2cec93"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{identificador}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="20" y="340" width="290" height="30" forecolor="#76787A" uuid="b88889d0-3566-4219-9462-d12b20b8382b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre_puesto}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="20" y="371" width="290" height="30" forecolor="#76787A" uuid="d9135112-ad80-426c-9b92-aebc9a30c132">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{direccion}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame">
+				<reportElement stretchType="RelativeToTallestObject" x="221" y="410" width="90" height="90" uuid="d1b4e8c8-4613-425a-8e00-1f9a807e3a10">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{fotoQR}]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+</jasperReport>

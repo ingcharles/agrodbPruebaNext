@@ -1,0 +1,25 @@
+@CHARSET "UTF-8";
+ 
+#__solicitudInspeccion {
+	background-image: url('../img/solicitudInspeccion.png');
+}
+
+
+#__confirmarInspeccion {
+	background-image: url('../img/confirmarInspeccion.png');
+}
+
+#__atenderInspeccion{
+	background-image: url('../img/atenderInspeccion.png');
+}
+
+#__revisionEstadoSolicitud{
+	background-image: url('../img/revisionEstadoSolicitud.png');
+}
+#_desestimiento{
+	background-image: url('../img/desestimiento.png');
+}
+
+#__configurarEstadoInspeccionPais{
+	background-image: url('../img/configurarEstadoInspeccionPais.png');
+}

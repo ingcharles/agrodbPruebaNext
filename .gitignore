@@ -1,0 +1,21 @@
+# Ignorar archivos .log
+*.log
+*.pdf
+*.xlsx 
+*.xml
+*.txt
+*.p12
+*.cert
+*.doc
+*.sh
+*.db
+aplicaciones/uath/archivosPerfilPublico/credenciales/*.png
+aplicaciones/procesosAutomaticos/envioTokenClienteWs/cont_dia.txt
+aplicaciones/publico/establecimiento/img/temp/*.jpg
+aplicaciones/publico/establecimiento/img/temp/*.png
+aplicaciones/publico/establecimiento/img/temp/*.jfif
+aplicaciones/mvc/modulos/AsignacionCuv/vistas/img/*.jpg
+aplicaciones/uath/qrPerfilPublico/*.png
+aplicaciones/uath/qrPerfilPublico/*.jpg
+clases/Conexion.php
+aplicaciones/mvc/config/config.php

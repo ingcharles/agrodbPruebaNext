@@ -1,0 +1,2306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="historiaClinica" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="0" isSummaryWithPageHeaderAndFooter="true" uuid="7455f87d-4ded-4ee6-8a78-df558e0c262d">
+	<property name="ireport.zoom" value="3.1384283767210666"/>
+	<property name="ireport.x" value="317"/>
+	<property name="ireport.y" value="2022"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="120"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="875"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="706"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="280"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="dataset1" uuid="1f21f222-01a1-4ae6-bf0f-b3d8fb403880">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="agrocaldiadPrueba"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<parameter name="idHistoriaClinica" class="java.lang.Integer"/>
+		<queryString>
+			<![CDATA[SELECT distinct  empresa, cargo, tipo, array_to_string(array_agg(subtipo),', ') as subtipo, tiempo_exposicion
+FROM 
+	g_historias_clinicas.historia_ocupacional ho
+	INNER JOIN g_historias_clinicas.tipo_procedimiento_medico tpm ON ho.id_tipo_procedimiento_medico = tpm.id_tipo_procedimiento_medico
+	
+	INNER JOIN g_historias_clinicas.detalle_historial_ocupacional dho ON ho.id_historia_ocupacional = dho.id_historia_ocupacional
+	INNER JOIN g_historias_clinicas.subtipo_procedimiento_medico spm ON dho.id_subtipo_proced_medico = spm.id_subtipo_proced_medico
+WHERE
+	id_historia_clinica =  $P{idHistoriaClinica}
+GROUP BY 
+	empresa, cargo, tipo, tiempo_exposicion]]>
+		</queryString>
+		<field name="empresa" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="empresa"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="historia_ocupacional"/>
+		</field>
+		<field name="cargo" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="cargo"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="historia_ocupacional"/>
+		</field>
+		<field name="tipo" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="tipo"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="tipo_procedimiento_medico"/>
+		</field>
+		<field name="subtipo" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="subtipo"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="subtipo_procedimiento_medico"/>
+		</field>
+		<field name="tiempo_exposicion" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="tiempo_exposicion"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="historia_ocupacional"/>
+		</field>
+	</subDataset>
+	<subDataset name="dataset2" uuid="dc0378fd-5aef-4e32-985e-9956caf6e97a">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="agrocaldiadPrueba"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<parameter name="idHistoriaClinica" class="java.lang.Integer"/>
+		<queryString>
+			<![CDATA[SELECT distinct anio||'-'||mes as fecha, empresa, naturaleza_lesion, parte_afectada, dias_incapacidad, secuelas
+FROM 
+	g_historias_clinicas.accidentes_laborales al
+	INNER JOIN g_historias_clinicas.historia_ocupacional ho ON al.id_historia_ocupacional = ho.id_historia_ocupacional
+WHERE
+	al.id_historia_clinica = $P{idHistoriaClinica}]]>
+		</queryString>
+		<field name="fecha" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="fecha"/>
+		</field>
+		<field name="empresa" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="empresa"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="historia_ocupacional"/>
+		</field>
+		<field name="naturaleza_lesion" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="naturaleza_lesion"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="accidentes_laborales"/>
+		</field>
+		<field name="parte_afectada" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="parte_afectada"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="accidentes_laborales"/>
+		</field>
+		<field name="dias_incapacidad" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="dias_incapacidad"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="accidentes_laborales"/>
+		</field>
+		<field name="secuelas" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="secuelas"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="accidentes_laborales"/>
+		</field>
+	</subDataset>
+	<subDataset name="dataset3" uuid="bb54bc36-cc5f-419d-a3bb-95eba8d7fc88">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+		<parameter name="idHistoriaClinica" class="java.lang.Integer"/>
+		<queryString>
+			<![CDATA[SELECT 
+tiprme.tipo,
+TO_CHAR(excl.fecha_examen, 'YYYY/MM/DD')  as fecha_examen,
+excl.resultado
+FROM g_historias_clinicas.examenes_clinicos excl
+INNER JOIN g_historias_clinicas.tipo_procedimiento_medico tiprme ON excl.id_tipo_procedimiento_medico = tiprme.id_tipo_procedimiento_medico
+LEFT JOIN g_historias_clinicas.detalle_examenes_clinicos deexcl ON excl.id_examenes_clinicos = deexcl.id_examenes_clinicos
+LEFT JOIN g_historias_clinicas.subtipo_procedimiento_medico suprme ON deexcl.id_subtipo_proced_medico = suprme.id_subtipo_proced_medico
+WHERE id_historia_clinica = $P{idHistoriaClinica}
+group by tipo, fecha_examen, resultado]]>
+		</queryString>
+		<field name="tipo" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="tipo"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="tipo_procedimiento_medico"/>
+		</field>
+		<field name="fecha_examen" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="fecha_examen"/>
+		</field>
+		<field name="resultado" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="resultado"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="examenes_clinicos"/>
+		</field>
+	</subDataset>
+	<subDataset name="dataset4" uuid="8a3ef422-0d2b-4a97-944f-1695a779d4e4">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="agrocaldiadPrueba"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<parameter name="idHistoriaClinica" class="java.lang.Integer"/>
+		<queryString>
+			<![CDATA[SELECT distinct tipo as parentesco, descripcion as enfermedad, observaciones
+FROM 
+	g_historias_clinicas.antecedentes_salud_familiar asf
+	INNER JOIN g_historias_clinicas.tipo_procedimiento_medico tpm ON asf.id_tipo_procedimiento_medico = tpm.id_tipo_procedimiento_medico
+	INNER JOIN g_historias_clinicas.cie cie ON asf.id_cie = cie.id_cie
+WHERE
+	id_historia_clinica = $P{idHistoriaClinica}]]>
+		</queryString>
+		<field name="parentesco" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="parentesco"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="tipo_procedimiento_medico"/>
+		</field>
+		<field name="enfermedad" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="enfermedad"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="cie"/>
+		</field>
+		<field name="observaciones" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="observaciones"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="antecedentes_salud_familiar"/>
+		</field>
+	</subDataset>
+	<subDataset name="dataset5" uuid="1a218d9a-9d75-42ed-9d56-506838ed1fab">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="agrocaldiadPrueba"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<parameter name="idHistoriaClinica" class="java.lang.Integer"/>
+		<queryString>
+			<![CDATA[SELECT distinct tipo as tipo_antecedente, diagnostico, observaciones
+FROM 
+	g_historias_clinicas.antecedentes_salud ans
+	INNER JOIN g_historias_clinicas.tipo_procedimiento_medico tpm ON ans.id_tipo_procedimiento_medico = tpm.id_tipo_procedimiento_medico
+	INNER JOIN g_historias_clinicas.detalle_antecedentes_salud das ON ans.id_antecedentes_salud = das.id_antecedentes_salud
+WHERE
+	id_historia_clinica = $P{idHistoriaClinica}
+	and tipo != 'Gineco Obstétricos']]>
+		</queryString>
+		<field name="tipo_antecedente" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="tipo_antecedente"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="tipo_procedimiento_medico"/>
+		</field>
+		<field name="diagnostico" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="diagnostico"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="detalle_antecedentes_salud"/>
+		</field>
+		<field name="observaciones" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="observaciones"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="detalle_antecedentes_salud"/>
+		</field>
+	</subDataset>
+	<subDataset name="dataset6" uuid="127db345-5a5f-48f1-872a-cdbfc42beaf1">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="agrocaldiadPrueba"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<parameter name="idHistoriaClinica" class="java.lang.Integer"/>
+		<queryString>
+			<![CDATA[SELECT ans.fecha_creacion, ciclo_mestrual, fecha_ultima_regla, fecha_ultima_citologia, resultado_citologia, numero_gestaciones,
+numero_partos, numero_cesareas, numero_abortos, numero_hijos_vivos, numero_hijos_muertos, embarazo, semanas_gestacion, numero_ecos,
+numero_controles_embarazo, complicaciones, vida_sexual_activa, planificacion_familiar, metodo_planificacion
+FROM 
+	g_historias_clinicas.antecedentes_salud ans
+	INNER JOIN g_historias_clinicas.tipo_procedimiento_medico tpm ON ans.id_tipo_procedimiento_medico = tpm.id_tipo_procedimiento_medico
+	INNER JOIN g_historias_clinicas.detalle_antecedentes_salud das ON ans.id_antecedentes_salud = das.id_antecedentes_salud
+WHERE
+	id_historia_clinica =  $P{idHistoriaClinica}
+	and tipo = 'Gineco Obstétricos']]>
+		</queryString>
+		<field name="fecha_creacion" class="java.sql.Timestamp">
+			<property name="com.jaspersoft.studio.field.label" value="fecha_creacion"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="antecedentes_salud"/>
+		</field>
+		<field name="ciclo_mestrual" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="ciclo_mestrual"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="detalle_antecedentes_salud"/>
+		</field>
+		<field name="fecha_ultima_regla" class="java.sql.Date">
+			<property name="com.jaspersoft.studio.field.label" value="fecha_ultima_regla"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="detalle_antecedentes_salud"/>
+		</field>
+		<field name="fecha_ultima_citologia" class="java.sql.Date">
+			<property name="com.jaspersoft.studio.field.label" value="fecha_ultima_citologia"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="detalle_antecedentes_salud"/>
+		</field>
+		<field name="resultado_citologia" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="resultado_citologia"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="detalle_antecedentes_salud"/>
+		</field>
+		<field name="numero_gestaciones" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="numero_gestaciones"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="detalle_antecedentes_salud"/>
+		</field>
+		<field name="numero_partos" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="numero_partos"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="detalle_antecedentes_salud"/>
+		</field>
+		<field name="numero_cesareas" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="numero_cesareas"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="detalle_antecedentes_salud"/>
+		</field>
+		<field name="numero_abortos" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="numero_abortos"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="detalle_antecedentes_salud"/>
+		</field>
+		<field name="numero_hijos_vivos" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="numero_hijos_vivos"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="detalle_antecedentes_salud"/>
+		</field>
+		<field name="numero_hijos_muertos" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="numero_hijos_muertos"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="detalle_antecedentes_salud"/>
+		</field>
+		<field name="embarazo" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="embarazo"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="detalle_antecedentes_salud"/>
+		</field>
+		<field name="semanas_gestacion" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="semanas_gestacion"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="detalle_antecedentes_salud"/>
+		</field>
+		<field name="numero_ecos" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="numero_ecos"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="detalle_antecedentes_salud"/>
+		</field>
+		<field name="numero_controles_embarazo" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="numero_controles_embarazo"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="detalle_antecedentes_salud"/>
+		</field>
+		<field name="complicaciones" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="complicaciones"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="detalle_antecedentes_salud"/>
+		</field>
+		<field name="vida_sexual_activa" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="vida_sexual_activa"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="detalle_antecedentes_salud"/>
+		</field>
+		<field name="planificacion_familiar" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="planificacion_familiar"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="detalle_antecedentes_salud"/>
+		</field>
+		<field name="metodo_planificacion" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="metodo_planificacion"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="detalle_antecedentes_salud"/>
+		</field>
+	</subDataset>
+	<subDataset name="dataset7" uuid="a829fe87-3f22-42ca-a4b1-f2017bc340b3">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="agrocaldiadPrueba"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<parameter name="idHistoriaClinica" class="java.lang.Integer"/>
+		<queryString>
+			<![CDATA[SELECT distinct tipo, array_to_string(array_agg(subtipo),', ') as subtipo, otros
+FROM 
+	g_historias_clinicas.revision_organos_sistemas ros
+	INNER JOIN g_historias_clinicas.tipo_procedimiento_medico tpm ON ros.id_tipo_procedimiento_medico = tpm.id_tipo_procedimiento_medico
+	INNER JOIN g_historias_clinicas.detalle_revision_organos_sistemas dros ON ros.id_revision_organos_sistemas = dros.id_revision_organos_sistemas
+	INNER JOIN g_historias_clinicas.subtipo_procedimiento_medico spm ON dros.id_subtipo_proced_medico = spm.id_subtipo_proced_medico
+WHERE
+	id_historia_clinica =  $P{idHistoriaClinica}
+GROUP BY tipo, otros
+ORDER BY 1]]>
+		</queryString>
+		<field name="tipo" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="tipo"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="tipo_procedimiento_medico"/>
+		</field>
+		<field name="subtipo" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="subtipo"/>
+		</field>
+		<field name="otros" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="otros"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="detalle_revision_organos_sistemas"/>
+		</field>
+	</subDataset>
+	<subDataset name="dataset8" uuid="98614e6b-2f38-435c-95ba-f94aa29e8b5f">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="agrocaldiadPrueba"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<parameter name="idHistoriaClinica" class="java.lang.Integer"/>
+		<queryString>
+			<![CDATA[SELECT tipo as vacuna, fecha_ultima_dosis, numero_dosis
+FROM 
+	g_historias_clinicas.inmunizacion i
+	INNER JOIN g_historias_clinicas.tipo_procedimiento_medico tpm ON i.id_tipo_procedimiento_medico = tpm.id_tipo_procedimiento_medico
+WHERE
+	id_historia_clinica =   $P{idHistoriaClinica}
+ORDER BY 1]]>
+		</queryString>
+		<field name="vacuna" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="vacuna"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="tipo_procedimiento_medico"/>
+		</field>
+		<field name="fecha_ultima_dosis" class="java.sql.Date">
+			<property name="com.jaspersoft.studio.field.label" value="fecha_ultima_dosis"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="inmunizacion"/>
+		</field>
+		<field name="numero_dosis" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="numero_dosis"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="inmunizacion"/>
+		</field>
+	</subDataset>
+	<subDataset name="dataset9" uuid="4b952292-0174-491b-bc42-f0d09ef0edcf">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="agrocaldiadPrueba"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<parameter name="idHistoriaClinica" class="java.lang.Integer"/>
+		<queryString>
+			<![CDATA[SELECT tipo, frecuencia_habito, anios_habito, observaciones
+FROM 
+	g_historias_clinicas.habitos ha
+	INNER JOIN g_historias_clinicas.tipo_procedimiento_medico tpm ON ha.id_tipo_procedimiento_medico = tpm.id_tipo_procedimiento_medico
+WHERE
+	id_historia_clinica = $P{idHistoriaClinica}
+ORDER BY 1]]>
+		</queryString>
+		<field name="tipo" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="tipo"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="tipo_procedimiento_medico"/>
+		</field>
+		<field name="frecuencia_habito" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="frecuencia_habito"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="habitos"/>
+		</field>
+		<field name="anios_habito" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="anios_habito"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="habitos"/>
+		</field>
+		<field name="observaciones" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="observaciones"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="habitos"/>
+		</field>
+	</subDataset>
+	<subDataset name="dataset10" uuid="38d15a3d-d65b-470d-89ab-ae6acc7cc005">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="agrocaldiadPrueba"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<parameter name="idHistoriaClinica" class="java.lang.Integer"/>
+		<queryString>
+			<![CDATA[SELECT tipo_actividad, frecuencia, observaciones
+FROM 
+	g_historias_clinicas.estilo_vida
+WHERE
+	id_historia_clinica =  $P{idHistoriaClinica}
+ORDER BY 1]]>
+		</queryString>
+		<field name="tipo_actividad" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="tipo_actividad"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="estilo_vida"/>
+		</field>
+		<field name="frecuencia" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="frecuencia"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="estilo_vida"/>
+		</field>
+		<field name="observaciones" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="observaciones"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="estilo_vida"/>
+		</field>
+	</subDataset>
+	<subDataset name="dataset11" uuid="ef9ff489-fa37-40eb-893d-f378c3365a3a">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="agrocaldiadPrueba"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<parameter name="idHistoriaClinica" class="java.lang.Integer"/>
+		<queryString>
+			<![CDATA[SELECT tipo, subtipo, normal, observaciones
+FROM 
+	g_historias_clinicas.procedimiento_medico pm
+	INNER JOIN g_historias_clinicas.tipo_procedimiento_medico tpm ON pm.id_procedimiento_medico = tpm.id_procedimiento_medico
+	INNER JOIN g_historias_clinicas.evaluacion_primaria ep ON tpm.id_tipo_procedimiento_medico = ep.id_tipo_procedimiento_medico
+	INNER JOIN g_historias_clinicas.subtipo_procedimiento_medico spm ON tpm.id_tipo_procedimiento_medico = spm.id_tipo_procedimiento_medico
+	INNER JOIN g_historias_clinicas.detalle_evaluacion_primaria dep ON ep.id_evaluacion_primaria = dep.id_evaluacion_primaria and spm.id_subtipo_proced_medico = dep.id_subtipo_proced_medico
+WHERE
+	nombre ='Examen físico' 
+	and pm.estado ='Activo'
+	and tpm.estado = 'Activo'
+	and spm.estado = 'Activo'
+	and id_historia_clinica =  $P{idHistoriaClinica}
+ORDER BY 1]]>
+		</queryString>
+		<field name="tipo" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="tipo"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="tipo_procedimiento_medico"/>
+		</field>
+		<field name="subtipo" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="subtipo"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="subtipo_procedimiento_medico"/>
+		</field>
+		<field name="normal" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="normal"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="detalle_evaluacion_primaria"/>
+		</field>
+		<field name="observaciones" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="observaciones"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="detalle_evaluacion_primaria"/>
+		</field>
+	</subDataset>
+	<subDataset name="dataset12" uuid="58b1602e-072d-4234-bb41-d0e19df4758c">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="agrocaldiadPrueba"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<parameter name="idHistoriaClinica" class="java.lang.Integer"/>
+		<queryString>
+			<![CDATA[SELECT tipo, subtipo, spm.fecha_creacion, estado_clinico, observaciones
+FROM 
+	g_historias_clinicas.examenes_clinicos ec
+	INNER JOIN g_historias_clinicas.tipo_procedimiento_medico tpm ON ec.id_tipo_procedimiento_medico = tpm.id_tipo_procedimiento_medico
+	INNER JOIN g_historias_clinicas.detalle_examenes_clinicos dc ON ec.id_examenes_clinicos = dc.id_examenes_clinicos
+	INNER JOIN g_historias_clinicas.subtipo_procedimiento_medico spm ON dc.id_subtipo_proced_medico = spm.id_subtipo_proced_medico
+WHERE
+	id_historia_clinica =  $P{idHistoriaClinica}
+ORDER BY 1]]>
+		</queryString>
+		<field name="tipo" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="tipo"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="tipo_procedimiento_medico"/>
+		</field>
+		<field name="subtipo" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="subtipo"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="subtipo_procedimiento_medico"/>
+		</field>
+		<field name="fecha_creacion" class="java.sql.Timestamp">
+			<property name="com.jaspersoft.studio.field.label" value="fecha_creacion"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="subtipo_procedimiento_medico"/>
+		</field>
+		<field name="estado_clinico" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="estado_clinico"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="detalle_examenes_clinicos"/>
+		</field>
+		<field name="observaciones" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="observaciones"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="detalle_examenes_clinicos"/>
+		</field>
+	</subDataset>
+	<subDataset name="dataset13" uuid="a0d81684-3498-49a2-8796-79721a9bc0a5">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="agrocaldiadPrueba"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<parameter name="idHistoriaClinica" class="java.lang.Integer"/>
+		<queryString>
+			<![CDATA[SELECT  tipo, subtipo, observaciones
+FROM 
+	g_historias_clinicas.examen_paraclinicos ep
+	INNER JOIN g_historias_clinicas.tipo_procedimiento_medico tpm ON ep.id_tipo_procedimiento_medico = tpm.id_tipo_procedimiento_medico
+	INNER JOIN g_historias_clinicas.detalle_examen_paraclinicos dep ON ep.id_examen_paraclinicos = dep.id_examen_paraclinicos
+	INNER JOIN g_historias_clinicas.subtipo_procedimiento_medico spm ON dep.id_subtipo_proced_medico = spm.id_subtipo_proced_medico
+WHERE
+	id_historia_clinica =  $P{idHistoriaClinica}
+ORDER BY 1]]>
+		</queryString>
+		<field name="tipo" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="tipo"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="tipo_procedimiento_medico"/>
+		</field>
+		<field name="subtipo" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="subtipo"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="subtipo_procedimiento_medico"/>
+		</field>
+		<field name="observaciones" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="observaciones"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="examen_paraclinicos"/>
+		</field>
+	</subDataset>
+	<subDataset name="dataset14" uuid="8bfd3e29-2cbe-49a9-8ba7-e997cb0d1b33">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="agrocaldiadPrueba"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<parameter name="idHistoriaClinica" class="java.lang.Integer"/>
+		<queryString>
+			<![CDATA[SELECT descripcion, estado_diagnostico, observaciones
+FROM 
+	g_historias_clinicas.impresion_diagnostica ip
+	INNER JOIN g_historias_clinicas.cie cie ON ip.id_cie = cie.id_cie
+WHERE
+	id_historia_clinica =   $P{idHistoriaClinica}
+ORDER BY 1]]>
+		</queryString>
+		<field name="descripcion" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="descripcion"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="cie"/>
+		</field>
+		<field name="estado_diagnostico" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="estado_diagnostico"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="impresion_diagnostica"/>
+		</field>
+		<field name="observaciones" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="observaciones"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="impresion_diagnostica"/>
+		</field>
+	</subDataset>
+	<parameter name="idHistoriaClinica" class="java.lang.Integer"/>
+	<parameter name="fondoCertificado" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT 
+hicl.id_historia_clinica,
+(SELECT STRING_AGG(descripcion, ', ') FROM g_historias_clinicas.actividad_enfermedad
+WHERE id_historia_clinica = $P{idHistoriaClinica} AND tipo = 'A' GROUP BY tipo) as actividades_extras_laborales,
+
+(SELECT STRING_AGG(descripcion, ', ')  FROM g_historias_clinicas.actividad_enfermedad
+WHERE id_historia_clinica = $P{idHistoriaClinica}AND tipo = 'E' GROUP BY tipo) as enfermedad_actual,
+
+(SELECT STRING_AGG(LEFT(tiprme.tipo,1) || ', ' || casupr.descripcion || ', ' || suprme.subtipo || ', ' || dereorsi.otros, '; ')
+FROM g_historias_clinicas.revision_organos_sistemas reorsi
+INNER JOIN g_historias_clinicas.detalle_revision_organos_sistemas dereorsi ON reorsi.id_revision_organos_sistemas = dereorsi.id_revision_organos_sistemas
+INNER JOIN g_historias_clinicas.tipo_procedimiento_medico tiprme ON reorsi.id_tipo_procedimiento_medico = tiprme.id_tipo_procedimiento_medico
+INNER JOIN g_historias_clinicas.subtipo_procedimiento_medico suprme ON dereorsi.id_subtipo_proced_medico = suprme.id_subtipo_proced_medico
+INNER JOIN g_historias_clinicas.categoria_subtipo_procedimiento casupr ON casupr.id_categoria_subtipo_procedimiento = suprme.id_categoria_subtipo_procedimiento
+WHERE id_historia_clinica = $P{idHistoriaClinica}) as revision_organos,
+
+exfi.tension_arterial, 
+exfi.temperatura_c, 
+exfi.frecuencia_cardiaca, 
+exfi.saturacion_oxigeno, 
+exfi.frecuencia_respiratoria, 
+exfi.peso_kg, 
+exfi.talla_mts, 
+exfi.imc, 
+exfi.perimetro_abdominal,
+
+(SELECT STRING_AGG(tiprme.tipo || ', ' || suprme.subtipo, '; ')  FROM 
+g_historias_clinicas.historia_clinica as hicl
+INNER JOIN g_historias_clinicas.examen_fisico as exfi on hicl.id_historia_clinica = exfi.id_historia_clinica
+INNER JOIN g_historias_clinicas.evaluacion_primaria as evpr ON hicl.id_historia_clinica = evpr.id_historia_clinica
+INNER JOIN g_historias_clinicas.detalle_evaluacion_primaria as deevpr ON evpr.id_evaluacion_primaria = deevpr.id_evaluacion_primaria
+INNER JOIN g_historias_clinicas.tipo_procedimiento_medico tiprme ON evpr.id_tipo_procedimiento_medico = tiprme.id_tipo_procedimiento_medico
+INNER JOIN g_historias_clinicas.subtipo_procedimiento_medico as suprme ON deevpr.id_subtipo_proced_medico = suprme.id_subtipo_proced_medico
+WHERE hicl.id_historia_clinica = $P{idHistoriaClinica}) as examen_fisico_regional
+
+FROM 
+g_historias_clinicas.historia_clinica as hicl
+INNER JOIN g_historias_clinicas.examen_fisico as exfi on hicl.id_historia_clinica = exfi.id_historia_clinica
+WHERE hicl.id_historia_clinica = $P{idHistoriaClinica}]]>
+	</queryString>
+	<field name="id_historia_clinica" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="id_historia_clinica"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="historia_clinica"/>
+	</field>
+	<field name="actividades_extras_laborales" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="actividades_extras_laborales"/>
+	</field>
+	<field name="enfermedad_actual" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="enfermedad_actual"/>
+	</field>
+	<field name="revision_organos" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="revision_organos"/>
+	</field>
+	<field name="tension_arterial" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="tension_arterial"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="examen_fisico"/>
+	</field>
+	<field name="temperatura_c" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="temperatura_c"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="examen_fisico"/>
+	</field>
+	<field name="frecuencia_cardiaca" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="frecuencia_cardiaca"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="examen_fisico"/>
+	</field>
+	<field name="saturacion_oxigeno" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="saturacion_oxigeno"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="examen_fisico"/>
+	</field>
+	<field name="frecuencia_respiratoria" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="frecuencia_respiratoria"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="examen_fisico"/>
+	</field>
+	<field name="peso_kg" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="peso_kg"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="examen_fisico"/>
+	</field>
+	<field name="talla_mts" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="talla_mts"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="examen_fisico"/>
+	</field>
+	<field name="imc" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="imc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="examen_fisico"/>
+	</field>
+	<field name="perimetro_abdominal" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="perimetro_abdominal"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="examen_fisico"/>
+	</field>
+	<field name="examen_fisico_regional" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="examen_fisico_regional"/>
+	</field>
+	<pageHeader>
+		<band height="55"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="713">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<printWhenExpression><![CDATA[(($V{PAGE_NUMBER} == 1) ? Boolean.TRUE : Boolean.FALSE)]]></printWhenExpression>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="-23" width="562" height="21" backcolor="#CCCCFF" uuid="d8116a63-30ac-45b3-aa54-473f46656ee4"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement verticalAlignment="Middle" rotation="None">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ G. ACTIVIDADES EXTRA LABORALES]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="-2" width="562" height="55" uuid="8d5293fb-e2c7-4408-afbf-d70eebbc64bc"/>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{actividades_extras_laborales}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="66" width="562" height="21" backcolor="#CCCCFF" uuid="250eead1-179e-4faf-9ae5-f1304f1b19cc"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement verticalAlignment="Middle" rotation="None">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ H. ENFERMEDAD ACTUAL]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="87" width="562" height="55" uuid="8379c1b7-5771-4d4a-ad59-73cba08f90d2"/>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{enfermedad_actual}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="157" width="562" height="21" backcolor="#CCCCFF" uuid="9c6b953d-e068-4f8c-a186-5d5685dc5b4f"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement verticalAlignment="Middle" rotation="None">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ I. REVISIÓN ACTUAL DE ÓRGANOS Y SISTEMAS]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="216" width="562" height="55" uuid="002fbe0f-8bbf-441d-b83b-f9ef73563502"/>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{revision_organos}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="178" width="110" height="19" backcolor="#CCFFFF" uuid="10b3d045-afd7-4db2-b459-7293bf730910"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ 1. Piel - Anexos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="197" width="110" height="19" backcolor="#CCFFFF" uuid="94c29f16-f36b-4107-993e-460f40433244"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[2. Órganos de los sentidos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="130" y="178" width="80" height="19" backcolor="#CCFFFF" uuid="321aabd1-fd17-4439-83f4-7a92f175701f"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ 3. Respiratorio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="130" y="197" width="80" height="19" backcolor="#CCFFFF" uuid="0d052b08-14ac-4170-8263-a58dc26f4964"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ 4. Cardio-vascular]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="230" y="178" width="70" height="19" backcolor="#CCFFFF" uuid="2dcaadbb-4cb2-443e-b372-fe18a226450b"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ 5. Digestivo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="230" y="197" width="70" height="19" backcolor="#CCFFFF" uuid="53570411-296d-4aa8-a56e-162a8af07921"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ 6. Genito-urinario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="320" y="178" width="100" height="19" backcolor="#CCFFFF" uuid="1ebc3803-1eb3-4cea-b0f4-8a48733d9a56"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ 7. Músculo esquelético]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="320" y="197" width="100" height="19" backcolor="#CCFFFF" uuid="c0359ccb-7694-4f2b-96e9-d71349cb8435"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[8. Endocrino]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="440" y="178" width="104" height="19" backcolor="#CCFFFF" uuid="a2526a98-a0e8-40c4-895f-044d9a9b6e7d"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ 9. Hemo lifático]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="440" y="197" width="104" height="19" backcolor="#CCFFFF" uuid="f7d95ed2-09df-4285-afce-41f99daba853"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ 10. Nervioso]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="110" y="178" width="20" height="19" uuid="de65b91b-fab7-4388-b199-b0c0208a4c81">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{revision_organos}.contains("1") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="110" y="197" width="20" height="19" uuid="8e1a1958-a09b-4481-b24a-25f6f078e190">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{revision_organos}.contains("2") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="210" y="178" width="20" height="19" uuid="1abcc684-c6fa-44b5-a36a-52f25c364d4b">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{revision_organos}.contains("3") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="210" y="197" width="20" height="19" uuid="e1698922-9a03-4f61-bf9a-fd61fdacda8e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{revision_organos}.contains("4") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="300" y="178" width="20" height="19" uuid="e204be12-22c8-4b42-9d6d-0cbb8626db43">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{revision_organos}.contains("5") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="300" y="197" width="20" height="19" uuid="5661c084-af9d-4086-976b-b31e03ef552e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{revision_organos}.contains("6") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="420" y="178" width="20" height="19" uuid="fff17d77-642d-41d6-be88-008bdf20564d">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{revision_organos}.contains("7") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="420" y="197" width="20" height="19" uuid="a4b8fe19-b154-4ac9-8086-74c0ae06e186">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{revision_organos}.contains("8") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="544" y="178" width="18" height="19" uuid="ebdd7b36-7330-4b90-85d4-d7ccf3a71a8f">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{revision_organos}.contains("9") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="544" y="197" width="18" height="19" uuid="760a7b54-bda4-44f2-b230-358faa34a3f8">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{revision_organos}.contains("10") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="287" width="562" height="21" backcolor="#CCCCFF" uuid="e2eff2db-b238-490e-9ec0-633a7b61cc54"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement verticalAlignment="Middle" rotation="None">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ J. CONSTANTES VITALES Y ANTROPOMETRÍA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="308" width="60" height="22" backcolor="#CCFFCC" uuid="ad8344b7-3fdb-45cd-a646-0aed1a3a9508"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Presión arterial ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="60" y="308" width="60" height="22" backcolor="#CCFFCC" uuid="1e3b2203-2940-498f-bad1-32a755beeb1e"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Temperatura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="120" y="308" width="60" height="22" backcolor="#CCFFCC" uuid="176edfa3-ca1a-478e-8fcc-6cc616b30b56"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Frecuencia cardiaca]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="180" y="308" width="58" height="22" backcolor="#CCFFCC" uuid="df73ca3d-f514-4a37-9239-1f0a673c2532"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Saturación de oxígeno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="238" y="308" width="62" height="22" backcolor="#CCFFCC" uuid="60815359-f1f9-43c0-8486-9d1ea17028c8"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Frecuencia respiratoria]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="300" y="308" width="50" height="22" backcolor="#CCFFCC" uuid="88dca416-8079-4049-a2b1-35ea727729d3"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Peso]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="400" y="308" width="74" height="22" backcolor="#CCFFCC" uuid="fb1a2307-483a-4e43-a01e-5fd80703c411"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Índice de masa corporal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="474" y="308" width="88" height="22" backcolor="#CCFFCC" uuid="2435ebe3-bb94-40ae-af2a-243c61dd5e5f"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Perímetro abdominal ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="350" y="308" width="50" height="22" backcolor="#CCFFCC" uuid="96473277-d3c7-47d5-9f1a-4e5e1cc50aee"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Talla]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="330" width="60" height="18" uuid="04e5cc17-908d-45e8-9092-e007a5ded9e4">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tension_arterial}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="60" y="330" width="60" height="18" uuid="fe7ce2a8-b679-4f62-9c10-42d734671442">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{temperatura_c}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="120" y="330" width="60" height="18" uuid="9573029b-a7dc-4412-b8b4-8d6a8743be5f">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{frecuencia_cardiaca}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="180" y="330" width="58" height="18" uuid="2d21fa72-f046-4ac9-9e2c-972f5845cee9">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{saturacion_oxigeno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="238" y="330" width="62" height="18" uuid="5cbd2198-2e11-4abf-9f12-67e29cbc9af5">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{frecuencia_respiratoria}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="300" y="330" width="50" height="18" uuid="5542c602-03a1-4440-8807-28c308f1e031">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{peso_kg}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="350" y="330" width="50" height="18" uuid="82c13b51-567a-4719-930d-23501961fc45">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{talla_mts}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="400" y="330" width="74" height="18" uuid="2a5d5591-b228-424a-a243-19a5958417c4">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{imc}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="474" y="330" width="88" height="18" uuid="f5889f67-475d-4e35-b67f-af836a1728a1">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{perimetro_abdominal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="357" width="562" height="21" backcolor="#CCCCFF" uuid="c7321e31-95aa-4eee-a9f2-81faf8154aec"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement verticalAlignment="Middle" rotation="None">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ K. EXAMEN FÍSICO REGIONAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="378" width="562" height="19" backcolor="#CCFFCC" uuid="a40adeea-f95e-4a5d-9ebe-10bde3f39a18"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Regiones]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="20" y="397" width="70" height="20" backcolor="#CCFFFF" uuid="925b8009-17f4-4e65-aa97-a0c2097d072d"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ a. Cicatrices]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="20" y="417" width="70" height="19" backcolor="#CCFFFF" uuid="59e521cf-633d-4358-978b-33c0982b66e0"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ b. Tatuajes]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="20" y="436" width="70" height="19" backcolor="#CCFFFF" uuid="79be5412-24c0-4db6-bf24-33085a8cba66"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ c. Piel y Faneras]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="20" y="455" width="70" height="19" backcolor="#CCFFFF" uuid="8725a628-16c5-4908-906e-0a70b99703dd"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ a. Párpados]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="20" y="474" width="70" height="19" backcolor="#CCFFFF" uuid="4a312b81-2859-4f1e-9acb-4f0100987fe2"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ b. Conjuntivas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="20" y="493" width="70" height="19" backcolor="#CCFFFF" uuid="9402d8f5-963b-497c-9aed-79ec56a8cfd8"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ c. Pupilas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="20" y="512" width="70" height="19" backcolor="#CCFFFF" uuid="c267133e-54a7-4102-a04c-08b34579fad8"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ d. Córnea]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="20" y="531" width="70" height="19" backcolor="#CCFFFF" uuid="af3d7b54-957d-4a19-9523-f20e8abd9203"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ e. Motilidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="130" y="397" width="69" height="20" backcolor="#CCFFFF" uuid="fcf53609-aaae-441b-9df4-aed610ac9bfa"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ a. C. auditivo externo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="130" y="417" width="69" height="19" backcolor="#CCFFFF" uuid="a325b8ef-aea3-4dfc-a9a7-a97d6679d991"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ b. Pabellón]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="130" y="436" width="69" height="19" backcolor="#CCFFFF" uuid="4da89019-4a60-456f-be98-0fb38712dd33"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ c. Tímpanos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="130" y="455" width="69" height="19" backcolor="#CCFFFF" uuid="7fadf503-6e44-413b-9df3-adcbf9df9401"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ a. Labios]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="130" y="474" width="69" height="19" backcolor="#CCFFFF" uuid="f1736529-0d2e-442f-8328-1f4f8654650e"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ b. Lengua]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="130" y="493" width="69" height="19" backcolor="#CCFFFF" uuid="a2a5fd30-231a-476a-9b4d-e0d3b2012763"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ c. Faringe]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="130" y="512" width="69" height="19" backcolor="#CCFFFF" uuid="1bf10ae9-abe9-4478-b225-42cacbdfc5e2"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ d. Amígdalas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="130" y="531" width="69" height="19" backcolor="#CCFFFF" uuid="1cdcb6b3-6a9b-469e-9a69-4ce54bfad386"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ e. Dentadura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="238" y="397" width="70" height="20" backcolor="#CCFFFF" uuid="2a95562c-a5c4-4ad3-9271-6c51c0a5e3d2"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ a. Tabique]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="238" y="417" width="70" height="19" backcolor="#CCFFFF" uuid="6ae05c35-ee46-4556-bb7d-3905f2fe5a5f"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ b. Cornetes]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="238" y="436" width="70" height="19" backcolor="#CCFFFF" uuid="b64339eb-0e16-4175-9a10-b319c63041a7"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ c. Mucosas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="238" y="455" width="70" height="19" backcolor="#CCFFFF" uuid="3974f7da-9986-49e3-a237-059e428bea23"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[d.Senos paranasales]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="238" y="474" width="70" height="19" backcolor="#CCFFFF" uuid="31c2c0cd-7cb1-4d3e-9ee3-1c019efbb871"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ a. Tiroides/masas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="238" y="493" width="70" height="19" backcolor="#CCFFFF" uuid="47f9cadc-0ce9-4d3d-a3b1-5b62b39dd0bc"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ b. Movilidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="238" y="512" width="70" height="19" backcolor="#CCFFFF" uuid="012bac2d-9596-4320-8b88-c3fb5d34fddc"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ a. Mamas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="238" y="531" width="70" height="19" backcolor="#CCFFFF" uuid="2c4918b8-429f-4982-894b-f14f2e8100f9"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ b. Corazón]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="358" y="397" width="70" height="19" backcolor="#CCFFFF" uuid="9922114f-38bb-4a03-9ad1-c87de57edd4c"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ a. Pulmones]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="358" y="416" width="70" height="19" backcolor="#CCFFFF" uuid="4727257f-6ec7-4d06-be85-db8ee0809c5b"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ b. Parrilla costal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="358" y="435" width="70" height="19" backcolor="#CCFFFF" uuid="147c6339-f27e-4f50-8d37-7e21ca680afd"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ a. Vísceras]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="358" y="454" width="70" height="23" backcolor="#CCFFFF" uuid="cf369f39-79f3-4024-b5fd-08eb5a3c9e5b"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ b. Pared abdominal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="358" y="477" width="70" height="19" backcolor="#CCFFFF" uuid="34284a6c-b960-41fe-95b1-1936f4ad51e2"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ a. Flexibilidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="358" y="496" width="70" height="31" backcolor="#CCFFFF" uuid="904a0905-297a-4eb1-b7da-44351b59c75c"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ b. Desviación ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="358" y="527" width="70" height="23" backcolor="#CCFFFF" uuid="a92df43b-e44a-42bb-b228-ed10b4007845"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ c. Dolor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="478" y="397" width="70" height="19" backcolor="#CCFFFF" uuid="c30b2626-f153-4d14-b4f1-62d28d120338"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ a. Pelvis]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="478" y="416" width="70" height="19" backcolor="#CCFFFF" uuid="e4ce05b0-f809-4c48-abaa-a809ee1d7ad8"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ b. Genitales]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="478" y="435" width="70" height="19" backcolor="#CCFFFF" uuid="6b23d500-7c04-41f3-a6e7-4086c5e3aa28"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ a. Vascular]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="478" y="454" width="70" height="19" backcolor="#CCFFFF" uuid="6226f0b0-1968-42a4-b881-aa02b13ff2b8"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ b. Miembros superiores]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="478" y="473" width="70" height="19" backcolor="#CCFFFF" uuid="c0be691f-12a2-449e-8f97-d371c92243f3"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ c. Miembros inferiores]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="478" y="492" width="70" height="19" backcolor="#CCFFFF" uuid="d55ee7f4-4c4a-4fcc-ba81-592abd84c5e8"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ a. Fuerza]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="478" y="511" width="70" height="19" backcolor="#CCFFFF" uuid="fab08764-98f0-4cb1-bada-1c01d5174c34"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ b. Sensibilidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="478" y="530" width="70" height="18" backcolor="#CCFFFF" uuid="d0bc1ed5-b512-43a2-b703-d09626ac2498"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ c. Marcha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="397" width="20" height="58" backcolor="#CCFFFF" uuid="7dafe4f9-d49d-409e-b902-baa8562ca040"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[1. Piel]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="455" width="20" height="95" backcolor="#CCFFFF" uuid="e65f71a3-a791-40d2-9949-40c04ba8793a"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[2. Ojos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="110" y="397" width="20" height="58" backcolor="#CCFFFF" uuid="493ea379-0a32-41fa-9618-51a6027d71cd"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ 3. Oído]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="110" y="455" width="20" height="95" backcolor="#CCFFFF" uuid="f7fe3c5c-eeb5-452d-a797-0c14b1388560"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ 4. Oro faringe]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="218" y="397" width="20" height="77" backcolor="#CCFFFF" uuid="521447fc-23e1-4fbd-809e-d1762989c87f"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[5. Naríz]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="218" y="474" width="20" height="38" backcolor="#CCFFFF" uuid="41027442-b1da-4562-bfcb-32d5ea3c1964"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[6. Cuello]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="218" y="512" width="20" height="38" backcolor="#CCFFFF" uuid="3056bf70-de12-4d15-822c-f97bc73426ab"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[7. Tórax]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="328" y="397" width="30" height="38" backcolor="#CCFFFF" uuid="24124d57-c735-49eb-84d5-b6e8fab8f3dc"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[8. Tórax]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="328" y="435" width="30" height="42" backcolor="#CCFFFF" uuid="0de67503-ca8a-43a1-a08b-46b399c3dceb"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ 9. Abdomen]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="328" y="477" width="30" height="73" backcolor="#CCFFFF" uuid="7cafa732-f6c7-4d0c-91ff-b9090e22534a"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[10. Columna]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="448" y="397" width="30" height="38" backcolor="#CCFFFF" uuid="a77ec2a9-f270-4570-8adc-facbb067e999"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ 11. Pelvis]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="448" y="435" width="30" height="57" backcolor="#CCFFFF" uuid="23055458-0cfd-4f98-93e0-fb080be4967c"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[12. Extremidades]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="448" y="492" width="30" height="75" backcolor="#CCFFFF" uuid="ea49f5cf-7631-4219-91a1-fce649b00f9e"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[13. Neurológico]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="478" y="548" width="70" height="19" backcolor="#CCFFFF" uuid="bee89c50-6f29-44d4-ae5f-86d2bb281c9c"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ d. Reflejos]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="567" width="562" height="30" uuid="47b91d95-0dcc-4eef-803a-fe30477a51a7"/>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Observaciones: " +  $F{examen_fisico_regional}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="550" width="448" height="17" uuid="08042027-3685-452c-a8bf-cd0f9a89a20c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Si existe evidencia de patología marcar con "X" y describir en la siguiente sección colocando el numeral]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="609" width="562" height="21" backcolor="#CCCCFF" uuid="ae2a8719-7b02-43e8-8de8-d4efb09ed159"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.25"/>
+				</box>
+				<textElement verticalAlignment="Middle" rotation="None">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ L. RESULTADOS DE EXÁMENES GENERALES Y ESPECÍFICOS DE ACUERDO AL RIESGO Y PUESTO DE TRABAJO (IMAGEN, LABORATORIO Y OTROS)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="630" width="80" height="19" backcolor="#CCFFCC" uuid="66db0779-31f9-4aff-bd65-7b8fc9a5d568"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Examen]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="80" y="630" width="80" height="19" backcolor="#CCFFCC" uuid="c09a50c3-d883-4fca-ac67-a92731cf6916"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="160" y="630" width="402" height="19" backcolor="#CCFFCC" uuid="ef16908a-2699-4204-ad12-d89fc8c4d0e1"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Resultados]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="90" y="397" width="20" height="20" uuid="d6cc8113-eb82-421c-8470-ee16a1e26da9">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Cicatrices") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="417" width="20" height="19" uuid="cd5d84cf-d5aa-42ec-ae27-209e6d08bc04">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Tatuajes") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="436" width="20" height="19" uuid="e410e2f4-6682-4b7a-bbc5-a9e059fd2ef3">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Piel  y Faneras") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="455" width="20" height="19" uuid="f492e3cc-2604-41fb-a703-a7050591b57e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Párpados") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="474" width="20" height="19" uuid="21861089-a2a0-4364-ba78-fc01fee5f2d8">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Conjuntivas") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="493" width="20" height="19" uuid="1a397d64-61f1-467f-9ae4-59e4064f3767">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Pupilas") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="512" width="20" height="19" uuid="55f98076-522f-4137-90ce-4fbf3b6c4338">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Córnea") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="531" width="20" height="19" uuid="884479cd-2414-434f-91af-955c5fc7c829">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Motilidad") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="199" y="397" width="19" height="20" uuid="3345d6f4-8892-414e-9903-41dc9ef6b699">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("C. Auditivo externo") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="199" y="417" width="19" height="19" uuid="0bfe73c7-22dd-4a1b-8630-093434d6a3c7">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Pabellón") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="199" y="436" width="19" height="19" uuid="e16661af-e985-4866-918d-b5b6cadc8adb">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Tímpanos") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="199" y="455" width="19" height="19" uuid="a98dc7d4-3180-4e5e-a5ea-75fb3cf1483e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Labios") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="199" y="474" width="19" height="19" uuid="3c4bf548-0d1f-4c0a-a17a-012860a51048">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Lengua") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="199" y="493" width="19" height="19" uuid="1273346d-2ecb-4759-8a8d-8edb9e6cc5d3">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Faringe") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="199" y="512" width="19" height="19" uuid="fb6b9b7d-4eaf-47fd-b2c0-8390697e68e9">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Amígdalas") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="199" y="531" width="19" height="19" uuid="ad338c4f-8df3-445c-8e30-4a43f811b11a">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Dentadura") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="308" y="397" width="20" height="20" uuid="95f2e4c9-7871-466c-be0e-1aef9f6d2994">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Tabique") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="308" y="417" width="20" height="19" uuid="72f5ef75-5b3d-4182-a72c-8ab7d8935aa1">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Cornetes") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="308" y="436" width="20" height="19" uuid="a5b95399-7f52-4dac-ac86-1ac8ed62deda">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Mucosas") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="308" y="455" width="20" height="19" uuid="d2d4cb4a-4d47-42f8-9d46-9dcd35ea3903">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Senos paranasales") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="308" y="474" width="20" height="19" uuid="7ec73d7e-96dd-4d41-aec8-4177fe01c2e3">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Tiroides/masas") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="308" y="493" width="20" height="19" uuid="aef27b2e-48ca-46c6-8ef5-08d8013d54c0">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Movilidad") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="308" y="512" width="20" height="19" uuid="8302384a-5965-4ef3-9eaf-1b34ab29d182">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Mamas") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="308" y="531" width="20" height="19" uuid="56f185fb-0c46-451d-92c6-fb9ccced830f">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Corazón") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="428" y="397" width="20" height="19" uuid="ce1d1be0-9c24-447e-88b6-b21d9e22dc5f">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Pulmones") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="428" y="416" width="20" height="19" uuid="a132eba2-e82a-4acf-9e9d-9b99539a8bf7">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Parrilla costal") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="428" y="435" width="20" height="19" uuid="e7abe257-32ce-44de-a5c3-2ea1d1d74313">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Vísceras") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="428" y="454" width="20" height="23" uuid="6bec5e21-489a-48a8-aa53-033c327d721b">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Pared abdominal") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="428" y="477" width="20" height="19" uuid="56287b05-5641-4b6a-8fb0-d455d985cf68">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Flexibilidad") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="428" y="496" width="20" height="31" uuid="b0c49c27-dcf5-434a-93e1-da8744563561">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Desviación") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="428" y="527" width="20" height="23" uuid="fc35ae4c-69aa-45c1-8af0-848110c2c4cd">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Dolor") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="548" y="397" width="14" height="19" uuid="8970e197-56e2-47be-8e9b-346f4572cf96">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Pelvis") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="548" y="416" width="14" height="19" uuid="d5a7bcb6-e788-4872-b2cb-aa59a79b0a98">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Genitales") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="548" y="435" width="14" height="19" uuid="e43e4557-13cb-4591-bb26-5045d48371fa">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Vascular") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="548" y="454" width="14" height="19" uuid="ed1ccb71-d0ca-436c-9220-5121d7fb4634">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Miembros superiores") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="548" y="473" width="14" height="19" uuid="f2c53b87-8e2b-4738-9967-50e1e0b35770">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Miembros inferiores") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="548" y="492" width="14" height="19" uuid="d98cb475-2d87-4b91-a61b-a23b93d7bfaa">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Fuerza") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="548" y="511" width="14" height="19" uuid="b0b5d6d1-5d7a-4613-a9b4-46d4216e603b">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Sensibilidad") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="548" y="530" width="14" height="18" uuid="92cbb12f-1840-4571-b3f5-a6dff5d32d6d">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Marcha") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="548" y="548" width="14" height="19" uuid="592d021e-9a3b-440e-9561-d5fe8e22175f">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{examen_fisico_regional}.contains("Reflejos") ? "X" : ""]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="0" y="649" width="561" height="64" uuid="aa23f443-04bb-4a9a-b547-1e908ec05a06">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="dataset3" uuid="a700d358-639f-4e68-8b2f-691fd1e9bb89">
+						<datasetParameter name="idHistoriaClinica">
+							<datasetParameterExpression><![CDATA[$F{id_historia_clinica}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="80" uuid="9b25247d-901d-4b0e-a8f4-97484a402b19">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+						<jr:detailCell style="Table_TD" height="20">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="80" height="20" uuid="e92d3f00-1c49-47c2-ad90-d5ac61738beb"/>
+								<textElement>
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="80" uuid="db3b2ab7-c925-449f-b6b4-8eb135d9234f">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+						<jr:detailCell style="Table_TD" height="20">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="80" height="20" uuid="8a6e47b6-ffcc-402b-a928-20af6ad09e11"/>
+								<textElement>
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{fecha_examen}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="402" uuid="f2900f0a-1433-41c9-9f9c-500080ae156d">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
+						<jr:detailCell style="Table_TD" height="20">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="402" height="20" uuid="f8519b06-66cd-4e6d-84c6-3e7296176c86"/>
+								<textElement>
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{resultado}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<line>
+				<reportElement x="0" y="649" width="1" height="64" uuid="595ad26b-8f3b-4e15-9f61-022694685c6e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="561" y="649" width="1" height="64" uuid="92c51328-5d7c-4ddd-8197-09f287b2e502">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="712" width="561" height="1" uuid="67000fc6-ee41-4bc2-8d40-1dbd8b665291">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.75" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnHeader>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="-4" y="0" width="184" height="20" uuid="0be1b386-3cd2-4085-8dc0-6c37636c1d8a"/>
+				<textElement verticalAlignment="Bottom"/>
+				<text><![CDATA[SNS-MSP / Form. HCU 077 / 2019]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="318" y="0" width="205" height="20" uuid="5e153de2-2588-473f-858c-3577f5325a50"/>
+				<textElement verticalAlignment="Bottom"/>
+				<text><![CDATA[EVALUACIÓN PRE OCUPACIONAL - INICIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="523" y="0" width="35" height="20" uuid="53fe69fd-4326-461c-a208-86ab1d5ac497"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[3/4]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

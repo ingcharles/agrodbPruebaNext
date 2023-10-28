@@ -1,0 +1,782 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AnexoCertificadoFitosanitario" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="0" uuid="33d4ee89-db5d-4efa-8d96-ba20cbb0ef45">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="produccion"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Empty Dataset1" uuid="9916f6e0-c2ef-43a3-afdc-cf2c9bf89bf4">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="local"/>
+		<parameter name="idSolicitud" class="java.lang.Integer"/>
+		<queryString>
+			<![CDATA[SELECT
+	STRING_AGG (DISTINCT (trf.nombre_producto), E'\n') AS nombre_producto,
+	COALESCE('REQUISITOS FITOSANITARIOS' || E'\n' || COALESCE(STRING_AGG (DISTINCT (trf.informacion_adicional), ', '), '') || CASE WHEN LENGTH(COALESCE(STRING_AGG (DISTINCT (trt.informacion_adicional), ', '), '')) > 0 THEN E'\n' || 'REQUISITOS DE TRÁNSITO' || E'\n' ELSE '' END || COALESCE(STRING_AGG (DISTINCT (trt.informacion_adicional), ', '), ''), 'N/A') AS informacion_adicional
+FROM
+	g_certificado_fitosanitario.certificado_fitosanitario_productos cfp
+INNER JOIN (SELECT 
+				cfp.id_certificado_fitosanitario
+				, ep.id_certificado_fitosanitario_producto
+				, p.nombre_comun || ' / ' || p.nombre_cientifico AS nombre_producto
+				, COALESCE(STRING_AGG (DISTINCT (r.detalle_impreso), ', '), 'N/A') AS informacion_adicional
+			FROM 
+				g_certificado_fitosanitario.certificado_fitosanitario cfp
+				INNER JOIN g_certificado_fitosanitario.paises_puertos_destino ppd ON ppd.id_certificado_fitosanitario = cfp.id_certificado_fitosanitario
+				INNER JOIN g_certificado_fitosanitario.certificado_fitosanitario_productos ep ON cfp.id_certificado_fitosanitario = ep.id_certificado_fitosanitario
+				INNER JOIN g_catalogos.productos p ON ep.id_producto = p.id_producto
+				INNER JOIN g_requisitos.requisitos_comercializacion rc ON rc.id_producto = ep.id_producto
+				INNER JOIN g_requisitos.requisitos_asignados ra ON rc.id_requisito_comercio = ra.id_requisito_comercio
+				INNER JOIN g_requisitos.requisitos r ON ra.requisito = r.id_requisito
+			WHERE
+				rc.id_localizacion = ppd.id_pais_destino 
+				AND ra.tipo = 'Exportación' 
+				AND r.tipo = 'Exportación' 
+				AND r.estado = 1
+				AND ra.estado = 'activo'
+			GROUP BY cfp.id_certificado_fitosanitario, p.nombre_comun, p.nombre_cientifico, ep.id_certificado_fitosanitario_producto) trf ON trf.id_certificado_fitosanitario_producto = cfp.id_certificado_fitosanitario_producto
+LEFT JOIN (SELECT 
+				cfp.id_certificado_fitosanitario
+				, ep.id_certificado_fitosanitario_producto
+				, p.nombre_comun || ' / ' || p.nombre_cientifico AS nombre_producto
+				, COALESCE(STRING_AGG (DISTINCT (r.detalle_impreso), ', '), 'N/A') AS informacion_adicional
+			FROM 
+				g_certificado_fitosanitario.certificado_fitosanitario cfp
+				INNER JOIN g_certificado_fitosanitario.paises_puertos_transito ppt ON ppt.id_certificado_fitosanitario = cfp.id_certificado_fitosanitario
+				INNER JOIN g_certificado_fitosanitario.certificado_fitosanitario_productos ep ON cfp.id_certificado_fitosanitario = ep.id_certificado_fitosanitario
+				INNER JOIN g_catalogos.productos p ON ep.id_producto = p.id_producto
+				INNER JOIN g_requisitos.requisitos_comercializacion rc ON rc.id_producto = ep.id_producto
+				INNER JOIN g_requisitos.requisitos_asignados ra ON rc.id_requisito_comercio = ra.id_requisito_comercio
+				INNER JOIN g_requisitos.requisitos r ON ra.requisito = r.id_requisito
+			WHERE
+				rc.id_localizacion = ppt.id_pais_transito 
+				AND ra.tipo = 'Tránsito' 
+				AND r.tipo = 'Tránsito' 
+				AND r.estado = 1
+				AND ra.estado = 'activo'	   		
+			GROUP BY cfp.id_certificado_fitosanitario, p.nombre_comun, p.nombre_cientifico, ep.id_certificado_fitosanitario_producto) trt ON trt.id_certificado_fitosanitario_producto = cfp.id_certificado_fitosanitario_producto
+WHERE
+	cfp.id_certificado_fitosanitario =  $P{idSolicitud} 
+GROUP BY trf.informacion_adicional]]>
+		</queryString>
+		<field name="nombre_producto" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="nombre_producto"/>
+		</field>
+		<field name="informacion_adicional" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="informacion_adicional"/>
+		</field>
+	</subDataset>
+	<subDataset name="Empty Dataset2" uuid="eba2cf1f-c37d-4891-88fb-b6dcefc7b916">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="local"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<parameter name="idSolicitud" class="java.lang.Integer"/>
+		<queryString>
+			<![CDATA[SELECT
+	tcfp.id_certificado_fitosanitario
+	, tcfp.nombre_producto
+	, tcfp.nombre_producto
+	, tcfp.cantidad
+	, tcfp.peso_neto
+	, tcfp.peso_bruto
+	, COALESCE (CASE WHEN i.codigo_idioma = 'SPA' THEN ctr.nombre_tratamiento ELSE ctr.nombre_tratamiento_ingles END, 'N/A') AS nombre_tratamiento
+	, COALESCE (cfp.duracion || ' ' || CASE WHEN i.codigo_idioma = 'SPA' THEN cudu.nombre_unidad_fitosanitaria ELSE cudu.nombre_unidad_fitosanitaria_ingles END || ' / ' || cfp.temperatura || ' ' || CASE WHEN i.codigo_idioma = 'SPA' THEN cute.nombre_unidad_fitosanitaria ELSE cute.nombre_unidad_fitosanitaria_ingles END, 'N/A') AS duracion_temperatura
+	, COALESCE (cfp.concentracion || ' ' || CASE WHEN i.codigo_idioma = 'SPA' THEN cuco.nombre_unidad_fitosanitaria ELSE cuco.nombre_unidad_fitosanitaria_ingles END, 'N/A') AS  concentracion
+	, COALESCE (cfp.producto_quimico, 'N/A') AS producto_quimico
+	, COALESCE (TO_CHAR (cfp.fecha_tratamiento, 'YYYY-MM-DD'), 'N/A') AS fecha_tratamiento
+FROM
+	g_certificado_fitosanitario.certificado_fitosanitario cf
+INNER JOIN g_catalogos.idiomas i ON i.id_idioma = cf.id_idioma
+INNER JOIN g_certificado_fitosanitario.certificado_fitosanitario_productos cfp ON cfp.id_certificado_fitosanitario = cf.id_certificado_fitosanitario
+INNER JOIN (SELECT 
+				ep.id_certificado_fitosanitario
+				, min(ep.id_certificado_fitosanitario_producto) AS id_producto
+				, stp.nombre || ' / ' || p.nombre_comun || ' / ' || p.nombre_cientifico AS nombre_producto
+				, CASE WHEN (SUM (ep.cantidad_comercial)::numeric) % 1 = 0 THEN SUM (ep.cantidad_comercial) ELSE ROUND(CAST(SUM (ep.cantidad_comercial) AS NUMERIC), 2) END || ' ' ||  CASE WHEN i.codigo_idioma = 'SPA' THEN cucc.nombre_unidad_fitosanitaria ELSE cucc.nombre_unidad_fitosanitaria_ingles END AS cantidad 
+				, CASE WHEN (SUM (ep.peso_neto)::numeric) % 1 = 0 THEN SUM (ep.peso_neto) ELSE ROUND(CAST(SUM (ep.peso_neto) AS NUMERIC), 2) END || ' ' || CASE WHEN i.codigo_idioma = 'SPA' THEN cupn.nombre_unidad_fitosanitaria ELSE cupn.nombre_unidad_fitosanitaria_ingles END AS peso_neto
+				, COALESCE (CASE WHEN (SUM (ep.peso_bruto)::numeric) % 1 = 0 THEN SUM (ep.peso_bruto) ELSE ROUND(CAST(SUM (ep.peso_bruto) AS NUMERIC), 2) END || ' ' || CASE WHEN i.codigo_idioma = 'SPA' THEN cupb.nombre_unidad_fitosanitaria ELSE cupb.nombre_unidad_fitosanitaria_ingles END, 'N/A') AS peso_bruto
+			FROM
+				g_certificado_fitosanitario.certificado_fitosanitario cf
+				INNER JOIN g_catalogos.idiomas i ON i.id_idioma = cf.id_idioma
+				INNER JOIN g_certificado_fitosanitario.certificado_fitosanitario_productos ep ON ep.id_certificado_fitosanitario = cf.id_certificado_fitosanitario
+				INNER JOIN g_catalogos.productos p ON ep.id_producto = p.id_producto
+				INNER JOIN g_catalogos.subtipo_productos stp ON stp.id_subtipo_producto = p.id_subtipo_producto
+				INNER JOIN g_catalogos.unidades_fitosanitarias cucc ON cucc.id_unidad_fitosanitaria = ep.id_unidad_cantidad_comercial
+				INNER JOIN g_catalogos.unidades_fitosanitarias cupn ON cupn.id_unidad_fitosanitaria = ep.id_unidad_peso_neto
+				LEFT JOIN g_catalogos.unidades_fitosanitarias cupb ON cupb.id_unidad_fitosanitaria = ep.id_unidad_peso_bruto
+			GROUP BY ep.id_certificado_fitosanitario, stp.nombre, p.nombre_comun, p.nombre_cientifico, i.codigo_idioma, cucc.nombre_unidad_fitosanitaria, cucc.nombre_unidad_fitosanitaria_ingles
+			, cupn.nombre_unidad_fitosanitaria, cupn.nombre_unidad_fitosanitaria_ingles, cupb.nombre_unidad_fitosanitaria, cupb.nombre_unidad_fitosanitaria_ingles
+			) tcfp ON cfp.id_certificado_fitosanitario_producto = tcfp.id_producto
+LEFT JOIN g_catalogos.unidades_fitosanitarias cudu ON cudu.id_unidad_fitosanitaria = cfp.id_duracion
+LEFT JOIN g_catalogos.unidades_fitosanitarias cute ON cute.id_unidad_fitosanitaria = cfp.id_temperatura
+LEFT JOIN g_catalogos.unidades_fitosanitarias cuco ON cuco.id_unidad_fitosanitaria = cfp.id_concentracion
+LEFT JOIN g_catalogos.tratamientos ctr ON ctr.id_tratamiento = cfp.id_tratamiento
+WHERE
+	tcfp.id_certificado_fitosanitario = $P{idSolicitud}
+ORDER BY 
+cfp.id_certificado_fitosanitario_producto ASC
+]]>
+		</queryString>
+		<field name="id_certificado_fitosanitario" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="id_certificado_fitosanitario"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="certificado_fitosanitario_productos"/>
+		</field>
+		<field name="nombre_producto" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="nombre_producto"/>
+		</field>
+		<field name="COLUMN_3" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="nombre_producto"/>
+		</field>
+		<field name="cantidad" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="cantidad"/>
+		</field>
+		<field name="peso_neto" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="peso_neto"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="exportadores_productos"/>
+		</field>
+		<field name="peso_bruto" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="peso_bruto"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="exportadores_productos"/>
+		</field>
+		<field name="nombre_tratamiento" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="nombre_tratamiento"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="exportadores_productos"/>
+		</field>
+		<field name="duracion_temperatura" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="duracion_temperatura"/>
+		</field>
+		<field name="concentracion" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="concentracion"/>
+		</field>
+		<field name="producto_quimico" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="producto_quimico"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="exportadores_productos"/>
+		</field>
+		<field name="fecha_tratamiento" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="fecha_tratamiento"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="exportadores_productos"/>
+		</field>
+	</subDataset>
+	<parameter name="idSolicitud" class="java.lang.Integer"/>
+	<parameter name="nombreInspector" class="java.lang.String"/>
+	<parameter name="lugarExpedicion" class="java.lang.String"/>
+	<parameter name="fondoCertificadoHorizontal" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT 
+	cf.id_certificado_fitosanitario
+	, cf.codigo_certificado
+	, cf.tipo_solicitud
+	, cf.informacion_adicional
+	, CASE WHEN LENGTH(cf.informacion_adicional) > 1115 THEN 'SI' ELSE 'NO' END AS mostrar_informacion_adicional
+	, LTRIM(COALESCE (STRING_AGG(DISTINCT (COALESCE (ppt.nombre_pais_transito, '')), '; '), '') || '; ' || ppd.nombre_pais_destino, '; ') AS organizacion
+	, CASE WHEN cf.tipo_solicitud = 'musaceas' OR cf.tipo_solicitud = 'otros' THEN
+		CASE WHEN i.codigo_idioma = 'SPA' THEN
+			to_char(cf.fecha_embarque, 'TMDay' || ' dd ') || 'de ' || to_char(cf.fecha_embarque, 'TMmonth') || ' de ' || to_char(cf.fecha_embarque, 'yyyy') 
+		ELSE
+			to_char(cf.fecha_embarque, 'Day' || ' dd ') || TRIM(to_char(cf.fecha_embarque, 'month')) || to_char(cf.fecha_embarque, ' YYYY')
+		END
+	  ELSE
+	  	CASE WHEN i.codigo_idioma = 'SPA' THEN
+			to_char(cf.fecha_aprobacion_certificado, 'TMDay' || ' dd ') || 'de ' || to_char(cf.fecha_aprobacion_certificado, 'TMmonth') || ' de ' || to_char(cf.fecha_aprobacion_certificado, 'yyyy') 
+		ELSE
+			to_char(cf.fecha_aprobacion_certificado, 'Day' || ' dd ') || TRIM(to_char(cf.fecha_aprobacion_certificado, 'month')) || to_char(cf.fecha_aprobacion_certificado, ' YYYY')
+		END
+	  END AS fecha_aprobacion_certificado_letras
+FROM 
+	g_certificado_fitosanitario.certificado_fitosanitario cf
+	INNER JOIN g_catalogos.idiomas i ON i.id_idioma = cf.id_idioma
+	INNER JOIN g_certificado_fitosanitario.paises_puertos_destino ppd ON ppd.id_certificado_fitosanitario = cf.id_certificado_fitosanitario
+	LEFT JOIN g_certificado_fitosanitario.paises_puertos_transito ppt ON cf.id_certificado_fitosanitario = ppt.id_certificado_fitosanitario
+WHERE 
+	cf.id_certificado_fitosanitario = $P{idSolicitud} 
+GROUP BY cf.id_certificado_fitosanitario, i.codigo_idioma, ppd.nombre_pais_destino]]>
+	</queryString>
+	<field name="id_certificado_fitosanitario" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="id_certificado_fitosanitario"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="certificado_fitosanitario"/>
+	</field>
+	<field name="codigo_certificado" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="codigo_certificado"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="certificado_fitosanitario"/>
+	</field>
+	<field name="tipo_solicitud" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="tipo_solicitud"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="certificado_fitosanitario"/>
+	</field>
+	<field name="informacion_adicional" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="informacion_adicional"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="certificado_fitosanitario"/>
+	</field>
+	<field name="mostrar_informacion_adicional" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="mostrar_informacion_adicional"/>
+	</field>
+	<field name="organizacion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="organizacion"/>
+	</field>
+	<field name="fecha_aprobacion_certificado_letras" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_aprobacion_certificado_letras"/>
+	</field>
+	<background>
+		<band height="555" splitType="Stretch">
+			<image>
+				<reportElement x="-20" y="-10" width="841" height="565" uuid="675a7083-e07b-4a9b-a9c1-9bd169d9daba"/>
+				<imageExpression><![CDATA[$P{fondoCertificadoHorizontal}]]></imageExpression>
+			</image>
+		</band>
+	</background>
+	<pageHeader>
+		<band height="112" splitType="Stretch">
+			<staticText>
+				<reportElement x="1" y="58" width="800" height="42" uuid="9b68c762-34b4-456b-96c8-7eb444dd4586"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ANEXO DEL CERTIFICADO FITOSANITARIO DE EXPORTACIÓN
+ANNEX TO THE PHYTOSANITARY EXPORT CERTIFICATE]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="40" y="91" width="240" height="13" uuid="fb4b1903-bfa0-44ae-a81f-0dff0efb0756"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["N° " + $F{codigo_certificado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="760" y="67" width="30" height="17" uuid="dad11717-801e-4eae-b344-b203619c6a06"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="50" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="1" y="0" width="277" height="50" backcolor="#BFE1FF" uuid="a9374fdd-8ec4-4e20-9a2d-4fd7e3f017fd">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="4">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Organización de Protección Fitosanitaria de Ecuador
+Plant Protection Organization of Ecuador]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="278" y="0" width="523" height="30" backcolor="#BFE1FF" uuid="daeb3770-75ea-4da9-a868-6cebd514ca70">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[A: Organización (es) de Protección Fitosanitaria de
+TO: Plant Protection Organization (s) of]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="278" y="30" width="523" height="20" uuid="2e22f7df-36d3-4ffb-96fa-645bf94a5b3a"/>
+				<box padding="4">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{organizacion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="40" splitType="Stretch">
+			<componentElement>
+				<reportElement x="1" y="0" width="800" height="40" uuid="a1184c9a-aae1-45e1-865d-3a713ee73e3e">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table 1_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table 1_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table 1_TD"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="Empty Dataset2" uuid="de59fea0-13df-4dfd-99c1-aa6bb113ed94">
+						<datasetParameter name="idSolicitud">
+							<datasetParameterExpression><![CDATA[$P{idSolicitud}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="180" uuid="e11ed916-0a5a-421c-8fd2-ef7786b4f5b3">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+						<jr:columnHeader style="Table 1_CH" height="25" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="180" height="25" uuid="0f555dc0-db9d-402a-8a61-0e4ebeb58115"/>
+								<box padding="4"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="7" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Producto / Product]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 1_TD" height="15">
+							<textField isStretchWithOverflow="true">
+								<reportElement x="0" y="0" width="180" height="15" uuid="0bb92840-cbc9-4e44-9242-8751e1d7400e"/>
+								<box padding="4"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font size="7.5"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{nombre_producto}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="80" uuid="c2aa0ee0-f0ee-456d-9bd8-ffb9499d7c49">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+						<jr:columnHeader style="Table 1_CH" height="25" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="80" height="25" uuid="31a339ab-bc50-4bd9-882d-1826e7e41236"/>
+								<box padding="3"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="7" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Cantidad / Quantity]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 1_TD" height="15">
+							<textField isStretchWithOverflow="true">
+								<reportElement x="0" y="0" width="80" height="15" uuid="a1c25d44-28bd-4104-bde7-6aa4cc1acbe4"/>
+								<box padding="4"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="7.5"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="80" uuid="32d42fe1-c675-4e66-87f4-c2d66b4c8287">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
+						<jr:columnHeader style="Table 1_CH" height="25" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="80" height="25" uuid="211ac7b3-9ab2-441c-801c-8f80a6c4eb71"/>
+								<box topPadding="0" leftPadding="4" bottomPadding="0" rightPadding="0"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="7" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Peso Neto / Net Weight]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 1_TD" height="15">
+							<textField isStretchWithOverflow="true">
+								<reportElement x="0" y="0" width="80" height="15" uuid="01e76f54-4a4e-4dd5-930b-8b1a3d443faf"/>
+								<box padding="4"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="7.5"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{peso_neto}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="80" uuid="e354480f-33b2-43b2-98e1-4b388b5e48d4">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
+						<jr:columnHeader style="Table 1_CH" height="25" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="80" height="25" uuid="4884cace-b4b9-4cf6-b7df-fd31e4faeaae"/>
+								<box padding="3"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="7" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Peso Bruto / Gross Weight]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 1_TD" height="15">
+							<textField isStretchWithOverflow="true">
+								<reportElement x="0" y="0" width="80" height="15" uuid="84fbc234-32e7-43ac-bc11-d96273d3fc5d"/>
+								<box padding="4"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="7.5"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{peso_bruto}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="80" uuid="f8f2a3c8-3fd6-471e-b088-ee5c5760912d">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
+						<jr:columnHeader style="Table 1_CH" height="25" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="80" height="25" uuid="dcecc5d4-7369-4cb7-a6b9-2b99aac6ee46"/>
+								<box padding="3"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="7" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Tratamiento / Treatment]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 1_TD" height="15">
+							<textField isStretchWithOverflow="true">
+								<reportElement x="0" y="0" width="80" height="15" uuid="d651c0bd-5c06-4be0-8dff-5dd2bf972ccc"/>
+								<box padding="4"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="7.5"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{nombre_tratamiento}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="80" uuid="aed8aded-8f92-4439-b991-7a89e1eb9054">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column6"/>
+						<jr:columnHeader style="Table 1_CH" height="25" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="80" height="25" uuid="3e094d63-25a8-49f0-bfd5-c3e2b6eb3caf"/>
+								<box padding="3"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="6" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Dur. Temperatura / Dur. Temperatura]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 1_TD" height="15">
+							<textField isStretchWithOverflow="true">
+								<reportElement x="0" y="0" width="80" height="15" uuid="f0970315-fc04-49c0-89fe-5e229f5cbce6"/>
+								<box padding="4"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="7.5"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{duracion_temperatura}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="80" uuid="19fb9a47-0429-43ba-a625-b0a844d79e82">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column7"/>
+						<jr:columnHeader style="Table 1_CH" height="25" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="80" height="25" uuid="2d219c60-9a78-4235-af1f-814febd7ca3f"/>
+								<box padding="3"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="7" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Concentración / Concentration]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 1_TD" height="15">
+							<textField isStretchWithOverflow="true">
+								<reportElement x="0" y="0" width="80" height="15" uuid="86335301-4b0b-447c-9bac-fc0969255396"/>
+								<box padding="4"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="7.5"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{concentracion}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="80" uuid="eafe924b-30cb-4a20-b219-885ea2f86e7a">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column8"/>
+						<jr:columnHeader style="Table 1_CH" height="25" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="80" height="25" uuid="4b38ecc9-8b4d-45b4-ad60-545b641e474e"/>
+								<box padding="3"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="7" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Químico / Chemical]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 1_TD" height="15">
+							<textField isStretchWithOverflow="true">
+								<reportElement x="0" y="0" width="80" height="15" uuid="a5c4ae39-5280-494e-9dbc-1465a15312a8"/>
+								<box padding="4"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="7.5"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{producto_quimico}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="60" uuid="8aaf3be7-6f4a-4d84-85f7-4d3aa74ea6d4">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column9"/>
+						<jr:columnHeader style="Table 1_CH" height="25" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="60" height="25" uuid="c3e4fc55-2e22-47b8-aad2-945787c21680"/>
+								<box padding="4"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="7" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Fecha / Date]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table 1_TD" height="15">
+							<textField isStretchWithOverflow="true">
+								<reportElement x="0" y="0" width="60" height="15" uuid="c93cf693-53e9-406d-a103-a4f6072c1339"/>
+								<box padding="4"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="7.5"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{fecha_tratamiento}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+		<band height="40">
+			<componentElement>
+				<reportElement x="1" y="10" width="801" height="30" uuid="04782b14-438f-4b0d-ba1f-27ad9fe1f9ae">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="Empty Dataset1" uuid="7dc95a2f-97bf-45d8-9da0-ec283607afa8">
+						<datasetParameter name="idSolicitud">
+							<datasetParameterExpression><![CDATA[$P{idSolicitud}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="180" uuid="d31d6c6f-e3b1-40e3-a1c7-f112e069d0c3">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+						<jr:columnHeader style="Table_CH" height="15" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="180" height="15" uuid="e96aa8fd-a3d3-4035-9c6e-aaff651641f9"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Producto / Product]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="15">
+							<textField isStretchWithOverflow="true">
+								<reportElement x="0" y="0" width="180" height="15" uuid="49648351-9b66-4f56-b291-62fee4e3b486"/>
+								<box padding="4"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{nombre_producto}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="621" uuid="8226ef67-71e1-456d-a33e-a7d5e4b577ee">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+						<jr:columnHeader style="Table_CH" height="15" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="621" height="15" uuid="22ae2859-daca-43b7-bd74-857bd3c1cb49"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Declaración Adicional / Additional Declaration]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="15">
+							<textField isStretchWithOverflow="true">
+								<reportElement x="0" y="0" width="621" height="15" uuid="92662c6e-0a92-4fe3-be18-cb948edd73b3"/>
+								<box padding="4"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{informacion_adicional}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+		<band height="50">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="1" y="30" width="800" height="20" uuid="94a06b33-1052-436b-9da7-f26e25c2e9c2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b655d10f-77f4-4759-a995-5e4bd222aa8b"/>
+				</reportElement>
+				<box padding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Justified">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{informacion_adicional}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="1" y="10" width="800" height="20" backcolor="#BFE1FF" uuid="9d000b2c-a89b-49a7-b650-258ad209f287"/>
+				<box topPadding="3" leftPadding="3">
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Información Adicional / Adicional Information]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="98" splitType="Stretch">
+			<staticText>
+				<reportElement x="1" y="42" width="179" height="15" uuid="d24ab7ce-2cb4-452f-a844-29633aa77799"/>
+				<box topPadding="0" leftPadding="4" bottomPadding="0" rightPadding="4">
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Fecha / Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="27" width="179" height="15" uuid="973ffe1a-4979-4d90-921b-734067f1d05e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="4" bottomPadding="0" rightPadding="4">
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Lugar de expedición / Place of issue]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="57" width="359" height="15" uuid="aaa608c0-4a86-4002-86a8-1860adb23b40"/>
+				<box topPadding="0" leftPadding="4" bottomPadding="0" rightPadding="4">
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Nombre Funcionario Autorizado / Name of Authorized Officer]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="180" y="27" width="180" height="15" uuid="de9cbeb5-a82b-496b-bd5b-e53eb8e95f6b"/>
+				<box leftPadding="4" rightPadding="4">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lugarExpedicion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="42" width="180" height="15" uuid="2bef7fff-5a72-433d-8ebf-213e0b4551d7"/>
+				<box leftPadding="4" rightPadding="4">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_aprobacion_certificado_letras}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="72" width="359" height="15" uuid="7c3f9fa5-b9cc-4fd8-b5bb-7e91d675dfd8">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box leftPadding="4" rightPadding="4">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nombreInspector}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="560" y="27" width="241" height="60" uuid="fa683cd3-898a-49c7-b29a-6791355cf05e"/>
+				<box leftPadding="11" rightPadding="11">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Este documento ha sido suscrito con firma electrónica, mediante la Ley de comercio electrónico, firmas electrónicas, mensajes de datos - Art. 16 Decreto Ejecutivo N° 981 - Uso de firma electrónica de la república del Ecuador.]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<lastPageFooter>
+		<band height="26">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</lastPageFooter>
+</jasperReport>

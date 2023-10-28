@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 4.0.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" printOrder="Horizontal" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Error">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="327"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="logoDerecha" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="logoIzquierda" class="java.lang.String" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[select cast( to_char(100*(2-(ss.tiempo_real/ss.plazo)), '9999') as varchar(32)) as eficiencia, * from (
+select distinct
+            tf.id_tramite_flujo,tf.identificador,tf.remitente,tf.ejecutor,tf.decision,
+            p.id_solicitud,p.id_expediente,p.id_certificado,p.estado,p.nombre as nombre_producto, 
+			o.razon_social,s.provincia,sp.nombre as subtipo_producto,p.fecha_solicitud as fecha_inicio,p.fecha_inscripcion as fecha_fin,
+			ce.nombre,tf.id_tramite,tf.id_flujo_documento,tf.identificador as tecnico,tf.fecha_inicio as fecha_tecnico,
+			cast((select count(id_tramite_observacion) from g_ensayo_eficacia.tramites_observaciones where id_tramite_flujo=tf.id_tramite_flujo) as integer) as numero_observaciones,
+			cast(EXTRACT(DAY FROM age(date(p.fecha_inscripcion),date(p.fecha_solicitud) ) ) as integer) as tiempo_real,
+			fd.plazo 		
+			from g_dossier_pecuario.solicitudes p
+			left join g_operadores.operadores o on p.identificador=o.identificador
+			left join g_operadores.sitios s on s.id_sitio=p.id_sitio
+			left join g_catalogos.subtipo_productos sp on sp.id_subtipo_producto=p.id_subtipo_producto
+			left join g_catalogos.catalogo_ef ce on ce.codigo=p.tipo_solicitud
+			left join g_ensayo_eficacia.tramites tt on tt.id_documento=p.id_solicitud and tt.tipo_documento='DP'
+			left join g_ensayo_eficacia.tramites_flujos tf on tf.id_tramite=tt.id_tramite
+			left join g_ensayo_eficacia.flujo_documentos fd on fd.id_flujo_documento=tf.id_flujo_documento
+			left join g_ensayo_eficacia.flujo_fases ff on ff.id_flujo=fd.id_flujo and ff.id_fase=fd.id_fase
+			
+			where ff.estado='analizarDossier' and fd.tipo_documento='DP' 
+
+			order by tf.id_tramite_flujo) as ss]]>
+	</queryString>
+	<field name="id_tramite_flujo" class="java.lang.Integer"/>
+	<field name="identificador" class="java.lang.String"/>
+	<field name="remitente" class="java.lang.String"/>
+	<field name="ejecutor" class="java.lang.String"/>
+	<field name="decision" class="java.lang.String"/>
+	<field name="id_solicitud" class="java.lang.Integer"/>
+	<field name="id_expediente" class="java.lang.String"/>
+	<field name="id_certificado" class="java.lang.String"/>
+	<field name="estado" class="java.lang.String"/>
+	<field name="nombre_producto" class="java.lang.String"/>
+	<field name="razon_social" class="java.lang.String"/>
+	<field name="provincia" class="java.lang.String"/>
+	<field name="subtipo_producto" class="java.lang.String"/>
+	<field name="fecha_inicio" class="java.lang.String"/>
+	<field name="fecha_fin" class="java.lang.String"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="id_tramite" class="java.lang.Integer"/>
+	<field name="id_flujo_documento" class="java.lang.Integer"/>
+	<field name="tecnico" class="java.lang.String"/>
+	<field name="fecha_tecnico" class="java.lang.String"/>
+	<field name="tiempo_real" class="java.lang.Integer"/>
+	<field name="plazo" class="java.lang.Integer"/>
+	<field name="eficiencia" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="80" splitType="Stretch">
+			<staticText>
+				<reportElement x="191" y="54" width="410" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[MATRIZ DE SERVICIOS]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="10" width="160" height="60"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{logoIzquierda}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="630" y="10" width="170" height="60"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{logoDerecha}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="191" y="10" width="410" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[AGENCIA DE REGULACIÓN Y CONTROL FITO Y ZOOSANITARIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="191" y="32" width="410" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" lineSpacing="Single">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[AGROCALIDAD]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement x="3" y="0" width="57" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Expediente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="0" width="119" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Producto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="110" y="0" width="60" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Identificador]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="170" y="0" width="144" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Razón Social]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="0" width="50" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha Ingreso ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="314" y="-10" width="66" height="32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Tipo de trámite]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="499" y="0" width="61" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Técnico Asignado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="560" y="0" width="53" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha Entrega]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="613" y="0" width="57" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Decisión]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="670" y="0" width="50" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Tiempo Real]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="720" y="0" width="40" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[plazo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="760" y="0" width="50" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[eficiencia]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="61" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="380" y="0" width="119" height="21"/>
+				<box leftPadding="2">
+					<pen lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+				</box>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre_producto}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="110" y="0" width="60" height="21"/>
+				<box>
+					<pen lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{identificador}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="3" y="0" width="57" height="21"/>
+				<box rightPadding="2">
+					<pen lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{id_expediente}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="170" y="0" width="144" height="21"/>
+				<box leftPadding="2">
+					<pen lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+				</box>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{razon_social}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="60" y="0" width="50" height="21"/>
+				<box>
+					<pen lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+				</box>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{fecha_inicio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="314" y="0" width="66" height="21"/>
+				<box>
+					<pen lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+				</box>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="499" y="0" width="61" height="21"/>
+				<box>
+					<pen lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+				</box>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tecnico}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="560" y="0" width="53" height="21"/>
+				<box>
+					<pen lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+				</box>
+				<textElement verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{fecha_fin}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="613" y="0" width="57" height="21"/>
+				<box>
+					<pen lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{decision}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="670" y="0" width="50" height="21"/>
+				<box>
+					<pen lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tiempo_real}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="720" y="0" width="40" height="21"/>
+				<box>
+					<pen lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{plazo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="760" y="0" width="50" height="21"/>
+				<box>
+					<pen lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="rgba(0, 0, 0, 0.5019608)"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{eficiencia}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="540" y="0" width="260" height="15"/>
+				<textElement lineSpacing="Single">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class=""><![CDATA[Página $V{PAGE_NUMBER} de $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

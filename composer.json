@@ -1,0 +1,47 @@
+{
+	"keywords" : [
+		"GUIA"
+	],
+	"name" : "agrocalidad/agrodb",
+	"type" : "project",
+	"description" : "Sistema Gestor Unificado de Información para Agrocalidad",
+	"license" : "MIT",
+	"authors" : [{
+			"name" : "Agrocalidad",
+			"email" : "edison.ayala@agrocalidad.gob.ec"
+		}
+	],
+	"require" : {
+		"php" : ">=7.4",
+		"zendframework/zend-db" : "~2.10.0",
+		"zendframework/zend-log" : "^2.8.3",
+		"zendframework/zend-json" : "~3",
+		"zendframework/zend-validator" : "^2.9.2",
+		"zendframework/zend-i18n" : "^2.9",
+		"zendframework/zend-filter" : "^2",
+		"phpoffice/phpspreadsheet" : "^1.3.1",
+		"tecnickcom/tcpdf" : "~6.2",
+		"kwn/number-to-words" : "~1.6",
+		"cossou/jasperphp" : "~2.8",
+		"wsdltophp/packagegenerator" : "~3.2",
+		"spatie/array-to-xml" : "~2.10.0",
+		"zendframework/zend-soap" : "~2.8",
+		"firebase/php-jwt" : "~5.5",
+		"propa/tcpdi" : "~1.3",
+		"iio/libmergepdf" : "~4.0.4",
+		"robrichards/xmlseclibs" : "~3.1",
+		"ass/xmlsecurity" : "~1.1",
+		"mpdf/mpdf": "^8.2"
+	},
+	"require-dev" : {
+		"ccampbell/chromephp" : "^4.1.0"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"Agrodb\\" : [
+				"aplicaciones/mvc",
+				"aplicaciones/mvc/modulos"
+			]
+		}
+	}
+}

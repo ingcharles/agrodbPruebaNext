@@ -1,0 +1,87 @@
+@CHARSET "UTF-8";
+
+.centrar{
+	text-align:center;
+}
+	
+#estadoIngresos{
+	font-weight:bold;
+	color:red;
+	text-align:center;
+}
+
+td{
+	text-align:center;
+}
+
+#__registrarIngresos{
+	background-image: url('../img/registrarIngresos.png');
+}
+
+#__conformarLote{
+	background-image: url('../img/conformarLote.png');
+}
+
+#__etiquetarLote{
+	background-image: url('../img/etiquetarLote.png');
+}
+
+#__reportes{
+	background-image: url('../img/Reportes.png');
+}
+
+.edit2{
+	background-image: url('../img/editar2.png');	
+	border-radius: 5px;
+	 background-position: center center;
+	 background-repeat: no-repeat;
+	 padding: 0;
+	 background-color: transparent !important;
+	 width: 27px;
+	 height: 27px;
+	 border: none;
+}
+
+.edit2:hover{
+	background-image: url('../img/editar2.png');
+}
+
+.del2{
+	background-image: url('../img/eliminar2.png');	
+	margin-left:5px;
+	border-radius: 5px;
+	 background-position: center center;
+	 background-repeat: no-repeat;
+	 padding: 0;
+	 background-color: transparent !important;
+	 width: 27px;
+	 height: 27px;
+	 border: none;
+}
+
+.del2:hover{
+	background-image: url('../img/eliminar2.png');	
+}
+
+.edit2[disabled=disabled],.del2[disabled=disabled] {
+       background: -moz-linear-gradient(top, #999 0%, #666 100%);
+       background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #999), color-stop(100%, #666));
+       background: -webkit-linear-gradient(top, #999 0%, #666 100%);
+       background: -o-linear-gradient(top, #999 0%, #666 100%);
+       background: -ms-linear-gradient(top, #999 0%, #666 100%);
+       background: linear-gradient(top, #999 0%, #666 100%);
+       /*background-color: #999 !important;*/
+       color: #DDD;
+       text-shadow: -1px -1px #333;
+   }
+
+.btn{
+border-radius: 5px;
+	 background-position: center center;
+	 background-repeat: no-repeat;
+	 padding: 0;
+	 background-color: transparent !important;
+	 width: 27px;
+	 height: 27px;
+	 border: none;
+}
