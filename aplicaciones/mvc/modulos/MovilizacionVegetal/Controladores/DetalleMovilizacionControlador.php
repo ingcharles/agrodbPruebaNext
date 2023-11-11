@@ -14,13 +14,15 @@ namespace Agrodb\MovilizacionVegetal\Controladores;
 
 use Agrodb\MovilizacionVegetal\Modelos\DetalleMovilizacionLogicaNegocio;
 use Agrodb\MovilizacionVegetal\Modelos\DetalleMovilizacionModelo;
+use Agrodb\Catalogos\Modelos\UnidadesFitosanitariasLogicaNegocio;
 
 class DetalleMovilizacionControlador extends BaseControlador
 {
 
     private $lNegocioDetalleMovilizacion = null;
     private $modeloDetalleMovilizacion = null;
-
+    private $lNegocioUnidadesFitosanitarias = null;
+    
     private $accion = null;
 
     /**
@@ -31,6 +33,7 @@ class DetalleMovilizacionControlador extends BaseControlador
         parent::__construct();
         $this->lNegocioDetalleMovilizacion = new DetalleMovilizacionLogicaNegocio();
         $this->modeloDetalleMovilizacion = new DetalleMovilizacionModelo();
+        $this->lNegocioUnidadesFitosanitarias = new UnidadesFitosanitariasLogicaNegocio();
         set_exception_handler(array(
             $this,
             'manejadorExcepciones'
@@ -128,7 +131,11 @@ class DetalleMovilizacionControlador extends BaseControlador
         
         $i=1;
         
-        foreach ($listaDestalles as $fila) {         
+        foreach ($listaDestalles as $fila) { 
+            
+            $idUnidad = $fila['unidad'];
+            $qUnidad = $this->lNegocioUnidadesFitosanitarias->buscar($idUnidad);
+            $unidad = $qUnidad->getNombreUnidadFitosanitaria();
             
             $this->listaDetalles .=
             '<tr>
@@ -138,7 +145,7 @@ class DetalleMovilizacionControlador extends BaseControlador
                         <td>' . ($fila['subtipo_producto'] != '' ? $fila['subtipo_producto'] : ''). '</td>
                         <td>' . ($fila['producto'] != '' ? $fila['producto'] : '') . '</td>
                         <td>' . ($fila['cantidad'] != '' ? $fila['cantidad'] : '') . '</td>
-                        <td>' . ($fila['unidad'] != '' ? $fila['unidad'] : '') . '</td>
+                        <td>' . ($fila['unidad'] != '' ? $unidad : '') . '</td>
                     </tr>';
         }
         

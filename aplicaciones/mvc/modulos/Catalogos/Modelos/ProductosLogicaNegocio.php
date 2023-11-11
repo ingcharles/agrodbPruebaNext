@@ -311,22 +311,34 @@ class ProductosLogicaNegocio implements IModelo{
 	 * @return array|ResultSet
 	 */
 	public function obtenerProductoAreasOperadoresOrigen($arrayParametros){
-		$consulta = "SELECT
-						distinct p.id_producto, p.nombre_comun, p.id_subtipo_producto
+		
+	    $consulta = "SELECT
+						DISTINCT
+                        p.id_producto
+                        , p.nombre_comun
+                        , p.id_subtipo_producto
 					FROM
                     	g_operadores.operadores o
                     	INNER JOIN g_operadores.sitios s ON s.identificador_operador = o.identificador
                     	INNER JOIN g_operadores.areas a ON s.id_sitio = a.id_sitio
                     	INNER JOIN g_operadores.productos_areas_operacion pao ON pao.id_area = a.id_area
                     	INNER JOIN g_operadores.operaciones op ON pao.id_operacion = op.id_operacion
+                        INNER JOIN g_catalogos.tipos_operacion top ON op.id_tipo_operacion = top.id_tipo_operacion
                     	INNER JOIN g_catalogos.productos p ON op.id_producto = p.id_producto
                         INNER JOIN g_catalogos.subtipo_productos sp ON p.id_subtipo_producto = sp.id_subtipo_producto
                         INNER JOIN g_catalogos.tipo_productos tp ON sp.id_tipo_producto = tp.id_tipo_producto
+                        INNER JOIN g_requisitos.requisitos_comercializacion rc ON rc.id_producto = p.id_producto
+	                    INNER JOIN g_requisitos.requisitos_asignados ra ON ra.id_requisito_comercio = rc.id_requisito_comercio
                     WHERE
-						a.id_area = " . $arrayParametros['id_area_origen'] . "
+						op.estado = 'registrado'
+                        and top.id_area || top.codigo IN ('SVACO', 'SVFRA', 'SVALM', 'SVPRP', 'SVMIM', 'SVPRO', 'SVVVE')
+                        and op.id_producto IN ('" . $arrayParametros['id_producto_origen'] . "')
+                        and a.id_area = " . $arrayParametros['id_area_destino'] . "
 						and p.movilizacion = 'SI'
                         and tp.id_area in ('" . $arrayParametros['area'] . "')
                         and p.id_subtipo_producto = " . $arrayParametros['id_subtipo_producto'] . "
+                        and ra.tipo = 'Movilización'
+                        and ra.estado = 'activo'
 					ORDER BY
                         p.nombre_comun ASC";
 

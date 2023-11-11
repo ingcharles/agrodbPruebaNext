@@ -4,7 +4,6 @@
 
 <?php 
     if($_SESSION['nombreProvincia'] === null){//Es operador
-        $identificadorOperador = $this->consultarTipoUsuario($_SESSION['usuario']);
         $operador = true;
     }else{
         $operador = false;
@@ -29,12 +28,12 @@
 
 		<div data-linea="2">
 			<label for="id_canton_emision">Cantón Emisión:</label>
-    			<?php echo $this->modeloMovilizacion->getCantonEmision(); ?>
+    			<?php echo ($this->modeloMovilizacion->getCantonEmision() != "") ? $this->modeloMovilizacion->getCantonEmision() : "N/A"; ?>
 		</div>
 
 		<div data-linea="3">
 			<label for="id_oficina_emision">Oficina Emisión:</label> 
-    			<?php echo $this->modeloMovilizacion->getOficinaEmision(); ?>
+    			<?php echo ($this->modeloMovilizacion->getOficinaEmision() != "") ? $this->modeloMovilizacion->getOficinaEmision() : "N/A"; ?>
 		</div>		
 		
 		<div data-linea="4">
@@ -189,46 +188,43 @@
 	<input type="hidden" id="id_movilizacion" name="id_movilizacion" value="<?php echo $this->modeloMovilizacion->getIdMovilizacion(); ?>"/>
 	<input type="hidden" id="estado_movilizacion" name="estado_movilizacion" value="<?php echo $this->modeloMovilizacion->getEstadoMovilizacion(); ?>" />
 	<input type="hidden" id="id" name="id" />
-		
-	<fieldset>
-		<legend>Datos Generales</legend>
-
-		<div data-linea="1">
-			<label for="tipo_solicitud">Tipo de Solicitud:</label> 
-			<select id="tipo_solicitud" name="tipo_solicitud" required>
-				<option value="">Seleccionar....</option>
-				<option value="Fitosanitario">Fitosanitario</option>
-            </select>
-		</div>
-
-		<div data-linea="2">
-			<label for="id_provincia_emision">Provincia Emisión:</label>
- 			<select id="id_provincia_emision" name="id_provincia_emision" required >
-                <option value="">Seleccionar....</option>
-                <?php
-                    echo $this->comboProvinciasEc($this->modeloMovilizacion->getIdProvinciaEmision());
-                ?>
-            </select>	
-            
-            <input type="hidden" id="provincia_emision" name="provincia_emision" />		
-		</div>
-
-		<div data-linea="2">
-			<label for="id_canton_emision">Cantón Emisión:</label>
-			<select id="id_canton_emision" name="id_canton_emision" <?php echo ($operador==false?'required':'');?> >
-                <option value="">Seleccionar....</option>
-            </select>
-            <input type="hidden" id="canton_emision" name="canton_emision" />
-		</div>
-
-		<div data-linea="3">
-			<label for="id_oficina_emision">Oficina Emisión:</label> 
-			<select id="id_oficina_emision" name="id_oficina_emision" <?php echo ($operador==false?'required':'');?> >
-                <option value="">Seleccionar....</option>
-            </select>
-			<input type="hidden" id="oficina_emision" name="oficina_emision" />
-		</div>		
-	</fieldset>
+	
+	<?php if($operador == false){?>
+	
+    	<fieldset>
+    		<legend>Datos Generales</legend>
+    
+    		<div data-linea="2">
+    			<label for="id_provincia_emision">Provincia Emisión:</label>
+     			<select id="id_provincia_emision" name="id_provincia_emision" required >
+                    <option value="">Seleccionar....</option>
+                    <?php
+                        echo $this->comboProvinciasEc($this->modeloMovilizacion->getIdProvinciaEmision());
+                    ?>
+                </select>
+                
+                <input type="hidden" id="provincia_emision" name="provincia_emision" />		
+    		</div>
+    
+    		<div data-linea="2">
+    			<label for="id_canton_emision">Cantón Emisión:</label>
+    			<select id="id_canton_emision" name="id_canton_emision" required >
+                    <option value="">Seleccionar....</option>
+                </select>
+                <input type="hidden" id="canton_emision" name="canton_emision" />
+    		</div>
+    
+    		<div data-linea="3">
+    			<label for="id_oficina_emision">Oficina Emisión:</label> 
+    			<select id="id_oficina_emision" name="id_oficina_emision" required>
+                    <option value="">Seleccionar....</option>
+                </select>
+    			<input type="hidden" id="oficina_emision" name="oficina_emision" />
+    		</div>
+    			
+    	</fieldset>
+	
+	<?php } ?>
 
 	<fieldset>
 		<legend>Datos Origen</legend>
@@ -245,32 +241,30 @@
             <input type="hidden" id="id_provincia_origen" name="id_provincia_origen" />
             <input type="hidden" id="provincia_origen" name="provincia_origen" />
 		</div>
-
-		<div data-linea="5">
-			<label for="identificador_operador_origen">Identificador Operador:</label> 
-			<input type="text" id="id_operador_origen" name="id_operador_origen" 
-				value="<?php echo ($operador == true? $identificadorOperador['identificador']:"");  ?>" 
-				placeholder="Identificador del operador de origen" required maxlength="13" 
-				<?php echo ($operador == true? "readonly='readonly'":""); ?> />
-				
-			<input type="hidden" id="identificador_operador_origen" name="identificador_operador_origen" 
-				value="<?php echo ($operador == true? $identificadorOperador['identificador']:"");  ?>" 
-				placeholder="Identificador del operador de origen" required maxlength="13" 
-				<?php echo ($operador == true? "readonly='readonly'":""); ?> />
-		</div>
-
-		<div data-linea="5">
-			<label for="nombre_operador_origen">Nombre Operador:</label> 
-			<input type="text" id="nom_operador_origen" name="nom_operador_origen" 
-				value="<?php echo ($operador == true? $identificadorOperador['razon_social']:""); ?>"
-				placeholder="Nombre del operador de origen" required maxlength="128" 
-				<?php echo ($operador == true? "readonly='readonly'":""); ?>/>
-				
-			<input type="hidden" id="nombre_operador_origen" name="nombre_operador_origen" 
-				value="<?php echo ($operador == true? $identificadorOperador['razon_social']:""); ?>"
-				placeholder="Nombre del operador de origen" required maxlength="128" 
-				<?php echo ($operador == true? "readonly='readonly'":""); ?>/>
-		</div>
+		
+		<?php if($operador == false){?>
+    		<div data-linea="5">
+    			<label for="identificador_operador_origen">Identificador Operador:</label> 
+    			<input type="text" id="id_operador_origen" name="id_operador_origen" 
+    				value="" 
+    				placeholder="Identificador del operador de origen" required maxlength="13" />   			
+    		</div>
+    
+    		<div data-linea="5">
+    			<label for="nombre_operador_origen">Nombre Operador:</label> 
+    			<input type="text" id="nom_operador_origen" name="nom_operador_origen" 
+    				value=""
+    				placeholder="Nombre del operador de origen" required maxlength="128" />
+    		</div>
+		<?php } ?>
+		
+		<input type="hidden" id="identificador_operador_origen" name="identificador_operador_origen" 
+    				value="" 
+    				placeholder="Identificador del operador de origen" required maxlength="13" />
+    	    				
+    	<input type="hidden" id="nombre_operador_origen" name="nombre_operador_origen" 
+    				value=""
+    				placeholder="Nombre del operador de origen" required maxlength="128" />
 		
 		<div data-linea="6">
 			<button type="button" class="buscar" onclick="buscarOperadorSitioOrigen()" >Buscar</button>
@@ -387,7 +381,7 @@
 			<label for="placa_transporte">Placa Transporte: </label> 
 			<input type="text" id="placa_transporte" name="placa_transporte" value="<?php echo $this->modeloMovilizacion->getPlacaTransporte(); ?>"
 				placeholder="Ej: AAA-0000" data-er="[A-Z]{3}-[0-9]{3,4}" data-inputmask="'mask': 'aaa-9999'" required maxlength="8" 
-				onblur="this.value=this.value.toUpperCase()" />
+				 style="text-transform:uppercase;"/>
 		</div>
 
 		<div data-linea="13">
@@ -399,7 +393,7 @@
 		<div data-linea="13">
 			<label for="nombre_conductor">Nombre Conductor: </label> 
 			<input type="text" id="nombre_conductor" name="nombre_conductor" value="<?php echo $this->modeloMovilizacion->getNombreConductor(); ?>"
-				placeholder="Nombre del conductor del vehículo" required maxlength="128" />
+				placeholder="Nombre del conductor del vehículo" required maxlength="128" readonly/>
 		</div>
 
 		<div data-linea="14">
@@ -468,15 +462,15 @@
 			<select id="unidad" name="unidad"  >
                 <option value="">Seleccionar....</option>
                 <?php
-                echo $this->comboUnidadesMovilizaciones($this->modeloDetalleMovilizacion->getUnidad());
+                echo $this->comboUnidadesFitosanitaras();
                 ?>
             </select>
 		</div>				
 
 		<div data-linea="18">
 			<label for="cantidad">Cantidad: </label>
-			<input type="number" id="cantidad" name="cantidad" data-er="^[0-9]+$"
-			placeholder="Cantidad del producto a movilizar" maxlength="4" min="1" step="1"/>
+			<input type="text" id="cantidad" name="cantidad" oninput="formatearCantidadProducto(this)"
+			placeholder="Cantidad del producto a movilizar" maxlength="9"/>
 		</div>	
 		
 		<div data-linea="19">
@@ -603,19 +597,13 @@ var combo = "<option>Seleccione....</option>";
         	$("#nom_operador_origen").val("");
         	$("#nombre_operador_origen").val("");
     	}
-    	$("#id_sitio_origen").html(combo);
+    	$("#id_sitio_origen").empty();
+    	$("#id_sitio_origen").append('<option value="">Seleccione....</option>');
     	$("#sitio_origen").val("");
     	$("#codigo_sitio_origen").val("");
     	$("#codigo_provincia_origen").val("");
     	$("#tbItems tbody").html("");
-    	
-        /*if ($(this).val !== "") {
-            $("#id_provincia_origen").val($("#ide_provincia_origen option:selected").val());
-            $("#provincia_origen").val($("#ide_provincia_origen option:selected").text());
-        }else{
-        	$("#id_provincia_origen").val("");
-        	$("#provincia_origen").val("");
-        }*/
+
     });
 
     $("#id_sitio_origen").change(function () {
@@ -711,7 +699,7 @@ var combo = "<option>Seleccione....</option>";
     	$("#tbItems tbody").html("");
 
 		if (($("#id_area_origen option:selected").val() !== "") && ($("#id_sitio_destino option:selected").val() !== "")) {
-			$("#area_origen").val($("#id_area_origen option:selected").text());
+			$("#area_origen").val($("#id_area_origen option:selected").attr('data-nombre'));
 			$("#codigo_area_origen").val($("#id_area_origen option:selected").attr('data-codigo_area'));
 			$("#codigo_area_origen_text").val($("#id_area_origen option:selected").attr('data-codigo_area'));
         }else{
@@ -750,13 +738,6 @@ var combo = "<option>Seleccione....</option>";
     	$("#area_destino").val("");
     	$("#tbItems tbody").html("");
     	
-        /*if ($("#ide_provincia_destino option:selected").val() !== "") {
-            $("#id_provincia_destino").val($("#ide_provincia_destino option:selected").val());
-            $("#provincia_destino").val($("#ide_provincia_destino option:selected").text());
-        }else{
-        	$("#id_provincia_destino").val("");
-        	$("#provincia_destino").val("");
-        }*/
     });
 
     $("#id_sitio_destino").change(function () {
@@ -795,8 +776,7 @@ var combo = "<option>Seleccione....</option>";
 				$("#provincia_destino").val($("#ide_provincia_destino option:selected").text());
 				
 				buscarOperadorAreaDestino();
-
-				buscarSubtipoProducto();     
+				    
             }
         }else{
         	$("#sitio_destino").val("");
@@ -810,9 +790,12 @@ var combo = "<option>Seleccione....</option>";
 		$("#tbItems tbody").html("");
     	
         if ($("#id_area_destino option:selected").val() !== "") {
-			$("#area_destino").val($("#id_area_destino option:selected").text());
+			$("#area_destino").val($("#id_area_destino option:selected").attr('data-nombre'));
 			$("#codigo_area_destino").val($("#id_area_destino option:selected").attr('data-codigo_area'));
 			$("#codigo_area_destino_text").val($("#id_area_destino option:selected").attr('data-codigo_area'));
+			
+			buscarSubtipoProducto();
+			
         }else{
         	$("#area_destino").val("");
         }
@@ -847,6 +830,7 @@ var combo = "<option>Seleccione....</option>";
 	    changeMonth: true,
 	    changeYear: true,
 	    dateFormat: 'yy-mm-dd',
+	    minDate: 0,
 	    onSelect: function(dateText, inst) {
         	var fecha=new Date($('#fecha_inicio_movilizacion').datepicker('getDate')); 
         	fecha.setDate(fecha.getDate()+1);	 
@@ -1171,14 +1155,16 @@ var combo = "<option>Seleccione....</option>";
         var nombre_operador_destino = $("#nombre_operador_destino").val();
         var id_sitio_destino = $("#id_sitio_destino option:selected").val();
         var id_area_origen = $("#id_area_origen option:selected").val();
+        var id_producto_origen = $("#id_area_origen option:selected").attr('data-id_producto');
 
         if ((provincia_destino !== "") && ((identificador_operador_destino !== "") && (nombre_operador_destino !== "")) && ((id_sitio_destino !== "") && (id_sitio_destino !== "Seleccione...."))) {
         	$.post("<?php echo URL ?>MovilizacionVegetal/Movilizacion/buscarAreasOperadoresDestino", 
     			{
-            		id_sitio_destino : $("#id_sitio_destino").val(),
-					id_area_origen : $("#id_area_origen option:selected").val(),
-					identificador_operador : $("#id_operador_destino").val(),
-					codigo_sitio : $("#id_sitio_destino option:selected").attr('data-codigo_sitio')
+            		id_sitio_destino : id_sitio_destino,
+					id_area_origen : id_area_origen,
+					identificador_operador : identificador_operador_destino,
+					codigo_sitio : $("#id_sitio_destino option:selected").attr('data-codigo_sitio'),
+					id_producto_origen : id_producto_origen
     			},
                 function (data) {
                     $("#id_area_destino").html(data);
@@ -1218,11 +1204,15 @@ var combo = "<option>Seleccione....</option>";
     	
         var id_sitio_origen = $("#id_sitio_origen option:selected").val();
         var id_area_origen = $("#id_area_origen option:selected").val();
+        var id_sitio_destino = $("#id_sitio_destino option:selected").val();
+        var id_area_destino = $("#id_area_destino option:selected").val();
+        var id_producto_origen = $("#id_area_origen option:selected").attr('data-id_producto');
 
-        if ((id_sitio_origen !== "") && (id_area_origen !== "")) {
+        if ((id_sitio_origen !== "") && (id_area_origen !== "") && (id_sitio_destino !== "") && (id_area_destino !== "")) {
         	$.post("<?php echo URL ?>MovilizacionVegetal/Movilizacion/buscarSubtipoProductoAreasOperadoresOrigen", 
     			{
-            		id_area_origen : $("#id_area_origen option:selected").val()
+            		id_area_destino : id_area_destino,
+            		id_producto_origen : id_producto_origen
     			},
                 function (data) {
                     $("#id_subtipo_producto").html(data);
@@ -1238,6 +1228,14 @@ var combo = "<option>Seleccione....</option>";
     			$("#id_area_origen").addClass("alertaCombo");
     		}
 
+			if(!$.trim($("#id_sitio_destino").val())){
+    			$("#id_sitio_destino").addClass("alertaCombo");
+    		}
+
+            if(!$.trim($("#id_area_destino").val())){
+    			$("#id_area_destino").addClass("alertaCombo");
+    		}
+			
             $("#estado").html("Por favor ingrese la información requerida para continuar").addClass('alerta');
         }
     }
@@ -1249,13 +1247,18 @@ var combo = "<option>Seleccione....</option>";
     	$("#producto").val("");
     	
         var id_subtipo_producto = $("#id_subtipo_producto option:selected").val();
+        var id_sitio_origen = $("#id_sitio_origen option:selected").val();
         var id_area_origen = $("#id_area_origen option:selected").val();
+        var id_sitio_destino = $("#id_sitio_destino option:selected").val();
+        var id_area_destino = $("#id_area_destino option:selected").val();
+        var id_producto_origen = $("#id_area_origen option:selected").attr('data-id_producto');
 
-        if ((id_subtipo_producto !== "") && (id_area_origen !== "")) {
+        if ((id_subtipo_producto !== "") && (id_sitio_origen !== "") && (id_area_origen !== "") && (id_sitio_destino !== "") && (id_area_destino !== "")) {
         	$.post("<?php echo URL ?>MovilizacionVegetal/Movilizacion/buscarProductoAreasOperadoresOrigen", 
     			{
-            		id_area_origen : $("#id_area_origen option:selected").val(),
-            		id_subtipo_producto : $("#id_subtipo_producto option:selected").val()
+            		id_area_destino : id_area_destino,
+            		id_subtipo_producto : id_subtipo_producto,
+            		id_producto_origen : id_producto_origen
     			},
                 function (data) {
                     $("#id_producto").html(data);
@@ -1269,6 +1272,14 @@ var combo = "<option>Seleccione....</option>";
 
             if(!$.trim($("#id_area_origen").val())){
     			$("#id_area_origen").addClass("alertaCombo");
+    		}
+    		
+    		if(!$.trim($("#id_sitio_destino").val())){
+    			$("#id_sitio_destino").addClass("alertaCombo");
+    		}
+    		
+    		if(!$.trim($("#id_area_destino").val())){
+    			$("#id_area_destino").addClass("alertaCombo");
     		}
 
             $("#estado").html("Por favor ingrese la información requerida para continuar").addClass('alerta');
@@ -1345,11 +1356,11 @@ var combo = "<option>Seleccione....</option>";
 								"</td>"+
 								"<td>"+$("#id_area_origen option:selected").text()+
 								"	<input id='iAreaOrigen' name='iAreaOrigen[]' value='"+$("#id_area_origen option:selected").val()+"' type='hidden'>"+
-								"	<input id='nAreaOrigen' name='nAreaOrigen[]' value='"+$("#id_area_origen option:selected").text()+"' type='hidden'>"+
+								"	<input id='nAreaOrigen' name='nAreaOrigen[]' value='"+$("#id_area_origen option:selected").attr('data-nombre')+"' type='hidden'>"+
 								"</td>"+
 								"<td>"+$("#id_area_destino option:selected").text()+
 								"	<input id='iAreaDestino' name='iAreaDestino[]' value='"+$("#id_area_destino option:selected").val()+"' type='hidden'>"+
-								"	<input id='nAreaDestino' name='nAreaDestino[]' value='"+$("#id_area_destino option:selected").text()+"' type='hidden'>"+
+								"	<input id='nAreaDestino' name='nAreaDestino[]' value='"+$("#id_area_destino option:selected").attr('data-nombre')+"' type='hidden'>"+
 								"</td>"+
 								"<td>"+$("#id_subtipo_producto option:selected").text()+
 								"	<input id='iSubtipoProducto' name='iSubtipoProducto[]' value='"+$("#id_subtipo_producto option:selected").val()+"' type='hidden'>"+
@@ -1441,4 +1452,64 @@ var combo = "<option>Seleccione....</option>";
     	var patron = new RegExp($(elemento).attr("data-er"),"g");
     	return patron.test($(elemento).val());
     }
+    
+    /////FORMATEAR CANTIDADES
+	
+    function formatearCantidadProducto(inputElement) {
+        var valor = inputElement.value.replace(/[^\d.]/g, ''); // Elimina caracteres no numéricos ni puntos
+        var partes = valor.split('.');
+        
+        if (partes.length > 1) {
+            partes[0] = partes[0].substring(0, 6); // Limita a enterosMaximos enteros
+            partes[1] = partes[1].substring(0, 2); // Limita a decimalesMaximos decimales
+            valor = partes.join('.');
+        } else if (partes[0].length > 6) {
+            valor = partes[0].substring(0, 6); // Limita a enterosMaximos enteros si no hay parte decimal
+        }
+        
+        inputElement.value = valor;
+	}
+
+	$("#placa_transporte").change(function () {
+        
+        var numero = $("#placa_transporte").val();
+        
+        if (numero !== "") {
+        	$.post("<?php echo URL ?>MovilizacionVegetal/Movilizacion/buscarPlacaTransporte",
+            {
+        		numero : numero
+			},
+                function (data) {
+                    if (data.validacion === 'Fallo') {
+                    	$("#placa_transporte").val("");
+                        mostrarMensaje(data.resultado, "FALLO");                        
+                    }
+                }, 'json');
+        }else{
+        	("#estado").html("Por favor revise los campos obligatorios.").addClass("alerta");
+        }
+    });
+
+	$("#identificador_conductor").change(function () {
+        
+        var numero = $("#identificador_conductor").val();
+        
+        if (numero !== "") {
+        	$.post("<?php echo URL ?>MovilizacionVegetal/Movilizacion/buscarIdentificadorConductor",
+            {
+        		numero : numero
+			},
+                function (data) {
+                    if (data.validacion === 'Fallo') {
+                    	$("#identificador_conductor").val("");
+                        mostrarMensaje(data.resultado, "FALLO");
+                    } else {             
+                        $("#nombre_conductor").val(data.nombreConductor);
+                    }
+                }, 'json');
+        }else{
+        	("#estado").html("Por favor revise los campos obligatorios.").addClass("alerta");
+        }
+    });
+    
 </script>
