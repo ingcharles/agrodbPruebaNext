@@ -158,12 +158,12 @@ class MovilizacionLogicaNegocio implements IModelo
 	public function buscarMovilizacionesXFiltro($arrayParametros)
 	{
 	    $busqueda = '';
-	    	    
+
 	    if (isset($arrayParametros['provinciaTecnico']) && ($arrayParametros['provinciaTecnico'] != '')) {
 	        $busqueda .= "and upper(m.provincia_destino) ilike upper('%" . $arrayParametros['provinciaTecnico'] . "%')";
 	    }
 	    
-	    $consulta = "  SELECT 
+	    $consulta = "SELECT 
                         	m.id_movilizacion, m.identificador, m.numero_permiso, 
                         	m.id_provincia_origen, m.provincia_origen, m.identificador_operador_origen, m.nombre_operador_origen, m.sitio_origen,
                         	m.id_provincia_destino, m.provincia_destino, m.identificador_operador_destino, m.nombre_operador_destino, m.sitio_destino,
@@ -173,7 +173,6 @@ class MovilizacionLogicaNegocio implements IModelo
                         WHERE
                             m.estado_movilizacion = '".$arrayParametros['estado_movilizacion']."'
                             ".($arrayParametros['identificador_operador_origen'] != '' ? " and m.identificador_operador_origen ilike '".$arrayParametros['identificador_operador_origen']."%'" : "")."
-                            ".($arrayParametros['nombre_operador_origen'] != '' ? " and upper(m.nombre_operador_origen) ilike upper('%".$arrayParametros['nombre_operador_origen']."%')" : "")."
                             ".($arrayParametros['sitio_origen'] != '' ? " and upper(m.sitio_origen) ilike upper('%".$arrayParametros['sitio_origen']."%')" : "")."
                             ".($arrayParametros['numero_permiso'] != '' ? " and m.numero_permiso ilike '%".$arrayParametros['numero_permiso']."%'" : "")."
                         	".($arrayParametros['fechaInicio'] != '' ? " and m.fecha_creacion >= '" . $arrayParametros['fechaInicio'] . " 00:00:00' " : "")."

@@ -127,6 +127,7 @@ class MovilizacionControlador extends BaseControlador
                 $dia = date('d');
                 
                 if ($_POST["id_movilizacion"] === '') {
+                    $_POST['tipo_solicitud'] = 'Fitosanitario';
                     $_POST['numero_permiso'] = $numero;
                     $_POST['secuencial_movilizacion'] = substr($numero, -5);
                     $_POST['ruta_certificado'] = MOV_VEG_CERT_URL . "certificado/" . $anio . "/" . $mes . "/" . $dia . "/" . $numero . ".pdf";
@@ -241,65 +242,48 @@ class MovilizacionControlador extends BaseControlador
      */
     public function cargarPanelMovilizaciones()
     {
-        $operador = false;
-        //cambiar validacion a  ===
+
+        $datosBusqueda = "";
+        
         if($_SESSION['nombreProvincia'] === null){//Es operador
-            $identificadorOperador = $this->consultarTipoUsuario($_SESSION['usuario']);
-            $operador = true;
-        }
-                
-        $this->panelBusquedaMovilizaciones = '<table class="filtro" style="width: 100%;">
-                                                <input type="hidden" id="identificadorUsuario" name="identificadorUsuario" value="'.$_SESSION['usuario'].'" readonly="readonly" >
-                                                <input type="hidden" id="provinciaTecnico" name="provinciaTecnico" value="'.$_SESSION['nombreProvincia'].'" readonly="readonly" >
-                                				
+            
+            $datosBusqueda = '<table class="filtro" style="width: 100%;">
                                                 <tbody>
                                                     <tr>
                                                         <th colspan="2">Consultar permiso de movilización:</th>
                                                     </tr>
-
-                                					<tr  style="width: 100%;">
-                                						<td >*Identificación operador: </td>
-                                						<td>
-                                							<input id="identificadorOperador" type="text" name="identificadorOperador" value="'.($_SESSION['nombreProvincia']===null? $_SESSION['usuario']:'').'" '.($operador == true? "readonly='readonly'":"") .' style="width: 90%" maxlength="13">
-                                						</td>
-
-                                						<td >*Nombre operador: </td>
-                                						<td>
-                                							<input id="nombreOperador" type="text" name="nombreOperador" value="'.($operador == true? ($identificadorOperador['razon_social']!=''? $identificadorOperador['razon_social']:''):'').'" '.($operador == true? "readonly='readonly'":"") .' style="width: 90%" maxlength="128">
-                                						</td>
-                                					</tr>
-
+                                                    
                                                     <tr  style="width: 100%;">
                                 						<td >*Nombre Sitio: </td>
                                 						<td>
                                 							<input id="nombreSitio" type="text" name="nombreSitio" style="width: 90%" maxlength="128">
                                 						</td>
-
+                                                    
                                 						<td >*Nº Permiso: </td>
                                 						<td>
                                 							<input id="numPermiso" type="number" name="numPermiso" style="width: 90%" maxlength="16">
                                 						</td>
                                 					</tr>
-
+                                                    
                                                     <tr  style="width: 100%;" colspan=2>
                                 						<td >*Estado: </td>
                                 						<td colspan=3>
                                                             <select id="estadoMovilizacion" name="estadoMovilizacion" style="width: 97%;" required>' . $this->comboEstadosMovilizaciones() . '</select>
                                 						</td>
                                 					</tr>
-
+                                                                
     												<tr  style="width: 100%;">
                                 						<td >Fecha Inicio: </td>
                                 						<td>
                                 							<input id="fechaInicio" type="text" name="fechaInicio" style="width: 90%" readonly="readonly">
                                 						</td>
-
+                                                                
                                 						<td >Fecha Fin: </td>
                                 						<td>
                                 							<input id="fechaFin" type="text" name="fechaFin" style="width: 90%" readonly="readonly">
                                 						</td>
                                 					</tr>
-
+                                                                
                                 					<tr>
                                 						<td colspan="2" style="text-align: end;">
                                 							<button id="btnFiltrar">Consultar</button>
@@ -307,6 +291,73 @@ class MovilizacionControlador extends BaseControlador
                                 					</tr>
                                 				</tbody>
                                 			</table>';
+            
+        }else{
+            
+            $datosBusqueda = '<table class="filtro" style="width: 100%;">
+                                                <input type="hidden" id="identificadorUsuario" name="identificadorUsuario" value="'.$_SESSION['usuario'].'" readonly="readonly" >
+                                                <input type="hidden" id="provinciaTecnico" name="provinciaTecnico" value="'.$_SESSION['nombreProvincia'].'" readonly="readonly" >
+                                                    
+                                                <tbody>
+                                                    <tr>
+                                                        <th colspan="2">Consultar permiso de movilización:</th>
+                                                    </tr>
+                                                    
+                                					<tr  style="width: 100%;">
+                                						<td >*Identificación operador: </td>
+                                						<td>
+                                							<input id="identificadorOperador" type="text" name="identificadorOperador" value="" style="width: 90%" maxlength="13">
+                                						</td>
+                                							    
+                                						<td >*Nombre operador: </td>
+                                						<td>
+                                							<input id="nombreOperador" type="text" name="nombreOperador" value="" style="width: 90%" maxlength="128">
+                                						</td>
+                                					</tr>
+                                							    
+                                                    <tr  style="width: 100%;">
+                                						<td >*Nombre Sitio: </td>
+                                						<td>
+                                							<input id="nombreSitio" type="text" name="nombreSitio" style="width: 90%" maxlength="128">
+                                						</td>
+                                							    
+                                						<td >*Nº Permiso: </td>
+                                						<td>
+                                							<input id="numPermiso" type="number" name="numPermiso" style="width: 90%" maxlength="16">
+                                						</td>
+                                					</tr>
+                                							    
+                                                    <tr  style="width: 100%;" colspan=2>
+                                						<td >*Estado: </td>
+                                						<td colspan=3>
+                                                            <select id="estadoMovilizacion" name="estadoMovilizacion" style="width: 97%;" required>' . $this->comboEstadosMovilizaciones() . '</select>
+                                						</td>
+                                					</tr>
+                                                                
+    												<tr  style="width: 100%;">
+                                						<td >Fecha Inicio: </td>
+                                						<td>
+                                							<input id="fechaInicio" type="text" name="fechaInicio" style="width: 90%" readonly="readonly">
+                                						</td>
+                                                                
+                                						<td >Fecha Fin: </td>
+                                						<td>
+                                							<input id="fechaFin" type="text" name="fechaFin" style="width: 90%" readonly="readonly">
+                                						</td>
+                                					</tr>
+                                                                
+                                					<tr>
+                                						<td colspan="2" style="text-align: end;">
+                                							<button id="btnFiltrar">Consultar</button>
+                                						</td>
+                                					</tr>
+                                				</tbody>
+                                			</table>';
+            
+        }
+               
+        $this->panelBusquedaMovilizaciones = $datosBusqueda;
+        
     }
     
     /**
@@ -345,10 +396,17 @@ class MovilizacionControlador extends BaseControlador
      * */
     public function buscarOperadoresOrigen(){
         
+        if($_SESSION['nombreProvincia'] === null){
+            $identificador = $_SESSION['usuario'];
+        }else{
+            $identificador =  $_POST["identificador_operador"];
+            $razonSocial = $_POST["nombre_operador"];
+        }
+        
         $arrayParametros = array('nombre_provincia' =>  $_POST["provincia"],
-                                 'identificador' =>  $_POST["identificador_operador"],
-                                 'razon_social' =>  $_POST["nombre_operador"],
-                                 'area' =>  'SV'
+                                'identificador' =>  $identificador,
+                                'razon_social' =>  $razonSocial??null,
+                                'area' =>  'SV'
         );
         
         $operadores = $this->lNegocioOperadores->obtenerOperadorSitioMovilizacionOrigen($arrayParametros);
@@ -408,22 +466,28 @@ class MovilizacionControlador extends BaseControlador
         $estado = 'EXITO';
         $mensaje = '';
         $contenido = '';
+        $identificadorOperador = "";
+        $identificadorUsuario = "";
+        $provinciaTecnico = "";
         
-        $identificadorUsuario = $_POST["identificadorUsuario"];
-        $provinciaTecnico = $_POST["provinciaTecnico"];
-        $identificadorOperador = $_POST["identificadorOperador"];
-        $nombreOperador = $_POST["nombreOperador"];
         $nombreSitio = $_POST["nombreSitio"];
         $numPermiso = $_POST["numPermiso"];
         $estadoMovilizacion = $_POST["estadoMovilizacion"];
         $fechaInicio = $_POST["fechaInicio"];
-        $fechaFin = $_POST["fechaFin"];
+        $fechaFin = $_POST["fechaFin"];        
         
+        if($_SESSION['nombreProvincia'] === null){            
+            $identificadorOperador = $_SESSION['usuario'];            
+        }else{
+            $identificadorOperador = $_POST['identificadorOperador']; 
+            $identificadorUsuario = $_POST["identificadorUsuario"];
+            $provinciaTecnico = $_POST["provinciaTecnico"];
+        }               
+       
         $arrayParametros = array(
             'identificadorUsuario' => $identificadorUsuario,
             'provinciaTecnico' => $provinciaTecnico,
             'identificador_operador_origen' => $identificadorOperador,
-            'nombre_operador_origen' => $nombreOperador,
             'sitio_origen' => $nombreSitio,
             'numero_permiso' => $numPermiso,
             'estado_movilizacion' => $estadoMovilizacion,
@@ -452,7 +516,12 @@ class MovilizacionControlador extends BaseControlador
                                  'area' =>  'SV'                                 
                                 );
 
-        $operador = $_POST["identificador_operador"];
+        if($_SESSION['nombreProvincia'] === null){
+            $identificador = $_SESSION['usuario'];
+        }else{
+            $identificador =  $_POST["identificador_operador"];
+        }
+        
         $areas = $this->lNegocioAreas->obtenerAreasOperadorMovilizacionOrigen($arrayParametros);
         
         $comboArea = "";
@@ -460,7 +529,7 @@ class MovilizacionControlador extends BaseControlador
         
         foreach ($areas as $item)
         {
-            $comboArea .= '<option value="' . $item->id_area . '" data-nombre="'. $item->nombre_area.'" data-codigo_area="'. $operador.'.'.$item->codigo_area.'">' . $item->nombre_area . '</option>';
+            $comboArea .= '<option value="' . $item->id_area . '" data-nombre="'. $item->nombre_area.'" data-codigo_area="'. $identificador.'.'.$item->codigo_area.'" data-id_producto="'.$item->id_producto.'">' . $item->nombre_area . '-' . $item->nombre_tipo_operacion. '</option>';
         }
         
         echo $comboArea;
@@ -471,19 +540,21 @@ class MovilizacionControlador extends BaseControlador
      * Método para obtener las áreas del sitio de origen del operador
      * */
     public function buscarAreasOperadoresDestino(){
+               
+        $arrayParametros = array('id_sitio' => $_POST["id_sitio_destino"],
+                                  'id_area' => $_POST["id_area_origen"],
+                                  'id_producto_origen' => $_POST["id_producto_origen"]
+                                );
         
-        $consulta = "id_sitio = ".$_POST["id_sitio_destino"]." and id_area not in (".$_POST["id_area_origen"].")";
-        
-        $operador = $_POST["identificador_operador"];
         $codigo = $_POST["codigo_sitio"];
-        $areas = $this->lNegocioAreas->buscarLista($consulta);
+        $areas = $this->lNegocioAreas->obtenerAreasOperadorMovilizacionDestino($arrayParametros);
         
         $comboArea = "";
         $comboArea .= '<option value="">Seleccione....</option>';
         
         foreach ($areas as $item)
         {
-            $comboArea .= '<option value="' . $item->id_area . '" data-nombre="'. $item->nombre_area.'" data-codigo_area="'. $codigo.$item->codigo.$item->secuencial. '">' . $item->nombre_area . '</option>';
+            $comboArea .= '<option value="' . $item->id_area . '" data-nombre="'. $item->nombre_area.'" data-codigo_area="'. $codigo.$item->codigo.$item->secuencial. '">' . $item->nombre_area . '-' . $item->nombre_tipo_operacion . '</option>';
         }
         
         echo $comboArea;
@@ -496,10 +567,12 @@ class MovilizacionControlador extends BaseControlador
      * */
     public function buscarSubtipoProductoAreasOperadoresOrigen(){
         
-        $id_area_origen = $_POST["id_area_origen"];
+        $id_area_destino = $_POST["id_area_destino"];
+        $id_producto_origen = $_POST["id_producto_origen"];
         
         $arrayParametros = array(
-            'id_area_origen' => $id_area_origen,
+            'id_area_destino' => $id_area_destino,
+            'id_producto_origen' => $id_producto_origen,
             'area' => 'SV'
         );
         
@@ -522,12 +595,14 @@ class MovilizacionControlador extends BaseControlador
      * */
     public function buscarProductoAreasOperadoresOrigen(){
         
-        $id_area_origen = $_POST["id_area_origen"];
+        $id_area_destino = $_POST["id_area_destino"];
         $id_subtipo_producto = $_POST["id_subtipo_producto"];
+        $id_producto_origen = $_POST["id_producto_origen"];
         
         $arrayParametros = array(
-            'id_area_origen' => $id_area_origen,
+            'id_area_destino' => $id_area_destino,
             'id_subtipo_producto' => $id_subtipo_producto,
+            'id_producto_origen' => $id_producto_origen,
             'area' => 'SV'
         );
         
@@ -551,37 +626,6 @@ class MovilizacionControlador extends BaseControlador
     public function obtenerCantonParroquiaSitios($idMovilizacion)
     {
         return $this->lNegocioMovilizacion->buscarCantonParroquiaSitios($idMovilizacion);
-    }
-    
-    /**
-     * Combo de unidades para movilizaciones
-     *
-     * @param
-     * $respuesta
-     * @return string
-     */
-    public function comboUnidadesMovilizaciones($opcion = null)
-    {
-        $combo = "";
-        if ($opcion == "Unidad") {
-            $combo .= '<option value="Unidad" selected="selected">Unidad</option>';
-            $combo .= '<option value="Kilogramos">Kilogramos</option>';
-            $combo .= '<option value="Toneladas">Toneladas</option>';
-        } else if ($opcion == "Kilogramos") {
-            $combo .= '<option value="Unidad" >Unidad</option>';
-            $combo .= '<option value="Kilogramos" selected="selected">Kilogramos</option>';
-            $combo .= '<option value="Toneladas">Toneladas</option>';
-        } else if ($opcion == "Toneladas") {
-            $combo .= '<option value="Unidad" >Unidad</option>';
-            $combo .= '<option value="Kilogramos">Kilogramos</option>';
-            $combo .= '<option value="Toneladas" selected="selected">Toneladas</option>';
-        } else {
-            $combo .= '<option value="Unidad">Unidad</option>';
-            $combo .= '<option value="Kilogramos">Kilogramos</option>';
-            $combo .= '<option value="Toneladas">Toneladas</option>';
-        }
-        
-        return $combo;
     }
     
     /**
@@ -622,6 +666,9 @@ class MovilizacionControlador extends BaseControlador
         $anio = date('Y');
         $mes = date('m');
         $dia = date('d');
+        
+        $_POST['id_provincia_emision'] = $_POST['id_provincia_emision']??$_POST['ide_provincia_origen'];
+        $_POST['provincia_emision'] = $_POST['provincia_emision']??$_POST['provincia_origen'];
         
         $this->guardar();
 
@@ -699,5 +746,65 @@ class MovilizacionControlador extends BaseControlador
             echo 'El certificado de movilización ' . $fila['id_movilizacion']. ' - ' . $fila['numero_permiso']. ' cambia de estado a Caducado'."\n";
         }
         echo "\n";
+    }
+    
+    /**
+     * Método para validar la placa del transporte
+     */
+    public function buscarPlacaTransporte(){
+        
+        $validacion = "Exito";
+        $resultado = "";
+        $numero = str_replace('-', '', $_POST['numero']);
+        $clasificacion = 'AntMatriculaLicencia';
+        
+        $arrayParametros = array('numero' => $numero
+            , 'clasificacion' => $clasificacion
+        );
+        
+        $qConsultaWebService = $this->consultarWebService($arrayParametros);
+        
+        if($qConsultaWebService['estado'] === 'error'){
+            $validacion = "Fallo";
+            $resultado = $qConsultaWebService['valores']['Error'];
+        }
+        
+        echo json_encode(array(
+            'validacion' => $validacion,
+            'resultado' => $resultado
+        ));
+        
+    }
+    
+    /**
+     * Método para validar identificacion del conductor
+     */
+    public function buscarIdentificadorConductor(){
+        
+        $validacion = "Exito";
+        $resultado = "";
+        $numero = $_POST['numero'];
+        $clasificacion = 'Cédula';
+        $nombreConductor = "";
+        
+        $arrayParametros = array('numero' => $numero
+                                , 'clasificacion' => $clasificacion
+                                );
+        
+        $qConsultaWebService = $this->consultarWebService($arrayParametros);
+
+        if($qConsultaWebService['estado'] === 'exito'){
+            $nombreConductor = $qConsultaWebService['valores']['Nombre'];
+        }else{
+            $validacion = "Fallo";
+            $resultado = $qConsultaWebService['valores']['Error'];
+        }
+        
+        echo json_encode(array(
+                        'validacion' => $validacion,
+                        'resultado' => $resultado,
+                        'nombreConductor' => $nombreConductor
+                    ));            
+
     }
 }

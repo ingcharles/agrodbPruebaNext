@@ -121,14 +121,23 @@ class OperadoresLogicaNegocio implements IModelo{
 	 * @return array|ResultSet
 	 */
 	public function obtenerOperadorSitioMovilizacionOrigen($arrayParametros){
-		$consulta = "SELECT
-						distinct o.identificador, o.razon_social as razon, s.id_sitio, s.nombre_lugar as sitio, s.provincia, s.codigo_provincia, s.codigo
+		
+	    $consulta = "SELECT
+						DISTINCT 
+                        o.identificador
+                        , o.razon_social as razon
+                        , s.id_sitio
+                        , s.nombre_lugar as sitio
+                        , s.provincia
+                        , s.codigo_provincia
+                        , s.codigo
 					FROM
                     	g_operadores.operadores o
                     	INNER JOIN g_operadores.sitios s ON s.identificador_operador = o.identificador
                     	INNER JOIN g_operadores.areas a ON s.id_sitio = a.id_sitio
                     	INNER JOIN g_operadores.productos_areas_operacion pao ON pao.id_area = a.id_area
                     	INNER JOIN g_operadores.operaciones op ON pao.id_operacion = op.id_operacion
+                        INNER JOIN g_catalogos.tipos_operacion top ON op.id_tipo_operacion = top.id_tipo_operacion
                     	INNER JOIN g_catalogos.productos p ON op.id_producto = p.id_producto
                         INNER JOIN g_catalogos.subtipo_productos sp ON p.id_subtipo_producto = sp.id_subtipo_producto
                         INNER JOIN g_catalogos.tipo_productos tp ON sp.id_tipo_producto = tp.id_tipo_producto
@@ -138,6 +147,8 @@ class OperadoresLogicaNegocio implements IModelo{
 						s.provincia ilike '%" . $arrayParametros['nombre_provincia'] . "%'
 						" . ($arrayParametros['identificador'] != '' ? " and o.identificador ilike '" . $arrayParametros['identificador'] . "%'" : "") . "
                         " . ($arrayParametros['razon_social'] != '' ? " and o.razon_social ilike '%" . $arrayParametros['razon_social'] . "%'" : "") . "
+                        and op.estado = 'registrado'
+                        and top.id_area || top.codigo IN ('SVACO', 'SVFRA', 'SVALM', 'SVPRP', 'SVMIM', 'SVPRO', 'SVVVE')
                         and p.movilizacion = 'SI' 
                         and tp.id_area in ('" . $arrayParametros['area'] . "')
                         and ra.tipo = 'Movilización'
@@ -145,7 +156,6 @@ class OperadoresLogicaNegocio implements IModelo{
 					ORDER BY
 						razon, sitio;";
 
-		// echo $consulta;
 		return $this->modeloOperadores->ejecutarSqlNativo($consulta);
 	}
 
@@ -156,14 +166,23 @@ class OperadoresLogicaNegocio implements IModelo{
 	 * @return array|ResultSet
 	 */
 	public function obtenerOperadorSitioMovilizacionDestino($arrayParametros){
+	    
 		$consulta = "SELECT
-						distinct o.identificador, o.razon_social as razon, s.id_sitio, s.nombre_lugar as sitio, s.provincia, s.codigo_provincia, s.codigo
+						DISTINCT 
+                        o.identificador
+                        , o.razon_social as razon
+                        , s.id_sitio
+                        , s.nombre_lugar as sitio
+                        , s.provincia
+                        , s.codigo_provincia
+                        , s.codigo
 					FROM
                     	g_operadores.operadores o
                     	INNER JOIN g_operadores.sitios s ON s.identificador_operador = o.identificador
                     	INNER JOIN g_operadores.areas a ON s.id_sitio = a.id_sitio
                     	INNER JOIN g_operadores.productos_areas_operacion pao ON pao.id_area = a.id_area
                     	INNER JOIN g_operadores.operaciones op ON pao.id_operacion = op.id_operacion
+                        INNER JOIN g_catalogos.tipos_operacion top ON op.id_tipo_operacion = top.id_tipo_operacion
                     	INNER JOIN g_catalogos.productos p ON op.id_producto = p.id_producto
                         INNER JOIN g_catalogos.subtipo_productos sp ON p.id_subtipo_producto = sp.id_subtipo_producto
                         INNER JOIN g_catalogos.tipo_productos tp ON sp.id_tipo_producto = tp.id_tipo_producto
@@ -173,6 +192,8 @@ class OperadoresLogicaNegocio implements IModelo{
                         " . ($arrayParametros['razon_social'] != '' ? " and o.razon_social ilike '%" . $arrayParametros['razon_social'] . "%'" : "") . "
                         and tp.id_area in ('" . $arrayParametros['area'] . "')
                         " . ($arrayParametros['id_sitio_origen'] != '' ? " and s.id_sitio not in (" . $arrayParametros['id_sitio_origen'] . ")" : "") . "
+                        and op.estado = 'registrado'
+                        and top.id_area || top.codigo IN ('SVPRO', 'SVACO', 'SVTRA', 'SVFRA', 'SVAGE', 'SVCON', 'SVPRP', 'SVVVE', 'SVALM', 'SVMIM')
 					ORDER BY
 						razon, sitio;";
 
