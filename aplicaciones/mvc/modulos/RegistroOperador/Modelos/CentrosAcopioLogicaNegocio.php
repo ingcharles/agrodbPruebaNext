@@ -38,8 +38,7 @@ class CentrosAcopioLogicaNegocio implements IModelo
 	private $lNegocioOperadores = null;
 	private $lNegocioCorreos = null;
 	private $lNegocioToken = null;
-	private $rutaFecha = null;
-	
+	private $rutaFecha  = null;
 	/**
 	 * Constructor
 	 * 

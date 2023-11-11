@@ -222,7 +222,7 @@ FROM
 INNER JOIN f_inspeccion.bpaf01_detalle ibpa ON ibpar.id = ibpa.id_padre
 WHERE
 id_solicitud =  $P{idSolicitud}
-and estado_registro = 'Activo' and tipo_nivel !='1' and tipo_nivel !='2' and cumple !='A' order by ibpa.id]]>
+and estado_registro = 'Activo' and tipo_nivel !='1' and tipo_nivel !='2' and cumple !='A' and no_aplica='Si'order by ibpa.id]]>
 		</queryString>
 		<field name="id" class="java.lang.Integer">
 			<property name="com.jaspersoft.studio.field.label" value="id"/>
