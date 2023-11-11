@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="0" uuid="0b10485c-c993-4f27-9cd0-7cb622891901">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="agrodbDesarrollo"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="local"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
@@ -82,7 +82,7 @@
 	dm.subtipo_producto,
 	dm.id_producto,
 	dm.producto,
-	dm.unidad,
+	uf.nombre_unidad_fitosanitaria as unidad,
 	dm.cantidad,
 	(
 		select 
@@ -99,6 +99,7 @@
 			1
 	)
 FROM g_movilizacion_vegetal.detalle_movilizacion dm
+INNER JOIN g_catalogos.unidades_fitosanitarias uf ON uf.id_unidad_fitosanitaria = dm.unidad
 WHERE dm.id_movilizacion = $P{id_movilizacion}]]>
 		</queryString>
 		<field name="id_detalle_movilizacion" class="java.lang.Integer">
@@ -162,7 +163,7 @@ WHERE dm.id_movilizacion = $P{id_movilizacion}]]>
 	UPPER (m.tipo_solicitud) as tipo_solicitud,
 	m.fecha_creacion,
 	m.numero_permiso,
-	m.provincia_emision || ' - ' || m.oficina_emision as lugar_emision,
+	COALESCE(m.provincia_emision || ' - ' || m.oficina_emision, m.provincia_emision) as lugar_emision,
 	m.fecha_inicio_movilizacion,
 	m.hora_inicio_movilizacion,
 	m.fecha_fin_movilizacion ,

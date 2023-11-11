@@ -3,8 +3,8 @@
 class Constantes {
     
 	const NOMBRE_INSTITUCION = 'AGENCIA DE REGULACIÓN Y CONTROL FITO Y ZOOSANITARIO - AGROCALIDAD';
-	const RUTA_SERVIDOR_OPT = '/var/www/html';
-	const RUTA_APLICACION = 'agrodbPrueba';
+	const RUTA_SERVIDOR_OPT = 'C:/xampp/htdocs';//'/var/www/html';
+	const RUTA_APLICACION = 'agrodbPruebaNext';
 	const RUTA_DOMINIO = 'https://pruebasguia.agrocalidad.gob.ec'; // 1 pruebas http://181.112.155.173 // 2 produccion https://guia.agrocalidad.gob.ec
 	const SCRIPT_MAPS = '<script src="https://maps.googleapis.com/maps/api/js"></script>';
 	const IDENTIFICADOR_RECAUDADOR = '1722551049';//Magdalena Paucar
