@@ -95,7 +95,11 @@ class SolicitudesControlador extends BaseControlador
         $this->lNegocioTipoProductos = new TipoProductosLogicaNegocio();
         $this->lNegocioSubtipoProductos = new SubtipoProductosLogicaNegocio();
         $this->lNegocioProductos = new ProductosLogicaNegocio();
-        $this->rutaFecha = date('Y').'/'.date('m').'/'.date('d');
+
+        $this->lNegocioGruposSolicitudes = new GruposSolicitudesLogicaNegocio();
+        $this->lNegocioInspeccion = new InspeccionLogicaNegocio();
+        
+        $this->rutaFecha = date('Y') . '/' . date('m') . '/' . date('d');
         $this->auditoria = array();
         
         set_exception_handler(array(
@@ -1168,4 +1172,55 @@ class SolicitudesControlador extends BaseControlador
            Mensajes::fallo($resultado['mensaje']);
        }
    }
+   
+    /**
+    * Funcion de proceso de generación de checklist en inspecciones de aplicativo móvil
+    */
+    public function paGenerarChecklistAplicativoMovil()
+    {
+
+        $fecha = date("Y-m-d h:m:s");
+        $estadoChecklist = "generado";
+
+        echo "\n" . 'Proceso Automático de solicitudes ' . $fecha . "\n" . "\n";
+
+        echo "\n" . 'Inicio generación de checklist inspección' . "\n" . "\n";
+
+        $solicitudes = $this->lNegocioSolicitudes->obtenerSolicitudesPorGenerarChecklist();
+
+        foreach ($solicitudes as $fila) {
+
+            // Se genera el archivo .pdf del checklist
+            $idSolicitud = $fila['id_solicitud'];
+            $nombreArchivo = md5(rand() . $idSolicitud);
+            $rutaChecklist = $this->lNegocioSolicitudes->generarChecklistInspeccionBpa($idSolicitud, $nombreArchivo);
+
+            $arrayActualizarRutaChecklist = array(
+                'id_solicitud' => $idSolicitud,
+                'ruta_checklist' => $rutaChecklist,
+                'estado_checklist' => $estadoChecklist
+            );
+
+            $this->lNegocioSolicitudes->guardar($arrayActualizarRutaChecklist);
+
+
+            $arrayActualizarRutaChecklist = array(
+                'id_operador_tipo_operacion' => $fila['id_operador_tipo_operacion'],
+                'estado' => 'Técnico'
+            );
+
+            $qInspeccion = $this->lNegocioGruposSolicitudes->obtenerMaximoInspeccionGrupoSolicitud($arrayActualizarRutaChecklist);
+            $idInspeccion = $qInspeccion->current()->id_inspeccion;
+
+            if (isset($idInspeccion)) {
+                $this->lNegocioInspeccion->guardar(array('id_inspeccion' => $idInspeccion, 'ruta_archivo' => $rutaChecklist));
+                $this->lNegocioSolicitudes->enviarCorreoInspeccionBpa($idSolicitud);
+            }
+
+
+            echo 'Se generó el checklist de la solicitud BPA ' . $fila['id_solicitud'] . "\n";
+        }
+
+        echo "\n" . 'Fin de generación de checklist inspección' . "\n" . "\n";
+    }
 }

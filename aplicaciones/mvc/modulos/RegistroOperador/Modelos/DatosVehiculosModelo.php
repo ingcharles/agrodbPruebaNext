@@ -1,12 +1,12 @@
 <?php
  /**
- * Modelo CodigosPoaModelo
+ * Modelo DatosVehiculosModelo
  *
- * Este archivo se complementa con el archivo   CodigosPoaLogicaNegocio.
+ * Este archivo se complementa con el archivo   DatosVehiculosLogicaNegocio.
  *
  * @author  AGROCALIDAD
- * @date    2022-01-10
- * @uses    CodigosPoaModelo
+ * @date    2022-04-05
+ * @uses    DatosVehiculosModelo
  * @package RegistroOperador
  * @subpackage Modelos
  */
@@ -172,6 +172,27 @@ class DatosVehiculosModelo extends ModeloBase
 		* servicio que presta el vehiculo
 		*/
 		protected $servicio;
+		/**
+		* @var String
+		* Campo requerido
+		* Campo visible en el formulario
+		* Campo que almacena el identificador del tecnico que realiza la revision
+		*/
+		protected $identificadorRevisor;
+		/**
+		* @var String
+		* Campo requerido
+		* Campo visible en el formulario
+		* Campo que almacena el origen de la inspeccion (GUIA, aplicativoMovil)
+		*/
+		protected $origenInspeccion;
+		/**
+		* @var String
+		* Campo requerido
+		* Campo visible en el formulario
+		* Campo que identifica si debe generarse el checklist (generar, generado)
+		*/
+		protected $estadoChecklist;
 
 	/**
 	* Campos del formulario 
@@ -201,7 +222,7 @@ class DatosVehiculosModelo extends ModeloBase
 	/**
 	*Secuencia
 */
-		 private $secuencial = 'g_operadores"."DatosVehiculos_id_dato_vehiculo_seq'; 
+		 private $secuencial = 'g_operadores"."datos_vehiculos_id_dato_vehiculo_seq'; 
 
 
 
@@ -845,6 +866,78 @@ class DatosVehiculosModelo extends ModeloBase
 	public function getServicio()
 	{
 		return $this->servicio;
+	}
+
+	/**
+	* Set identificadorRevisor
+	*
+	*Campo que almacena el identificador del tecnico que realiza la revision
+	*
+	* @parámetro String $identificadorRevisor
+	* @return IdentificadorRevisor
+	*/
+	public function setIdentificadorRevisor($identificadorRevisor)
+	{
+	  $this->identificadorRevisor = (String) $identificadorRevisor;
+	    return $this;
+	}
+
+	/**
+	* Get identificadorRevisor
+	*
+	* @return null|String
+	*/
+	public function getIdentificadorRevisor()
+	{
+		return $this->identificadorRevisor;
+	}
+
+	/**
+	* Set origenInspeccion
+	*
+	*Campo que almacena el origen de la inspeccion (GUIA, aplicativoMovil)
+	*
+	* @parámetro String $origenInspeccion
+	* @return OrigenInspeccion
+	*/
+	public function setOrigenInspeccion($origenInspeccion)
+	{
+	  $this->origenInspeccion = (String) $origenInspeccion;
+	    return $this;
+	}
+
+	/**
+	* Get origenInspeccion
+	*
+	* @return null|String
+	*/
+	public function getOrigenInspeccion()
+	{
+		return $this->origenInspeccion;
+	}
+
+	/**
+	* Set estadoChecklist
+	*
+	*Campo que identifica si debe generarse el checklist (generar, generado)
+	*
+	* @parámetro String $estadoChecklist
+	* @return EstadoChecklist
+	*/
+	public function setEstadoChecklist($estadoChecklist)
+	{
+	  $this->estadoChecklist = (String) $estadoChecklist;
+	    return $this;
+	}
+
+	/**
+	* Get estadoChecklist
+	*
+	* @return null|String
+	*/
+	public function getEstadoChecklist()
+	{
+		return $this->estadoChecklist;
 	}
 
 	/**

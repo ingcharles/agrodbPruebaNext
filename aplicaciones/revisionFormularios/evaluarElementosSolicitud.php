@@ -991,6 +991,7 @@ try{
 														$cr->guardarDocumentoOperador($conexion, $solicitud, $idOperadorTipoOperacion, $rutaArchivo, 'registroOperadorLeche', $secuencial, $idOperador, 'Certificación de registro de operador de leche');
 														
 														$cr->inactivarCentroAcopioXAreaXIdOperadorTipoOperacion($conexion, $identificadorArea, $idOperadorTipoOperacion);
+														$cr->actualizarCentrosAcopioInspeccion($conexion, $idOperadorTipoOperacion, 'sistemaGUIA', 'generado');
 														
 														//Tabla de firmas físicas
 														$firmaResponsable = pg_fetch_assoc($cc->obtenerFirmasResponsablePorProvincia($conexion, $provinciaSitio, 'AI'));
@@ -1042,6 +1043,8 @@ try{
 														$cr->guardarDocumentoOperador($conexion, $solicitud, $idOperadorTipoOperacion, $rutaArchivo, 'registroOperadorLecheVehiculo', $secuencial, $idOperador, 'Certificación de registro de operador de leche vehículo');
 													
 														$cr->inactivarVehiculoRecolectorXAreaXIdOperadorTipoOperacion($conexion, $identificadorArea, $idOperadorTipoOperacion);
+														
+														$cr->actualizarDatosVehiculoInspeccion($conexion, $idOperadorTipoOperacion, 'sistemaGUIA', 'generado');
 														
 														//Tabla de firmas físicas
 														$firmaResponsable = pg_fetch_assoc($cc->obtenerFirmasResponsablePorProvincia($conexion, $provinciaSitio, 'AI'));

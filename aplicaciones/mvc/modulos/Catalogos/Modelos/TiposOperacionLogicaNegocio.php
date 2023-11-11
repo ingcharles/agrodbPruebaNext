@@ -122,4 +122,23 @@ class TiposOperacionLogicaNegocio implements IModelo
         
         return $operacion;
     }
+
+    public function buscarTipoOperacionPorIdOperacion($arrayParametros)
+    {
+
+        $consulta = "SELECT
+                        top.codigo,
+                        top.id_tipo_operacion,
+                        top.id_area,
+                        top.nombre
+                     FROM
+                        g_operadores.operaciones op,
+                        g_catalogos.tipos_operacion top
+                     WHERE
+                        op.id_tipo_operacion = top.id_tipo_operacion
+                        and op.id_operacion = " . $arrayParametros['id_operacion'] . ";";
+
+        return $this->modeloTiposOperacion->ejecutarSqlNativo($consulta);
+    }
+
 }
