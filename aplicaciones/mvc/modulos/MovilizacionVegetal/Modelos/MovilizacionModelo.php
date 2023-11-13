@@ -409,6 +409,22 @@ class MovilizacionModelo extends ModeloBase
     * Código único de identificación del área de destino
     */
     protected $codigoAreaDestino;
+    
+    /**
+     * @var String
+     * Campo requerido
+     * Campo visible en el formulario
+     * Direción sitio origen
+     */
+    protected $direccionSitioOrigen;
+    
+    /**
+     * @var String
+     * Campo requerido
+     * Campo visible en el formulario
+     * Direción sitio destino
+     */
+    protected $direccionSitioDestino;
 
     /**
      * Campos del formulario
@@ -436,6 +452,38 @@ class MovilizacionModelo extends ModeloBase
      * Secuencia
      */
     private $secuencial = 'g_movilizacion_vegetal"."movilizacion_id_movilizacion_seq';
+
+    /**
+     * @return string
+     */
+    public function getDireccionSitioOrigen()
+    {
+        return $this->direccionSitioOrigen;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDireccionSitioDestino()
+    {
+        return $this->direccionSitioDestino;
+    }
+
+    /**
+     * @param string $direccionSitioOrigen
+     */
+    public function setDireccionSitioOrigen($direccionSitioOrigen)
+    {
+        $this->direccionSitioOrigen = $direccionSitioOrigen;
+    }
+
+    /**
+     * @param string $direccionSitioDestino
+     */
+    public function setDireccionSitioDestino($direccionSitioDestino)
+    {
+        $this->direccionSitioDestino = $direccionSitioDestino;
+    }
 
     /**
      * Constructor

@@ -83,21 +83,36 @@
 		<div data-linea="10">
 			<label id="lid_sitio_origen">Código de Sitio: </label> 
 				<?php echo $this->modeloMovilizacion->getCodigoSitioOrigen(); ?>
+		</div>		
+				
+		<div data-linea="12">
+			<label id="lid_area_origen">Área: </label> 
+				<?php echo $this->modeloMovilizacion->getAreaOrigen(); ?>
 		</div>
 		
-		<div data-linea="11">
+		<div data-linea="12">
+			<label id="lid_area_origen">Código de Área: </label> 
+				<?php echo $this->modeloMovilizacion->getCodigoAreaOrigen(); ?>
+		</div>
+		
+		<div data-linea="13">
 			<label for="id_provincia_origen">Provincia:</label>
     			<?php echo $this->modeloMovilizacion->getProvinciaOrigen(); ?>
 		</div>
 		
-		<div data-linea="11">
+		<div data-linea="13">
 			<label for="canton_origen">Cantón:</label>
     			<?php echo $this->modeloMovilizacion->getCantonOrigen(); ?>
 		</div>
 		
-		<div data-linea="12">
+		<div data-linea="14">
 			<label for="parroquia_origen">Parroquia:</label>
     			<?php echo $this->modeloMovilizacion->getParroquiaOrigen(); ?>
+		</div>
+		
+		<div data-linea="15">
+			<label id="ldireccion_sitio_origen">Dirección: </label> 
+				<?php echo $this->modeloMovilizacion->getDireccionSitioOrigen(); ?>
 		</div>
 		
 	</fieldset>
@@ -105,39 +120,54 @@
 	<fieldset>
 		<legend>Datos Destino</legend>
 		
-		<div data-linea="13">
+		<div data-linea="15">
 			<label for="identificador_operador_destino">Identificador Operador:	</label> 
 				<?php echo $this->modeloMovilizacion->getIdentificadorOperadorDestino(); ?>
 		</div>
 
-		<div data-linea="14">
+		<div data-linea="16">
 			<label for="nombre_operador_destino">Nombre Operador: </label>
 				<?php echo $this->modeloMovilizacion->getNombreOperadorDestino(); ?>
 		</div>
 		
-		<div data-linea="15">
+		<div data-linea="17">
 			<label id="lid_sitio_destino">Sitio: </label>
 				<?php echo $this->modeloMovilizacion->getSitioDestino(); ?>
 		</div>
 		
-		<div data-linea="15">
+		<div data-linea="17">
 			<label id="lid_sitio_destino">Código de Sitio: </label>
 				<?php echo $this->modeloMovilizacion->getCodigoSitioDestino(); ?>
 		</div>
+				
+		<div data-linea="19">
+			<label id="lid_sitio_destino">Área: </label>
+				<?php echo $this->modeloMovilizacion->getAreaDestino(); ?>
+		</div>
 		
-		<div data-linea="16">
+		<div data-linea="19">
+			<label id="lid_sitio_destino">Código de Área: </label>
+				<?php echo $this->modeloMovilizacion->getCodigoAreaDestino(); ?>
+		</div>
+		
+		<div data-linea="20">
 			<label for="id_provincia_destino">Provincia: </label> 				
 				<?php echo $this->modeloMovilizacion->getProvinciaDestino(); ?>
 		</div>
 
-		<div data-linea="16">
+		<div data-linea="20">
 			<label for="canton_destino">Cantón: </label> 				
 				<?php echo $this->modeloMovilizacion->getCantonDestino(); ?>
 		</div>
 		
-		<div data-linea="17">
+		<div data-linea="21">
 			<label for="parroquia_destino">Parroquia: </label> 				
 				<?php echo $this->modeloMovilizacion->getParroquiaDestino(); ?>
+		</div>
+		
+		<div data-linea="22">
+			<label id="ldireccion_sitio_destino">Dirección: </label> 
+				<?php echo $this->modeloMovilizacion->getDireccionSitioDestino(); ?>
 		</div>
 
 	</fieldset>
@@ -145,27 +175,37 @@
 	<fieldset>
 		<legend>Datos de Movilización</legend>
 
-		<div data-linea="18">
+		<div data-linea="22">
 			<label for="medio_transporte">Medio Transporte: </label> 
     			<?php echo $this->modeloMovilizacion->getMedioTransporte(); ?>
 		</div>
 
-		<div data-linea="18">
+		<div data-linea="22">
 			<label for="placa_transporte">Placa Transporte: </label> 
 				<?php echo $this->modeloMovilizacion->getPlacaTransporte(); ?>
 		</div>
 
-		<div data-linea="19">
+		<div data-linea="23">
 			<label for="identificador_conductor">Identificador Conductor: </label>
 				<?php echo $this->modeloMovilizacion->getIdentificadorConductor(); ?>
 		</div>
 
-		<div data-linea="19">
+		<div data-linea="23">
 			<label for="nombre_conductor">Nombre Conductor: </label> 
 				<?php echo $this->modeloMovilizacion->getNombreConductor(); ?>
+		</div>
+		
+		<div data-linea="24">
+			<label for="fecha_movilizacion">Fecha: </label> 
+				<?php echo $this->modeloMovilizacion->getFechaInicioMovilizacion(); ?>
+		</div>
+		
+		<div data-linea="24">
+			<label for="hora_movilizacion">Hora: </label> 
+				<?php echo $this->modeloMovilizacion->getHoraInicioMovilizacion(); ?>
 		</div>		
 
-		<div data-linea="20">
+		<div data-linea="25">
 			<label for="observacion_transporte">Observación: </label> 
 				<?php echo $this->modeloMovilizacion->getObservacionTransporte(); ?>
 		</div>
@@ -175,7 +215,7 @@
 	<fieldset>
 		<legend>Detalle de Productos a Movilizar</legend>
     	
-    	<div data-linea="22">
+    	<div data-linea="26">
     		<div id="tablaMovilizaciones" name="tablaMovilizaciones"> </div>
 		</div>
 		
@@ -372,7 +412,6 @@
 		<div data-linea="12">
 			<label for="medio_transporte">Medio Transporte: </label> 
 			<select id="medio_transporte" name="medio_transporte" required>
-				<option value="">Seleccionar....</option>
 				<option value="Terrestre">Terrestre</option>
             </select>
 		</div>
@@ -1472,6 +1511,7 @@ var combo = "<option>Seleccione....</option>";
 
 	$("#placa_transporte").change(function () {
         
+        $("#estado").html("").removeClass('alerta');
         var numero = $("#placa_transporte").val();
         
         if (numero !== "") {
@@ -1492,6 +1532,7 @@ var combo = "<option>Seleccione....</option>";
 
 	$("#identificador_conductor").change(function () {
         
+        $("#estado").html("").removeClass('alerta');
         var numero = $("#identificador_conductor").val();
         
         if (numero !== "") {
@@ -1501,6 +1542,7 @@ var combo = "<option>Seleccione....</option>";
 			},
                 function (data) {
                     if (data.validacion === 'Fallo') {
+                    	$("#nombre_conductor").val("");
                     	$("#identificador_conductor").val("");
                         mostrarMensaje(data.resultado, "FALLO");
                     } else {             
@@ -1508,6 +1550,7 @@ var combo = "<option>Seleccione....</option>";
                     }
                 }, 'json');
         }else{
+        	$("#nombre_conductor").val("");
         	("#estado").html("Por favor revise los campos obligatorios.").addClass("alerta");
         }
     });

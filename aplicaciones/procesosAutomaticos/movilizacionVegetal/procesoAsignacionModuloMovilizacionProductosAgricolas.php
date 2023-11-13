@@ -4,7 +4,7 @@ require_once '../../../clases/Conexion.php';
 require_once '../../../clases/ControladorUsuarios.php';
 require_once '../../../clases/ControladorMonitoreo.php';
 require_once '../../../clases/ControladorAplicaciones.php';
-require_once '../../../clases/ControladorInspeccionFitosanitaria.php';
+require_once '../../../clases/ControladorMovilizacionVegetal.php';
 require_once '../../../clases/ControladorGestionAplicacionesPerfiles.php';
 
 if($_SERVER['REMOTE_ADDR'] == ''){

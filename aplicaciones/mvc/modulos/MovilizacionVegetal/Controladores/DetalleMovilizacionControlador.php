@@ -119,7 +119,7 @@ class DetalleMovilizacionControlador extends BaseControlador
         $this->listaDetalles = '<table style="width: 100%;">
                                         <thead>
                                             <tr>
-                                                <th>NºReg</th>
+                                                <th>Nº Reg</th>
                                                 <th>Origen</th>
                                                 <th>Destino</th>
                                                 <th>Subtipo Producto</th>
@@ -140,8 +140,8 @@ class DetalleMovilizacionControlador extends BaseControlador
             $this->listaDetalles .=
             '<tr>
                         <td>' . $i++. '</td>
-                        <td>' . ($fila['area_origen'] != '' ? $fila['area_origen'] : ''). '</td>
-                        <td>' . ($fila['area_destino'] != '' ? $fila['area_destino'] : '') . '</td>
+                        <td>' . ($fila['area_origen'] != '' ? $fila['sitio_origen'] . '/' . $fila['area_origen'] : ''). '</td>
+                        <td>' . ($fila['area_destino'] != '' ? $fila['sitio_destino'] . '/' . $fila['area_destino'] : '') . '</td>
                         <td>' . ($fila['subtipo_producto'] != '' ? $fila['subtipo_producto'] : ''). '</td>
                         <td>' . ($fila['producto'] != '' ? $fila['producto'] : '') . '</td>
                         <td>' . ($fila['cantidad'] != '' ? $fila['cantidad'] : '') . '</td>

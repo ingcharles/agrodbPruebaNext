@@ -112,8 +112,11 @@ class DetalleMovilizacionLogicaNegocio implements IModelo
 	{
 	    $consulta = "SELECT
                     	dm.*
+                        , m.sitio_origen
+                        , m.sitio_destino
                      FROM
-                        g_movilizacion_vegetal.detalle_movilizacion dm
+                        g_movilizacion_vegetal.movilizacion m
+                        INNER JOIN g_movilizacion_vegetal.detalle_movilizacion dm ON dm.id_movilizacion = m.id_movilizacion
                      WHERE
                     	dm.id_movilizacion = ". $idMovilizacion .";";
 	    

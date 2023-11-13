@@ -184,6 +184,9 @@ class MovilizacionControlador extends BaseControlador
         $this->modeloMovilizacion->setCantonDestino($sitio['canton_destino']);
         $this->modeloMovilizacion->setParroquiaDestino($sitio['parroquia_destino']);
         
+        $this->modeloMovilizacion->setDireccionSitioOrigen($sitio['direccion_sitio_origen']);
+        $this->modeloMovilizacion->setDireccionSitioDestino($sitio['direccion_sitio_destino']);
+        
         require APP . 'MovilizacionVegetal/vistas/formularioMovilizacionVista.php';
     }
 

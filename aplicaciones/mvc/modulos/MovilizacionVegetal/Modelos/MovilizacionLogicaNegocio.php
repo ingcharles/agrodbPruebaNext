@@ -277,7 +277,9 @@ class MovilizacionLogicaNegocio implements IModelo
                         	so.canton canton_origen, 
             				so.parroquia parroquia_origen,                            
             				sd.canton canton_destino, 
-            				sd.parroquia parroquia_destino
+            				sd.parroquia parroquia_destino,
+                            so.direccion direccion_sitio_origen,
+                            sd.direccion direccion_sitio_destino
                         FROM
                         	g_movilizacion_vegetal.movilizacion m
                             INNER JOIN g_operadores.sitios so ON m.id_sitio_origen = so.id_sitio
@@ -291,7 +293,9 @@ class MovilizacionLogicaNegocio implements IModelo
 	    $datosSitio = array(    'canton_origen' => $fila->canton_origen,
 	                            'parroquia_origen' => $fila->parroquia_origen,
                     	        'canton_destino' => $fila->canton_destino,
-                    	        'parroquia_destino' => $fila->parroquia_destino
+                    	        'parroquia_destino' => $fila->parroquia_destino,
+	                            'direccion_sitio_origen' => $fila->direccion_sitio_origen,
+	                            'direccion_sitio_destino' => $fila->direccion_sitio_destino
                     	    );
 	    
 	    return $datosSitio;

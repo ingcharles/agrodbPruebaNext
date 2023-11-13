@@ -75,9 +75,9 @@
     distinct dm.id_detalle_movilizacion,
 	dm.id_movilizacion,
 	dm.id_area_origen,
-	dm.area_origen,
+	dma.sitio_origen || '/' || dm.area_origen as area_origen,
 	dm.id_area_destino,
-	dm.area_destino,
+	dma.sitio_destino || '/' || dm.area_destino as area_destino,
 	dm.id_subtipo_producto,
 	dm.subtipo_producto,
 	dm.id_producto,
@@ -197,7 +197,7 @@ WHERE dm.id_movilizacion = $P{id_movilizacion}]]>
 	(SELECT case p.codificacion_perfil 
 		when 'PFL_USUAR_INT' then (SELECT upper((rsv.nombre::text || ' '::text) || rsv.apellido::text)  FROM g_uath.ficha_empleado rsv WHERE m.identificador = rsv.identificador )
 		when 'PFL_USUAR_CIV_PR' then (SELECT upper((rsv.nombre::text || ' '::text) || rsv.apellido::text)  FROM g_uath.ficha_empleado rsv WHERE m.identificador = rsv.identificador )
-		when 'PFL_USUAR_EXT' then  (SELECT UPPER(( oa.nombre_representante::TEXT||' '::TEXT) || oa.apellido_representante::TEXT ) FROM g_operadores.operadores oa WHERE m.identificador = oa.identificador   ) end as nombre_responsable
+		when 'PFL_USUAR_EXT' then  (SELECT UPPER(( case when oa.razon_social = '' then oa.nombre_representante ||' '|| oa.apellido_representante else oa.razon_social end)) FROM g_operadores.operadores oa WHERE m.identificador = oa.identificador   ) end as nombre_responsable
 		FROM g_usuario.perfiles p, g_usuario.usuarios_perfiles up
 		WHERE p.id_perfil=up.id_perfil and p.codificacion_perfil in ('PFL_USUAR_INT','PFL_USUAR_EXT', 'PFL_USUAR_CIV_PR') and up.identificador=m.identificador limit 1), 
 	(SELECT
@@ -361,7 +361,7 @@ WHERE
 	<field name="nombre_responsable" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="nombre_responsable"/>
 	</field>
-	<field name="cantidad_total" class="java.lang.Long">
+	<field name="cantidad_total" class="java.lang.Double">
 		<property name="com.jaspersoft.studio.field.label" value="cantidad_total"/>
 	</field>
 	<field name="productos" class="java.lang.String">
