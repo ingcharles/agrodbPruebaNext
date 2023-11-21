@@ -8914,32 +8914,99 @@ public function abrirOperacionRevision ($conexion, $idOperacion){
 		return $res;
 	}
 	
-	public function actualizarCentrosAcopioInspeccion($conexion, $idOperadorTipoOperacion, $origenInspeccion, $estadoChecklist){
+	public function obtenerDatosPorOperacionGestionOperadores($conexion, $identificador, $tipo_operacion,$area) {
+ 	
+		set_time_limit (120);
+
+		$cedula= ("'".$identificador."'"); 
+		$res = $conexion->ejecutarConsulta("select * from g_operadores.fs_retorna_areas_productos_by_identificador_operador($tipo_operacion,$cedula)");
+	   
+		return pg_fetch_assoc($res);
+   }
+   
+   	public function actulizarEstadoAuditoriaOperacionesBanano($conexion, $identificador, $id, $estado){
 	    
-	    $consulta = "UPDATE
-                        g_operadores.centros_acopio
-                    SET
-                        origen_inspeccion = '" . $origenInspeccion . "'
-                        , estado_checklist = '" . $estadoChecklist . "'
-                    WHERE
-                        id_operador_tipo_operacion = '" . $idOperadorTipoOperacion . "'
-                        and estado_centro_acopio = 'activo' RETURNING id_centro_acopio;";
+	    $consulta = "UPDATE public.auditoria_operaciones_banano SET estado_registro = '$estado' WHERE identificador = ".$identificador." and id = '$id' and estado_registro = ".$estado." ;";
 	    
 	    $res = $conexion->ejecutarConsulta($consulta);
 	    
 	    return $res;
 	}
-	
-	public function actualizarDatosVehiculoInspeccion($conexion, $idOperadorTipoOperacion, $origenInspeccion, $estadoChecklist){
+
+	public function  actualizarSitioOperadorBanano($conexion, $valores,$arrayParametros){
+        
+		$consulta ="with t2  (nombre_sitio,superficie_total,
+				direccion, telefono, latitud, longitud,codigo_hacienda)as(values " . $valores . "))
+				UPDATE g_operadores.sitios as t1
+						 SET 
+							 nombre_lugar=t2.nombre_sitio,
+							 superficie_total=t2.superficie_total::double precision,
+							 direccion=t2.direccion, 
+							 telefono=t2.telefono, 
+							 latitud=t2.latitud, 
+							 longitud=t2.longitud
+				FROM t2
+				JOIN g_operadores.areas ar ON ar.codigo_transaccional = t2.codigo_hacienda
+				WHERE t1.id_sitio = ar.id_sitio and t1.identificador_operador = '".$arrayParametros['identificador']."'
+				and ar.tipo_area ilike('%".$arrayParametros['tipo_area']."%') and ar.codigo_transaccional = '".$arrayParametros['codigo_hacienda']."';";
+
+		
+		 
+		 $res = $conexion->ejecutarConsulta($consulta);
+		 return $res;
+	 }
+ 
+	 public function actualizarAreaOperadorBanano($conexion,$arrayParametrosArea, $tipo_area,$codigoArea){
+       
+		$consulta ="UPDATE g_operadores.areas
+				SET  nombre_area='".$arrayParametrosArea['nombre_area']."',  superficie_utilizada='".$arrayParametrosArea['superficie_utilizada']."'
+				WHERE id_area =". $codigoArea.";";
+		 
+		 $res = $conexion->ejecutarConsulta($consulta);
+		 return $res;
+	 }
+
+	 public function bucarSitioPorAreaNombreIdentificador($conexion, $identificador, $nombre, $superficie,$codigoTransaccion,$tipoArea){
 	    
-	    $consulta = "UPDATE
-                        g_operadores.datos_vehiculos
-                    SET
-                        origen_inspeccion = '" . $origenInspeccion . "'
-                        , estado_checklist = '" . $estadoChecklist . "'
-                    WHERE
-                        id_operador_tipo_operacion = '" . $idOperadorTipoOperacion . "'
-                        and estado_dato_vehiculo = 'activo' RETURNING id_dato_vehiculo;";
+		$consulta = "SELECT  
+					sit.id_sitio, ar.id_area,ar.codigo_transaccional, 
+					sit.identificador_operador 
+					FROM g_operadores.areas ar
+					Left JOIN g_operadores.sitios sit
+					ON ar.id_sitio = sit.id_sitio					
+					WHERE sit.identificador_operador='$identificador' AND sit.nombre_lugar = '$nombre' 
+					AND sit.superficie_total = '$superficie' AND ar.codigo_transaccional = '$codigoTransaccion' AND ar.tipo_area ilike ('%$tipoArea%') ;";
+
+
+	    $res = $conexion->ejecutarConsulta($consulta);
+	    
+	    return $res;
+	}
+
+	public function obtenerOperacionesBananoPorAreaAuditoria($conexion){
+	    
+	    $consulta = "select identificador,nombre_sitio,superficie_total, direccion, telefono, latitud, longitud,superficie_utilizada, nombre_area,tipo_area,tipo_operacion, producto,codigo_hacienda
+		
+		from public.operaciones_banano
+		except
+		select identificador,nombre_sitio,superficie_total, direccion, telefono, latitud, longitud,superficie_utilizada, nombre_area,tipo_area,tipo_operacion, producto,codigo_hacienda
+	
+		from public.auditoria_operaciones_banano ;";
+	    
+	    $res = $conexion->ejecutarConsulta($consulta);
+	    
+	    return $res;
+	}
+
+	public function obtenerOperacionesBananoPorAreaPorId($conexion,$arrayParametros){
+	    
+	    $consulta = "SELECT * FROM public.operaciones_banano WHERE 
+		 	
+					 identificador =  '".$arrayParametros['identificador']."'
+					and tipo_area =  '".$arrayParametros['tipo_area']."'
+					and tipo_operacion =  '".$arrayParametros['tipo_operacion']."'
+					and producto =  '".$arrayParametros['producto']."'
+					and codigo_hacienda =   '".$arrayParametros['codigo_hacienda']."';";
 	    
 	    $res = $conexion->ejecutarConsulta($consulta);
 	    
@@ -9256,6 +9323,38 @@ public function abrirOperacionRevision ($conexion, $idOperacion){
 						and o.estado = '$estado'
 						and o.id_operacion in (SELECT id_operacion FROM g_operadores.operaciones_organico oo WHERE oo.id_operacion = o.id_operacion);";
 																																
+	    $res = $conexion->ejecutarConsulta($consulta);
+	    
+	    return $res;
+	}
+
+	public function actualizarCentrosAcopioInspeccion($conexion, $idOperadorTipoOperacion, $origenInspeccion, $estadoChecklist){
+	    
+	    $consulta = "UPDATE
+                        g_operadores.centros_acopio
+                    SET
+                        origen_inspeccion = '" . $origenInspeccion . "'
+                        , estado_checklist = '" . $estadoChecklist . "'
+                    WHERE
+                        id_operador_tipo_operacion = '" . $idOperadorTipoOperacion . "'
+                        and estado_centro_acopio = 'activo' RETURNING id_centro_acopio;";
+	    
+	    $res = $conexion->ejecutarConsulta($consulta);
+	    
+	    return $res;
+	}
+	
+	public function actualizarDatosVehiculoInspeccion($conexion, $idOperadorTipoOperacion, $origenInspeccion, $estadoChecklist){
+	    
+	    $consulta = "UPDATE
+                        g_operadores.datos_vehiculos
+                    SET
+                        origen_inspeccion = '" . $origenInspeccion . "'
+                        , estado_checklist = '" . $estadoChecklist . "'
+                    WHERE
+                        id_operador_tipo_operacion = '" . $idOperadorTipoOperacion . "'
+                        and estado_dato_vehiculo = 'activo' RETURNING id_dato_vehiculo;";
+	    
 	    $res = $conexion->ejecutarConsulta($consulta);
 	    
 	    return $res;
