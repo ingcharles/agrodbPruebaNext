@@ -5,7 +5,7 @@
  * Este archivo se complementa con el archivo   OperacionesLogicaNegocio.
  *
  * @author  AGROCALIDAD
- * @date    2019-06-06
+ * @date    2022-04-05
  * @uses    OperacionesModelo
  * @package RegistroOperador
  * @subpackage Modelos
@@ -166,6 +166,13 @@ class OperacionesModelo extends ModeloBase
 		*/
 		protected $moduloProvee;
 		/**
+		* @var String
+		* Campo requerido
+		* Campo visible en el formulario
+		* Observación interna que indica en el caso de alteració nde estado por parte de un requerimiento o incidencia.
+		*/
+		protected $observacionTecnica;
+		/**
 		* @var Integer
 		* Campo requerido
 		* Campo visible en el formulario
@@ -176,9 +183,16 @@ class OperacionesModelo extends ModeloBase
 		* @var String
 		* Campo requerido
 		* Campo visible en el formulario
-		* Observación interna que indica en el caso de alteració nde estado por parte de un requerimiento o incidencia.
+		* Indica si se ha iniciado un proceso de actualización para el registro relacionado con el id_operador_tipo_operacion
 		*/
-		protected $observacionTecnica;
+		protected $procesoModificacion;
+		/**
+		* @var String
+		* Campo requerido
+		* Campo visible en el formulario
+		* Campo que identifica si una operacion debe actualizar un certificado
+		*/
+		protected $actualizarCertificado;
 
 	/**
 	* Campos del formulario 
@@ -208,7 +222,7 @@ class OperacionesModelo extends ModeloBase
 	/**
 	*Secuencia
 */
-		 private $secuencial = '"Operaciones_"id_operacion_seq'; 
+		 private $secuencial = 'g_operadores"."Operaciones_id_operacion_seq'; 
 
 
 
@@ -831,6 +845,30 @@ class OperacionesModelo extends ModeloBase
 	}
 
 	/**
+	* Set observacionTecnica
+	*
+	*Observación interna que indica en el caso de alteració nde estado por parte de un requerimiento o incidencia.
+	*
+	* @parámetro String $observacionTecnica
+	* @return ObservacionTecnica
+	*/
+	public function setObservacionTecnica($observacionTecnica)
+	{
+	  $this->observacionTecnica = (String) $observacionTecnica;
+	    return $this;
+	}
+
+	/**
+	* Get observacionTecnica
+	*
+	* @return null|String
+	*/
+	public function getObservacionTecnica()
+	{
+		return $this->observacionTecnica;
+	}
+
+	/**
 	* Set idVigenciaDocumento
 	*
 	*Identificador de la tabla vigencia documentos
@@ -855,27 +893,51 @@ class OperacionesModelo extends ModeloBase
 	}
 
 	/**
-	* Set observacionTecnica
+	* Set procesoModificacion
 	*
-	*Observación interna que indica en el caso de alteració nde estado por parte de un requerimiento o incidencia.
+	*Indica si se ha iniciado un proceso de actualización para el registro relacionado con el id_operador_tipo_operacion
 	*
-	* @parámetro String $observacionTecnica
-	* @return ObservacionTecnica
+	* @parámetro String $procesoModificacion
+	* @return ProcesoModificacion
 	*/
-	public function setObservacionTecnica($observacionTecnica)
+	public function setProcesoModificacion($procesoModificacion)
 	{
-	  $this->observacionTecnica = (String) $observacionTecnica;
+	  $this->procesoModificacion = (String) $procesoModificacion;
 	    return $this;
 	}
 
 	/**
-	* Get observacionTecnica
+	* Get procesoModificacion
 	*
 	* @return null|String
 	*/
-	public function getObservacionTecnica()
+	public function getProcesoModificacion()
 	{
-		return $this->observacionTecnica;
+		return $this->procesoModificacion;
+	}
+
+	/**
+	* Set actualizarCertificado
+	*
+	*Campo que identifica si una operacion debe actualizar un certificado
+	*
+	* @parámetro String $actualizarCertificado
+	* @return ActualizarCertificado
+	*/
+	public function setActualizarCertificado($actualizarCertificado)
+	{
+	  $this->actualizarCertificado = (String) $actualizarCertificado;
+	    return $this;
+	}
+
+	/**
+	* Get actualizarCertificado
+	*
+	* @return null|String
+	*/
+	public function getActualizarCertificado()
+	{
+		return $this->actualizarCertificado;
 	}
 
 	/**

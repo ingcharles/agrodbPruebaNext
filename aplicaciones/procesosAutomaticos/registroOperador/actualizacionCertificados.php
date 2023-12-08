@@ -10,6 +10,7 @@ if(1){
 	require_once '../../../clases/ControladorCatalogos.php';
 	require_once '../../../aplicaciones/general/PDFMerger.php';
 	require_once '../../../clases/ControladorFirmaDocumentos.php';
+	require_once '../../../clases/ControladorEstructuraFuncionarios.php';															  
 
 	$conexion = new Conexion();
 	$cr = new ControladorRegistroOperador();
@@ -17,6 +18,7 @@ if(1){
 	$cu = new ControladorUsuarios();
 	$cm = new ControladorMonitoreo();
 	$cc = new ControladorCatalogos();
+	$pdf = new PDFMerger(false);
 	$cfd = new ControladorFirmaDocumentos();
 
 	set_time_limit(86000);

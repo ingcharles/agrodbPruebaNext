@@ -1,7 +1,23 @@
+<!-- <meta charset="utf-8">
+<script src="<?php echo URL_GUIA ?>/general/funciones/jquery-1.9.1.js" type="text/javascript"></script>
+<script src="<?php echo URL_GUIA ?>/general/funciones/jquery-ui-1.10.2.custom.js" type="text/javascript"></script>
+<script src="<?php echo URL_GUIA ?>/general/funciones/agrdbfunc.js?version=1.2" type="text/javascript"></script>
+
+	
+
+</head> -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Panel de control GUIA</title>
+
+
 <header>
 	<h1><?php echo $this->accion; ?></h1>
-</header>
 
+</header>
+</head>
 <?php 
     if($_SESSION['nombreProvincia'] === null){//Es operador
         $operador = true;
@@ -419,7 +435,7 @@
 		<div data-linea="12">
 			<label for="placa_transporte">Placa Transporte: </label> 
 			<input type="text" id="placa_transporte" name="placa_transporte" value="<?php echo $this->modeloMovilizacion->getPlacaTransporte(); ?>"
-				placeholder="Ej: AAA-0000" data-er="[A-Z]{3}-[0-9]{3,4}" data-inputmask="'mask': 'aaa-9999'" required maxlength="8" 
+				placeholder="Ej: AAA-0000"  required maxlength="8" 
 				 style="text-transform:uppercase;"/>
 		</div>
 
@@ -558,13 +574,22 @@
 		<button type="submit" class="guardar">Guardar</button>
 	</div>
 </form>
+<!-- <script src="<?php echo URL_GUIA ?>/general/funciones/jquery-1.9.1.js" type="text/javascript"></script> -->
+<script type="text/javascript" src="<?php echo URL_GUIA ?>/general/funciones/jquery.maskedinput.min.js"></script>
 
 <script type="text/javascript">
 var operador = <?php echo json_encode($operador); ?>;
 var bandera = <?php echo json_encode($this->formulario); ?>;
 var combo = "<option>Seleccione....</option>";
-
+// jQuery(function($){
+// 	$.mask.definitions['#'] = $.mask.definitions['9'];  //Set # to do what 9 does
+// $.mask.definitions['9'] = null;                     //Remove 9 as a masking character
+// // $("input").mask("(09) ###-###-###");
+     
+// $("#placa_transporte").mask("aaa-9999");
+// });
 	$(document).ready(function() {
+		$("#placa_transporte").mask("aaa-9999");
 		$("#formulario").hide();
 		$("#datosMovilizacion").hide();
 
@@ -1556,3 +1581,6 @@ var combo = "<option>Seleccione....</option>";
     });
     
 </script>
+
+</body>
+</html>
