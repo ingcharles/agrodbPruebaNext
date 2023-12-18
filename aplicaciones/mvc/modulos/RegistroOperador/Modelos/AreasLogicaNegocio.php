@@ -233,12 +233,50 @@ class AreasLogicaNegocio implements IModelo
                     WHERE
                         op.estado = 'registrado'
                         and top.id_area || top.codigo IN ('SVPRO', 'SVACO', 'SVTRA', 'SVFRA', 'SVAGE', 'SVCON', 'SVPRP', 'SVVVE', 'SVALM', 'SVMIM')
-                        and op.id_producto IN ('" . $arrayParametros['id_producto_origen'] . "')
+                        and op.id_producto IN (" . $arrayParametros['id_producto_origen'] . ")
                         and a.id_sitio = " . $arrayParametros['id_sitio'] . "
                         and a.id_area NOT IN (" . $arrayParametros['id_area'] . ")
 					ORDER BY
 						nombre_area ASC;";
 
+	    return $this->modeloAreas->ejecutarSqlNativo($consulta);
+	}
+	
+	/**
+	 * Ejecuta una consulta(SQL) personalizada, para obtener la información de las áreas de un operador con
+	 * productos para movilización de Sanidad Vegetal como origen.
+	 *
+	 * @return array|ResultSet
+	 */
+	public function obtenerAreasOperadorAsignarCupo($arrayParametros) {
+	    
+	    $consulta = "SELECT
+                    	distinct a.id_area
+                        , a.nombre_area
+                        , s.codigo_provincia ||''|| s.codigo || '' || a.codigo || '' || a.secuencial codigo_area
+                        , top.nombre AS nombre_tipo_operacion
+                    FROM
+                    	g_operadores.areas a
+                    	INNER JOIN g_operadores.sitios s ON s.id_sitio = a.id_sitio
+                    	INNER JOIN g_operadores.productos_areas_operacion pao ON pao.id_area = a.id_area
+                    	INNER JOIN g_operadores.operaciones op ON pao.id_operacion = op.id_operacion
+                    	INNER JOIN g_catalogos.tipos_operacion top ON top.id_tipo_operacion = op.id_tipo_operacion
+                        INNER JOIN g_catalogos.productos p ON op.id_producto = p.id_producto
+                        INNER JOIN g_catalogos.subtipo_productos sp ON p.id_subtipo_producto = sp.id_subtipo_producto
+                        INNER JOIN g_catalogos.tipo_productos tp ON sp.id_tipo_producto = tp.id_tipo_producto
+	                    INNER JOIN g_requisitos.requisitos_comercializacion rc ON rc.id_producto = p.id_producto
+		                INNER JOIN g_requisitos.requisitos_asignados ra ON ra.id_requisito_comercio = rc.id_requisito_comercio
+                    WHERE
+                        op.estado = 'registrado'
+                        and top.id_area || top.codigo IN ('SVPRO')
+						and p.movilizacion = 'SI'
+                        and tp.id_area in ('" . $arrayParametros['area'] . "')
+                        and a.id_sitio = " . $arrayParametros['id_sitio'] . "
+                        and ra.tipo = 'Movilización'
+                        and ra.estado = 'activo'
+					ORDER BY
+						nombre_area ASC;";
+	    
 	    return $this->modeloAreas->ejecutarSqlNativo($consulta);
 	}
 }
