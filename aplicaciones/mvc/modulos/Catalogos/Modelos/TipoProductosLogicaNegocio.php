@@ -193,4 +193,27 @@ class TipoProductosLogicaNegocio implements IModelo
         
         return $tipoProducto;
     }
+    
+    public function obtenerTipoProductoConfiguracionProductoCupoPorIdArea($idArea) {
+        
+        $consulta = "SELECT
+						DISTINCT
+                        tp.id_tipo_producto
+                        , tp.nombre
+					FROM
+                        g_catalogos.tipo_productos tp
+                        INNER JOIN g_catalogos.subtipo_productos sp ON sp.id_tipo_producto = tp.id_tipo_producto
+                        INNER JOIN g_catalogos.productos p ON p.id_subtipo_producto = sp.id_subtipo_producto                       
+                        INNER JOIN g_requisitos.requisitos_comercializacion rc ON rc.id_producto = p.id_producto
+	                    INNER JOIN g_requisitos.requisitos_asignados ra ON ra.id_requisito_comercio = rc.id_requisito_comercio
+                    WHERE
+                        tp.id_area = '" . $idArea . "'
+						and p.movilizacion = 'SI'                        
+                        and ra.tipo = 'Movilización'
+                        and ra.estado = 'activo'
+					ORDER BY
+						tp.nombre;";
+        
+        return $this->modeloTipoProductos->ejecutarSqlNativo($consulta);
+    }
 }

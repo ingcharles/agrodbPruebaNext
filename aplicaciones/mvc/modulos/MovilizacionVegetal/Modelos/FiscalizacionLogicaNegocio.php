@@ -203,7 +203,7 @@ class FiscalizacionLogicaNegocio implements IModelo
         $i = 3;
         $j = 2;
 
-        $documento->setCellValueByColumnAndRow(1, 1, 'Reporte de Fiscalizaciones');
+        $documento->setCellValueByColumnAndRow(1, 1, 'Reporte de fiscalización de permisos de movilización de productos agrícolas');
 
         $documento->setCellValueByColumnAndRow(1, $j, 'ID');
         $documento->setCellValueByColumnAndRow(2, $j, 'Número Permiso');

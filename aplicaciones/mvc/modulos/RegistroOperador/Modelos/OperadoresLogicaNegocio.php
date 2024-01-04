@@ -378,6 +378,50 @@ class OperadoresLogicaNegocio implements IModelo{
 	    
 	    return $this->modeloOperadores->ejecutarSqlNativo($consulta);
 	    
-	}	
+	}
 	
+	/**
+	 * Ejecuta una consulta(SQL) personalizada, para obtener la información de un operador con
+	 * productos para movilización de Sanidad Vegetal como origen.
+	 *
+	 * @return array|ResultSet
+	 */
+	public function obtenerOperadorSitioAsignarCupo($arrayParametros){
+	    
+	    $consulta = "SELECT
+						DISTINCT
+                        o.identificador
+                        , o.razon_social as razon
+                        , s.id_sitio
+                        , s.nombre_lugar as sitio
+                        , s.provincia
+                        , s.codigo_provincia
+                        , s.codigo
+					FROM
+                    	g_operadores.operadores o
+                    	INNER JOIN g_operadores.sitios s ON s.identificador_operador = o.identificador
+                    	INNER JOIN g_operadores.areas a ON s.id_sitio = a.id_sitio
+                    	INNER JOIN g_operadores.productos_areas_operacion pao ON pao.id_area = a.id_area
+                    	INNER JOIN g_operadores.operaciones op ON pao.id_operacion = op.id_operacion
+                        INNER JOIN g_catalogos.tipos_operacion top ON op.id_tipo_operacion = top.id_tipo_operacion
+                    	INNER JOIN g_catalogos.productos p ON op.id_producto = p.id_producto
+                        INNER JOIN g_catalogos.subtipo_productos sp ON p.id_subtipo_producto = sp.id_subtipo_producto
+                        INNER JOIN g_catalogos.tipo_productos tp ON sp.id_tipo_producto = tp.id_tipo_producto
+                        INNER JOIN g_requisitos.requisitos_comercializacion rc ON rc.id_producto = p.id_producto
+	                    INNER JOIN g_requisitos.requisitos_asignados ra ON ra.id_requisito_comercio = rc.id_requisito_comercio
+                    WHERE
+						s.provincia ilike '%" . $arrayParametros['nombre_provincia'] . "%'
+						" . ($arrayParametros['identificador'] != '' ? " and o.identificador ilike '" . $arrayParametros['identificador'] . "%'" : "") . "
+                        " . ($arrayParametros['razon_social'] != '' ? " and o.razon_social ilike '%" . $arrayParametros['razon_social'] . "%'" : "") . "
+                        and op.estado = 'registrado'
+                        and top.id_area || top.codigo IN ('SVPRO')
+                        and p.movilizacion = 'SI'
+                        and tp.id_area in ('" . $arrayParametros['area'] . "')
+                        and ra.tipo = 'Movilización'
+                        and ra.estado = 'activo'
+					ORDER BY
+						razon, sitio;";
+	    
+	    return $this->modeloOperadores->ejecutarSqlNativo($consulta);
+	}
 }

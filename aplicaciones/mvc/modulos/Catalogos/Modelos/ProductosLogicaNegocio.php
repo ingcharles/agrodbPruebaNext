@@ -332,7 +332,7 @@ class ProductosLogicaNegocio implements IModelo{
                     WHERE
 						op.estado = 'registrado'
                         and top.id_area || top.codigo IN ('SVACO', 'SVFRA', 'SVALM', 'SVPRP', 'SVMIM', 'SVPRO', 'SVVVE')
-                        and op.id_producto IN ('" . $arrayParametros['id_producto_origen'] . "')
+                        and op.id_producto IN (" . $arrayParametros['id_producto_origen'] . ")
                         and a.id_area = " . $arrayParametros['id_area_destino'] . "
 						and p.movilizacion = 'SI'
                         and tp.id_area in ('" . $arrayParametros['area'] . "')
@@ -616,6 +616,59 @@ class ProductosLogicaNegocio implements IModelo{
                             
                             ORDER BY
                             	tp.nombre_producto;";
+	    
+	    return $this->modeloProductos->ejecutarSqlNativo($consulta);
+	}
+	
+	public function obtenerProductoConfiguracionProductoCupoPorIdSubipoProducto($idSubtipoProducto) {
+	    
+	    $consulta = "SELECT
+						DISTINCT
+                        p.id_producto
+                        , p.nombre_comun
+					FROM
+                        g_catalogos.productos p
+                        INNER JOIN g_requisitos.requisitos_comercializacion rc ON rc.id_producto = p.id_producto
+	                    INNER JOIN g_requisitos.requisitos_asignados ra ON ra.id_requisito_comercio = rc.id_requisito_comercio
+                    WHERE
+                        p.id_subtipo_producto = '" . $idSubtipoProducto . "'
+						and p.movilizacion = 'SI'
+                        and ra.tipo = 'Movilización'
+                        and ra.estado = 'activo'
+					ORDER BY
+						p.nombre_comun;";
+	    
+	    return $this->modeloProductos->ejecutarSqlNativo($consulta);
+	}
+	
+	/**
+	 * Ejecuta una consulta(SQL) personalizada, para obtener la información de los producto
+	 * registrados por un operador con productos para movilización de
+	 * Sanidad Vegetal como origen.
+	 *
+	 * @return array|ResultSet
+	 */
+	public function obtenerProductoAreasOperadoresAsignarCupo($arrayParametros){
+	    
+	    $consulta = "SELECT
+						DISTINCT
+                        p.id_producto
+                        , p.nombre_comun
+					FROM
+                    	g_operadores.areas a
+                    	INNER JOIN g_operadores.productos_areas_operacion pao ON pao.id_area = a.id_area
+                    	INNER JOIN g_operadores.operaciones op ON pao.id_operacion = op.id_operacion
+                        INNER JOIN g_catalogos.tipos_operacion top ON op.id_tipo_operacion = top.id_tipo_operacion
+                    	INNER JOIN g_catalogos.productos p ON op.id_producto = p.id_producto
+                        INNER JOIN g_movilizacion_vegetal.configuracion_producto_cupo ccp ON ccp.id_producto = p.id_producto
+                    WHERE
+						op.estado = 'registrado'
+                        and top.id_area || top.codigo IN ('SVPRO')
+                        and a.id_area = " . $arrayParametros['id_area'] . "
+						and p.movilizacion = 'SI'
+                        and ccp.estado_configuracion_producto_cupo = 'Activo'
+					ORDER BY
+                        p.nombre_comun ASC";
 	    
 	    return $this->modeloProductos->ejecutarSqlNativo($consulta);
 	}

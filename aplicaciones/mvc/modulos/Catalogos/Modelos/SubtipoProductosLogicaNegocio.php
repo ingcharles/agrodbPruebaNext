@@ -145,7 +145,7 @@ class SubtipoProductosLogicaNegocio implements IModelo{
                     WHERE
                         op.estado = 'registrado'
                         and top.id_area || top.codigo IN ('SVACO', 'SVFRA', 'SVALM', 'SVPRP', 'SVMIM', 'SVPRO', 'SVVVE')
-						and op.id_producto IN ('" . $arrayParametros['id_producto_origen'] . "')
+						and op.id_producto IN (" . $arrayParametros['id_producto_origen'] . ")
                         and a.id_area = " . $arrayParametros['id_area_destino'] . "
 						and p.movilizacion = 'SI'
                         and tp.id_area in ('" . $arrayParametros['area'] . "')
@@ -308,6 +308,28 @@ class SubtipoProductosLogicaNegocio implements IModelo{
                         WHERE
                         	ttp.id_producto = '". $idProducto . "'
                         	and ttp.estado = 1";
+	    
+	    return $this->modeloSubtipoProductos->ejecutarSqlNativo($consulta);
+	}
+	
+	public function obtenerSubtipoProductoConfiguracionProductoCupoPorIdTipoProducto($idTipoProducto) {
+	    
+	    $consulta = "SELECT
+						DISTINCT
+                        sp.id_subtipo_producto
+                        , sp.nombre
+					FROM
+                        g_catalogos.subtipo_productos sp
+                        INNER JOIN g_catalogos.productos p ON p.id_subtipo_producto = sp.id_subtipo_producto
+                        INNER JOIN g_requisitos.requisitos_comercializacion rc ON rc.id_producto = p.id_producto
+	                    INNER JOIN g_requisitos.requisitos_asignados ra ON ra.id_requisito_comercio = rc.id_requisito_comercio
+                    WHERE
+                        sp.id_tipo_producto = '" . $idTipoProducto . "'
+						and p.movilizacion = 'SI'
+                        and ra.tipo = 'Movilización'
+                        and ra.estado = 'activo'
+					ORDER BY
+						sp.nombre;";
 	    
 	    return $this->modeloSubtipoProductos->ejecutarSqlNativo($consulta);
 	}

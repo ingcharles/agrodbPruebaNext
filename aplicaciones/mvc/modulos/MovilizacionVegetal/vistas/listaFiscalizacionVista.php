@@ -1,4 +1,5 @@
 <header>
+	<h1>Fiscalización permiso movilización</h1>
 	<nav><?php echo $this->panelBusquedaFiscalizaciones;?></nav>
 	<nav><?php echo $this->crearAccionBotones();?></nav>
 </header>
@@ -97,11 +98,12 @@
 	    dateFormat: 'yy-mm-dd',
 	    onSelect: function(dateText, inst) {
         	var fecha=new Date($('#fechaInicio').datepicker('getDate')); 
-        	fecha.setDate(fecha.getDate()+30);	 
+        	fecha.setDate(fecha.getDate()+90);	 
       		$('#fechaFin').datepicker('option', 'minDate', $("#fechaInicio" ).val());
       		$('#fechaFin').datepicker('option', 'maxDate', fecha);
+      		$('#fechaFin').datepicker('setDate', fecha);
 	    }
-	 });
+	}).datepicker("setDate", new Date());
 
 	$("#fechaFin").datepicker({ 
 	    changeMonth: true,
@@ -110,5 +112,5 @@
 	    onSelect: function(dateText, inst) {
         	var fecha=new Date($('#fechaInicio').datepicker('getDate')); 
 	    }
-	 });
+	}).datepicker("setDate", new Date());
 </script>
