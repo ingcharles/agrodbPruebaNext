@@ -1,4 +1,7 @@
-<header><nav><?php echo $this->crearAccionBotones();?></nav></header>
+<header>
+<h1>Configuración producto/cupo</h1>
+<nav><?php echo $this->crearAccionBotones();?></nav>
+</header>
 <div id="paginacion" class="normal"></div>
 <table id="tablaItems">
 	<thead><tr>

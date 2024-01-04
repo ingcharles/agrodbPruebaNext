@@ -1,4 +1,5 @@
 <header>
+	<h1>Emisión permiso movilización</h1>
 	<nav><?php echo $this->panelBusquedaMovilizaciones;?></nav>
 	<nav><?php echo $this->crearAccionBotones();?></nav>
 </header>

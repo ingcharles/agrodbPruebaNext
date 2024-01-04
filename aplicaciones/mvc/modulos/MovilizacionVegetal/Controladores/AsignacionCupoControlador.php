@@ -32,7 +32,7 @@ class AsignacionCupoControlador extends BaseControlador
 
     private $idUnidad = null;
 
-    private $codigoUnidad = null;
+    private $nombreUnidad = null;
 
     private $modeloMovilizacion = null;
 
@@ -79,7 +79,19 @@ class AsignacionCupoControlador extends BaseControlador
      */
     public function index()
     {
+        $fechaActual = date('Y-m-d');
         $this->panelBusqueda = $this->cargarPanelAsignacionCupo();
+        
+        $arrayParametros = ['identificacionOperador' => ""
+                            , 'nombreOperador' => ""
+                            , 'provincia' => ""
+                            , 'fechaInicio' => $fechaActual
+                            , 'fechaFin' => $fechaActual
+                            ];
+        
+        $modeloAsignacionCupo = $this->lNegocioAsignacionCupo->buscarAsignacionCupo($arrayParametros);
+        $this->tablaHtmlAsignacionCupo($modeloAsignacionCupo);
+        
         require APP . 'MovilizacionVegetal/vistas/listaAsignacionCupoVista.php';
     }
 
@@ -96,7 +108,7 @@ class AsignacionCupoControlador extends BaseControlador
 
         $qUnidad = $this->lNegocioUnidadesFitosanitarias->buscarLista($arrayParametros);
         $this->idUnidad = $qUnidad->current()->id_unidad_fitosanitaria;
-        $this->codigoUnidad = $qUnidad->current()->codigo_unidad_fitosanitaria;
+        $this->nombreUnidad = $qUnidad->current()->nombre_unidad_fitosanitaria;
 
         $estadoAsignacionCupo = 'Nuevo';
         $this->datosGenerales = $this->construirDatosGenerales($estadoAsignacionCupo);
@@ -117,7 +129,7 @@ class AsignacionCupoControlador extends BaseControlador
 
         $resultado = $this->lNegocioAsignacionCupo->guardarAsignacionCupo($arrayParametros);
 
-        if ($resultado['resultado'] == 'Fallo') {
+        if ($resultado['resultado'] == 'fallo') {
             Mensajes::fallo($resultado['mensaje']);
         } else {
             Mensajes::exito($resultado['mensaje']);
@@ -324,12 +336,12 @@ class AsignacionCupoControlador extends BaseControlador
                                         <tr>
                     						<td>*Identificación operador: </td>
                     						<td>
-                    							<input id="identificacionOperador" type="text" name="identificacionOperador" maxlength="13" style="width: 100%" class="validacion">
+                    							<input id="identificacionOperador" type="text" name="identificacionOperador" maxlength="13" style="width: 100%">
                     						</td>
     
                     						<td>*Nombre operador: </td>
                     						<td>
-                    							<input id="nombreOperador" type="text" name="nombreOperador" maxlength="512" style="width: 100%" class="validacion">
+                    							<input id="nombreOperador" type="text" name="nombreOperador" maxlength="512" style="width: 100%">
                     						</td>
                     					</tr>
                                         <tr>
@@ -448,7 +460,7 @@ class AsignacionCupoControlador extends BaseControlador
                     				maxlength="128" />
                     		</div>
                     		<div data-linea="8">
-                    			<label for="cupo_asignado">Estimación de consecha (' . $this->codigoUnidad . '): </label>
+                    			<label for="cupo_asignado">Estimación de consecha (' . $this->nombreUnidad . '): </label>
                     			<input type="text" id="cupo_asignado" name="cupo_asignado" value=""
                     				placeholder="Cantidad de la estimación de cosecha"
                     				class="validacion" maxlength="10"
@@ -474,7 +486,7 @@ class AsignacionCupoControlador extends BaseControlador
                 $nombreProducto = $qDatosAsignacionCupo->current()->nombre_producto;
                 $lote = $qDatosAsignacionCupo->current()->lote;
                 $cupoAsignado = $qDatosAsignacionCupo->current()->cupo_asignado;
-                $codigoUnidad = $qDatosAsignacionCupo->current()->codigo_unidad;
+                $nombreUnidad = $qDatosAsignacionCupo->current()->nombre_unidad;
                 $idAsignacionCupo = $qDatosAsignacionCupo->current()->id_asignacion_cupo;
                 $cupoDisponible = $qDatosAsignacionCupo->current()->cupo_disponible;
                 $anioAsignacionCupo = $qDatosAsignacionCupo->current()->anio_asignacion_cupo;
@@ -490,7 +502,7 @@ class AsignacionCupoControlador extends BaseControlador
 
                         $rutaFormulario = "actualizarCupoAdicional";
 
-                        $datoCupoAdicional = '<div data-linea="9"><label for="cupo_adicional">Cupo adicional (' . $codigoUnidad . '): </label><input type="text" id="cupo_adicional" name="cupo_adicional" value=""
+                        $datoCupoAdicional = '<div data-linea="9"><label for="cupo_adicional">Cupo adicional (' . $nombreUnidad . '): </label><input type="text" id="cupo_adicional" name="cupo_adicional" value=""
                 				placeholder="Cupo adicional de la estimación de cosecha"
                 				class="validacion" maxlength="10"
                 				oninput="formatearCantidadProducto(this)" /></div>';
@@ -544,9 +556,9 @@ class AsignacionCupoControlador extends BaseControlador
                     		<div data-linea="7">
                     			<label for="lote">Lote: </label>' . $lote . '</div>
                     		<div data-linea="8">
-                    			<label for="cupo_asignado">Cupo asignado (' . $codigoUnidad . '): </label>' . $cupoAsignado . '</div>
+                    			<label for="cupo_asignado">Cupo asignado (' . $nombreUnidad . '): </label>' . $cupoAsignado . '</div>
                             <div data-linea="8">
-                    			<label for="cupo_disponible">Cupo disponible (' . $codigoUnidad . '): </label>' . $cupoDisponible . '</div>
+                    			<label for="cupo_disponible">Cupo disponible (' . $nombreUnidad . '): </label>' . $cupoDisponible . '</div>
                             ' . $datoCupoAdicional . '
                     	</fieldset>' . $datoGuardar . '</form>';
                 break;

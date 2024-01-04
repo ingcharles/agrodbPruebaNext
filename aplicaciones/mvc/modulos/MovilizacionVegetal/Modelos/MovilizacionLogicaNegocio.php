@@ -329,87 +329,95 @@ class MovilizacionLogicaNegocio implements IModelo
 	 
 	    //$busqueda = ltrim($busqueda, " and");
 	    
-	    $consulta = " SELECT
-                            m.id_movilizacion, 
-                        	m.numero_permiso, 
-                        	m.provincia_emision,  
-                        	m.canton_emision, 
-                        	m.oficina_emision, 
-                        	(
-                        	SELECT
-                        		t.nombre
-                        	FROM
-                        		g_operadores.operaciones o
-                        		INNER JOIN g_operadores.productos_areas_operacion pao ON o.id_operacion = pao.id_operacion
-                        		INNER JOIN g_catalogos.tipos_operacion t ON o.id_tipo_operacion = t.id_tipo_operacion
-                        	WHERE
-                        		pao.id_area = dm.id_area_origen and
-                        		o.id_producto = dm.id_producto and
-                        		o.identificador_operador = m.identificador_operador_origen and
-                        		t.id_area = 'SV'
-                            LIMIT 1                                
-                        	) as operacion_origen,
-                        	m.id_provincia_origen,
-                        	m.provincia_origen,  
-                        	(
-                        	SELECT
-                        		l.id_localizacion
-                        	FROM
-                        		g_catalogos.localizacion l
-                        	WHERE
-                        		l.nombre = so.canton
-                        	LIMIT 1
-                        	) as id_canton_origen,
-                        	so.canton canton_origen,
-                        	(
-                        	SELECT
-                        		l.id_localizacion
-                        	FROM
-                        		g_catalogos.localizacion l
-                        	WHERE
-                        		l.nombre = so.parroquia
-                        	LIMIT 1
-                        	) as id_parroquia_origen,
-                        	so.parroquia parroquia_origen,
-                        	m.id_sitio_origen, 
-                        	m.sitio_origen, 
-                        	m.identificador_operador_origen, 
-                        	m.nombre_operador_origen,
-                        	m.provincia_destino, 
-                        	sd.canton canton_destino,
-                        	sd.parroquia parroquia_destino, 
-                                m.sitio_destino, 
-                        	m.identificador_operador_destino, 
-                        	m.nombre_operador_destino,
-                        	m.identificador identificador_responsable, 
-                        	(SELECT case when p.codificacion_perfil='PFL_USUAR_INT' then (SELECT upper((rsv.nombre::text || ' '::text) || rsv.apellido::text)  FROM g_uath.ficha_empleado rsv WHERE m.identificador = rsv.identificador )
-                        	 else (SELECT UPPER(( oa.nombre_representante::TEXT||' '::TEXT) || oa.apellido_representante::TEXT ) FROM g_operadores.operadores oa WHERE m.identificador = oa.identificador   ) end nombre_responsable
-                        	 FROM g_usuario.perfiles p, g_usuario.usuarios_perfiles up
-                        	 WHERE p.id_perfil=up.id_perfil and p.codificacion_perfil in ('PFL_USUAR_INT','PFL_USUAR_EXT') and up.identificador=m.identificador limit 1), 
-                        	tp.id_tipo_producto,
-                        	dm.id_subtipo_producto,
-                        	dm.subtipo_producto,
-                        	dm.id_producto,
-                        	dm.producto,
-                        	dm.area_origen,
-                            dm.area_destino,
-                        	dm.cantidad,
-                        	m.identificador_conductor, 
-                        	m.nombre_conductor,
-                        	m.medio_transporte, 
-                        	m.placa_transporte,  
-                        	m.observacion_transporte,
-                        	m.fecha_inicio_movilizacion,   
-                        	m.fecha_fin_movilizacion,
-                        	m.estado_movilizacion
-                        FROM 
-                        	g_movilizacion_vegetal.movilizacion m
-                        	INNER JOIN g_movilizacion_vegetal.detalle_movilizacion dm ON m.id_movilizacion = dm.id_movilizacion
-                        	INNER JOIN g_operadores.sitios so ON m.id_sitio_origen = so.id_sitio
-                            INNER JOIN g_operadores.sitios sd ON m.id_sitio_destino = sd.id_sitio
-                        	INNER JOIN g_catalogos.subtipo_productos sp ON dm.id_subtipo_producto = sp.id_subtipo_producto
-                        	INNER JOIN g_catalogos.tipo_productos tp ON tp.id_tipo_producto = sp.id_tipo_producto
-                        WHERE
+	    $consulta = "SELECT 
+                    	m.id_movilizacion
+                    	, m.numero_permiso
+                    	, m.provincia_emision
+                    	, m.canton_emision
+                    	, m.oficina_emision
+                    	, ( SELECT 
+                    		t.nombre 
+                    		FROM 
+                    		g_operadores.operaciones o 
+                    		INNER JOIN g_operadores.productos_areas_operacion pao ON o.id_operacion = pao.id_operacion 
+                    		INNER JOIN g_catalogos.tipos_operacion t ON o.id_tipo_operacion = t.id_tipo_operacion 
+                    		WHERE 
+                    		pao.id_area = dm.id_area_origen 
+                    		and o.id_producto = dm.id_producto 
+                    		and o.identificador_operador = m.identificador_operador_origen and t.id_area = 'SV' LIMIT 1 ) as operacion_origen
+                    	, m.id_provincia_origen
+                    	, m.provincia_origen
+                    	, ( SELECT 
+                    		l.id_localizacion 
+                    		FROM 
+                    		g_catalogos.localizacion l 
+                    		WHERE l.nombre = so.canton LIMIT 1 ) as id_canton_origen
+                    	, so.canton canton_origen
+                    	, ( SELECT 
+                    		l.id_localizacion 
+                    		FROM 
+                    		g_catalogos.localizacion l 
+                    		WHERE 
+                    		l.nombre = so.parroquia LIMIT 1 ) as id_parroquia_origen
+                    	, so.parroquia parroquia_origen
+                    	, m.id_sitio_origen
+                    	, m.sitio_origen
+                    	, m.identificador_operador_origen
+                    	, m.nombre_operador_origen
+                    	, m.provincia_destino
+                    	, sd.canton canton_destino
+                    	, sd.parroquia parroquia_destino
+                    	, m.sitio_destino
+                    	, m.identificador_operador_destino
+                    	, m.nombre_operador_destino
+                    	, m.identificador identificador_responsable
+                    	, (SELECT 
+                    		case when p.codificacion_perfil='PFL_USUAR_INT' 
+                    		then (SELECT 
+                    				upper((rsv.nombre::text || ' '::text) || rsv.apellido::text) 
+                    				FROM 
+                    				g_uath.ficha_empleado rsv 
+                    				WHERE 
+                    				m.identificador = rsv.identificador ) 
+                    		else (SELECT UPPER(( oa.nombre_representante::TEXT||' '::TEXT) || oa.apellido_representante::TEXT ) 
+                    				FROM 
+                    				g_operadores.operadores oa 
+                    				WHERE 
+                    				m.identificador = oa.identificador) end nombre_responsable 
+                    				FROM g_usuario.perfiles p, g_usuario.usuarios_perfiles up 
+                    				WHERE 
+                    				p.id_perfil=up.id_perfil 
+                    				and p.codificacion_perfil in ('PFL_USUAR_INT','PFL_USUAR_EXT') 
+                    				and up.identificador=m.identificador limit 1)
+                    	, tp.id_tipo_producto
+                    	, dm.id_subtipo_producto
+                    	, dm.subtipo_producto
+                    	, dm.id_producto
+                    	, dm.producto
+                    	, dm.cantidad
+                    	, uf.codigo_unidad_fitosanitaria AS codigo_unidad_medida
+                    	, dm.lote
+                    	, v.nombre AS nombre_variedad
+                    	, dm.area_origen
+                    	, dm.area_destino
+                    	, m.identificador_conductor
+                    	, m.nombre_conductor
+                    	, m.medio_transporte
+                    	, m.placa_transporte
+                    	, m.observacion_transporte
+                    	, m.fecha_inicio_movilizacion
+                    	, m.fecha_fin_movilizacion
+                    	, m.estado_movilizacion 
+                    FROM
+                    	g_movilizacion_vegetal.movilizacion m 
+                    	INNER JOIN g_movilizacion_vegetal.detalle_movilizacion dm ON m.id_movilizacion = dm.id_movilizacion
+                    	INNER JOIN g_catalogos.unidades_fitosanitarias uf ON uf.id_unidad_fitosanitaria = dm.unidad
+                    	INNER JOIN g_operadores.sitios so ON m.id_sitio_origen = so.id_sitio 
+                    	INNER JOIN g_operadores.sitios sd ON m.id_sitio_destino = sd.id_sitio 
+                    	INNER JOIN g_catalogos.subtipo_productos sp ON dm.id_subtipo_producto = sp.id_subtipo_producto 
+                    	INNER JOIN g_catalogos.tipo_productos tp ON tp.id_tipo_producto = sp.id_tipo_producto
+                    	LEFT JOIN g_catalogos.variedades v ON v.id_variedad = dm.id_variedad
+                    WHERE
                             m.fecha_creacion >= '" . $arrayParametros['fecha_inicio'] . " 00:00:00' and
 	                        m.fecha_creacion <= '" . $arrayParametros['fecha_fin'] . " 24:00:00'
                             ". $busqueda ."
@@ -433,7 +441,7 @@ class MovilizacionLogicaNegocio implements IModelo
 	    $i = 3;
 	    $j = 2;
 	    
-	    $documento->setCellValueByColumnAndRow(1, 1, 'Reporte de Movilizaciones');
+	    $documento->setCellValueByColumnAndRow(1, 1, 'Reporte de permisos de movilización de productos agrícolas');
 	    
 	    $documento->setCellValueByColumnAndRow(1, $j, 'ID');
 	    $documento->setCellValueByColumnAndRow(2, $j, 'Número Permiso');
@@ -459,14 +467,17 @@ class MovilizacionLogicaNegocio implements IModelo
 	    $documento->setCellValueByColumnAndRow(22, $j, 'Subtipo Producto');
 	    $documento->setCellValueByColumnAndRow(23, $j, 'Producto');
 	    $documento->setCellValueByColumnAndRow(24, $j, 'Cantidad');
-	    $documento->setCellValueByColumnAndRow(25, $j, 'Identificación Conductor');
-	    $documento->setCellValueByColumnAndRow(26, $j, 'Nombre Conductor');
-	    $documento->setCellValueByColumnAndRow(27, $j, 'Medio Transporte');
-	    $documento->setCellValueByColumnAndRow(28, $j, 'Placa de Transporte');
-	    $documento->setCellValueByColumnAndRow(29, $j, 'Observación');
-	    $documento->setCellValueByColumnAndRow(30, $j, 'Fecha Inicio Vigencia');
-	    $documento->setCellValueByColumnAndRow(31, $j, 'Fecha Fin Vigencia');
-	    $documento->setCellValueByColumnAndRow(32, $j, 'Estado');
+	    $documento->setCellValueByColumnAndRow(25, $j, 'Unidad de medida');
+	    $documento->setCellValueByColumnAndRow(26, $j, 'Lote');
+	    $documento->setCellValueByColumnAndRow(27, $j, 'Variedad');
+	    $documento->setCellValueByColumnAndRow(28, $j, 'Identificación Conductor');
+	    $documento->setCellValueByColumnAndRow(29, $j, 'Nombre Conductor');
+	    $documento->setCellValueByColumnAndRow(30, $j, 'Medio Transporte');
+	    $documento->setCellValueByColumnAndRow(31, $j, 'Placa de Transporte');
+	    $documento->setCellValueByColumnAndRow(32, $j, 'Observación');
+	    $documento->setCellValueByColumnAndRow(33, $j, 'Fecha Inicio Vigencia');
+	    $documento->setCellValueByColumnAndRow(34, $j, 'Fecha Fin Vigencia');
+	    $documento->setCellValueByColumnAndRow(35, $j, 'Estado');
 	    
 	    if($datos != ''){
     	    foreach ($datos as $fila){
@@ -494,14 +505,17 @@ class MovilizacionLogicaNegocio implements IModelo
     	        $documento->setCellValueByColumnAndRow(22, $i, $fila['subtipo_producto']);
     	        $documento->setCellValueByColumnAndRow(23, $i, $fila['producto']);
     	        $documento->setCellValueByColumnAndRow(24, $i, $fila['cantidad']);
-    	        $documento->getCellByColumnAndRow(25, $i)->setValueExplicit($fila['identificador_conductor'], 's');
-    	        $documento->setCellValueByColumnAndRow(26, $i, $fila['nombre_conductor']);
-    	        $documento->setCellValueByColumnAndRow(27, $i, $fila['medio_transporte']);
-    	        $documento->setCellValueByColumnAndRow(28, $i, $fila['placa_transporte']);
-    	        $documento->setCellValueByColumnAndRow(29, $i, $fila['observacion_transporte']);
-    	        $documento->setCellValueByColumnAndRow(30, $i, ($fila['fecha_inicio_movilizacion']!=null?date('Y-m-d',strtotime($fila['fecha_inicio_movilizacion'])):''));
-    	        $documento->setCellValueByColumnAndRow(31, $i, ($fila['fecha_fin_movilizacion']!=null?date('Y-m-d',strtotime($fila['fecha_fin_movilizacion'])):''));
-    	        $documento->setCellValueByColumnAndRow(32, $i, $fila['estado_movilizacion']);
+    	        $documento->setCellValueByColumnAndRow(25, $i, $fila['codigo_unidad_medida']);
+    	        $documento->setCellValueByColumnAndRow(26, $i, $fila['lote']);
+    	        $documento->setCellValueByColumnAndRow(27, $i, $fila['nombre_variedad']);
+    	        $documento->getCellByColumnAndRow(28, $i)->setValueExplicit($fila['identificador_conductor'], 's');
+    	        $documento->setCellValueByColumnAndRow(29, $i, $fila['nombre_conductor']);
+    	        $documento->setCellValueByColumnAndRow(30, $i, $fila['medio_transporte']);
+    	        $documento->setCellValueByColumnAndRow(31, $i, $fila['placa_transporte']);
+    	        $documento->setCellValueByColumnAndRow(32, $i, $fila['observacion_transporte']);
+    	        $documento->setCellValueByColumnAndRow(33, $i, ($fila['fecha_inicio_movilizacion']!=null?date('Y-m-d',strtotime($fila['fecha_inicio_movilizacion'])):''));
+    	        $documento->setCellValueByColumnAndRow(34, $i, ($fila['fecha_fin_movilizacion']!=null?date('Y-m-d',strtotime($fila['fecha_fin_movilizacion'])):''));
+    	        $documento->setCellValueByColumnAndRow(35, $i, $fila['estado_movilizacion']);
     	        
     	        $i++;
     	    }
@@ -515,5 +529,27 @@ class MovilizacionLogicaNegocio implements IModelo
 	    $writer = IOFactory::createWriter($hoja, 'Xlsx');
 	    $writer->save('php://output');
 	    exit();
+	}
+	
+	/**
+	 * Ejecuta una consulta(SQL) personalizada .
+	 *
+	 * @return array|ResultSet
+	 */
+	public function buscarVariedadesPorIdProducto($arrayParametros)
+	{
+	    
+	    $idProducto = $arrayParametros['id_producto'];
+	    
+	    $consulta = "SELECT 
+                        pv.id_variedad
+                        , pv.codigo_variedad || '-' || v.nombre AS nombre_variedad
+                     FROM 
+                        g_catalogos.productos_variedades pv
+                     INNER JOIN g_catalogos.variedades v ON v.id_variedad = pv.id_variedad
+                     WHERE 
+                        id_producto = '" . $idProducto . "'";
+	    
+	    return $this->modeloMovilizacion->ejecutarSqlNativo($consulta);
 	}
 }

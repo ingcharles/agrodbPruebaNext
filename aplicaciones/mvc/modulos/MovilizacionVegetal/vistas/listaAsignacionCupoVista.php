@@ -1,4 +1,5 @@
 <header>
+<h1>Asignación de cupo</h1>
 <nav><?php echo $this->panelBusqueda?></nav>
 <nav><?php echo $this->crearAccionBotones();?></nav></header>
 <div id="paginacion" class="normal"></div>
@@ -9,8 +10,8 @@
 		<th>Área</th>
 		<th>Producto</th>
 		<th>Lote</th>
-		<th>Estimación de cosecha (KGM)</th>
-		<th>Cupo disponible (KGM)</th>
+		<th>Estimación de cosecha (Kilogramos)</th>
+		<th>Cupo disponible (Kilogramos)</th>
 		<th>Año</th>
 		</tr></thead>
 	<tbody></tbody>
@@ -54,22 +55,6 @@
 		event.preventDefault();
 		fn_limpiar();
 		var error = false;
-
-		if (!$.trim($("#identificacionOperador").val())) {
-			if (!$.trim($("#nombreOperador").val())) {
-				$("#identificacionOperador").addClass("alertaCombo");
-				$("#nombreOperador").addClass("alertaCombo");
-				error = true;
-			}
-		}
-
-		if (!$.trim($("#nombreOperador").val())) {
-			if (!$.trim($("#identificacionOperador").val())) {
-				$("#identificacionOperador").addClass("alertaCombo");
-				$("#nombreOperador").addClass("alertaCombo");
-				error = true;
-			}
-		}
 		        
 		if (!error) {
 			$("#paginacion").html("<div id='cargando'>Cargando...</div>");

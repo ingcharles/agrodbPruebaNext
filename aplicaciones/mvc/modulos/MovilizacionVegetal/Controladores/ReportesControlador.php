@@ -124,7 +124,7 @@ class ReportesControlador extends BaseControlador
                                                         <table class="filtro" style="width: 450px;">
                                                             <tbody>
                                                                 <tr>
-                                                                    <th colspan="4">Filtro para el reporte de movilización de productos S. Vegetal</th>
+                                                                    <th colspan="4">Filtro para el reporte de movilización de productos agrícolas</th>
                                                                 </tr>
                                             					<tr  style="width: 100%;">
                                             						<td >Provincia: </td>
@@ -191,7 +191,7 @@ class ReportesControlador extends BaseControlador
                                                         <table class="filtro" style="width: 450px;">
                                                             <tbody>
                                                                 <tr>
-                                                                    <th colspan="4">Filtro para el reporte de fiscalizaciones de permisos de movilización</th>
+                                                                    <th colspan="4">Filtro para el reporte de fiscalizaciones de permisos de movilización de productos agrícolas</th>
                                                                 </tr>
                                             					<tr  style="width: 100%;">
                                             						<td >Provincia: </td>
